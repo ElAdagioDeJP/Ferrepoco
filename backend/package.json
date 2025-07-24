@@ -1,0 +1,19 @@
+{
+  "name": "ferrepoco-backend",
+  "version": "1.0.0",
+  "description": "Backend de Ferrepoco con Node.js y Express",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
