@@ -26,7 +26,10 @@ USE ferrepocobd;
 -- 3. Creación de las tablas
 
 -- Tabla para almacenar los usuarios del sistema.
-[cite_start]-- Consolida los roles de Cliente, Empleado y Administrador en una sola tabla[cite: 67].
+[cite_start]-- 
+Consolida los roles de Cliente, Empleado y Administrador en una sola tabla[cite: 67].
+
+
 CREATE TABLE USUARIO (
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
     [cite_start]nombre VARCHAR(100) NOT NULL, -- [cite: 66]
@@ -36,6 +39,8 @@ CREATE TABLE USUARIO (
 );
 
 -- Tabla para almacenar la información de los productos de la ferretería.
+
+
 CREATE TABLE PRODUCTO (
     id_producto INT PRIMARY KEY AUTO_INCREMENT,
     [cite_start]nombre VARCHAR(100) NOT NULL, -- [cite: 71]
@@ -45,6 +50,7 @@ CREATE TABLE PRODUCTO (
 );
 
 -- Tabla para almacenar la cabecera de los pedidos realizados por los clientes.
+
 CREATE TABLE PEDIDO (
     id_pedido INT PRIMARY KEY AUTO_INCREMENT,
     id_cliente INT NOT NULL,
@@ -55,6 +61,7 @@ CREATE TABLE PEDIDO (
 
 -- Tabla de detalle para relacionar los productos con los pedidos.
 -- Permite que un pedido tenga múltiples productos.
+
 CREATE TABLE DETALLE_PEDIDO (
     id_detalle INT PRIMARY KEY AUTO_INCREMENT,
     id_pedido INT NOT NULL,
