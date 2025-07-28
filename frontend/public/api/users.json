@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Admin User",
+    "email": "admin@ferrepoco.com",
+    "password": "password",
+    "role": "admin"
+  },
+  {
+    "id": 2,
+    "name": "Employee User",
+    "email": "employee@ferrepoco.com",
+    "password": "password",
+    "role": "employee"
+  },
+  {
+    "id": 3,
+    "name": "Client User",
+    "email": "client@ferrepoco.com",
+    "password": "password",
+    "role": "client"
+  }
+]
