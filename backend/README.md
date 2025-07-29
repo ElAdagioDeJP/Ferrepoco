@@ -1,73 +1,73 @@
-# Backend Ferrepoco
+# Plataforma Ferrepoco
 
-Este directorio contiene la configuración inicial del backend usando Node.js y Express.
+Este repositorio contiene el código base para la plataforma Ferrepoco, un sistema comercial para la gestión de inventario y la interacción con clientes, desarrollado con Vue.js (Frontend) y Node.js (Backend). La base de datos está simulada con archivos JSON.
 
-## Scripts
+## Estructura del Proyecto
+ferrepoco-app/
+├── backend/       # Código del servidor Node.js
+└── frontend/      # Código de la aplicación Vue.js
+## Configuración y Ejecución
 
-- `npm install` - Instala las dependencias.
-- `npm run dev` - Ejecuta el servidor en modo desarrollo con nodemon.
-- `npm start` - Ejecuta el servidor en modo producción.
+Sigue estos pasos para poner en marcha la aplicación:
 
-## Configuración
+### 1. Backend (Node.js)
 
-Duplica `.env.example` a `.env` y define tus variables de entorno:
+1.  Navega a la carpeta `backend`:
+    ```bash
+    cd backend
+    ```
+2.  Instala las dependencias de Node.js:
+    ```bash
+    npm install
+    ```
+3.  Inicia el servidor backend:
+    ```bash
+    npm run dev  # Usar 'dev' para nodemon (recarga automática) o 'start' para ejecución normal
+    ```
+    El servidor se ejecutará en `http://localhost:3000`.
 
-```
-PORT=3000
-```
+### 2. Frontend (Vue.js)
 
-## Creacion de la base de datos
- 1. Creación de la base de datos
-CREATE DATABASE ferrepocobd;
+1.  En una **nueva terminal**, navega a la carpeta `frontend`:
+    ```bash
+    cd frontend
+    ```
+2.  Instala las dependencias de Vue.js:
+    ```bash
+    npm install
+    ```
+3.  Inicia la aplicación frontend:
+    ```bash
+    npm run serve
+    ```
+    La aplicación se ejecutará en `http://localhost:8080` (o un puerto similar).
 
--- 2. Selección de la base de datos para usarla
-USE ferrepocobd;
+### 3. Acceso a la Aplicación
 
--- 3. Creación de las tablas
+Abre tu navegador web y ve a `http://localhost:8080`.
 
--- Tabla para almacenar los usuarios del sistema.
-[cite_start]-- 
-Consolida los roles de Cliente, Empleado y Administrador en una sola tabla[cite: 67].
+**Usuarios de Prueba (Simulados):**
 
+* **Administrador:** `admin@ferrepoco.com` / `password`
+* **Empleado:** `empleado@ferrepoco.com` / `password`
+* **Cliente:** `cliente@ferrepoco.com` / `password`
 
-CREATE TABLE USUARIO (
-    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
-    [cite_start]nombre VARCHAR(100) NOT NULL, -- [cite: 66]
-    [cite_start]correo VARCHAR(100) NOT NULL UNIQUE, -- [cite: 66]
-    [cite_start]contrasena VARCHAR(255) NOT NULL, -- [cite: 66]
-    rol ENUM('Cliente', 'Empleado', 'Administrador') NOT NULL
-);
+## Funcionalidades Implementadas (Base)
 
--- Tabla para almacenar la información de los productos de la ferretería.
+* **Autenticación básica:** Login de usuarios (Admin, Empleado, Cliente).
+* **Gestión de Usuarios (Admin):** Visualización y eliminación (simplificada).
+* **Gestión de Productos (Admin/Empleado/Cliente):** Visualización de productos.
+* **Gestión de Stock (Admin/Empleado):** Actualización de stock (ejemplos de sobrecarga de `actualizarStock`).
+* **Alertas de Inventario (Admin/Empleado):** Generación de alertas de bajo stock.
+* **Gestión de Pedidos (Cliente/Empleado):** Clientes pueden añadir al carrito y "realizar compra". Empleados pueden ver y actualizar el estado de los pedidos.
 
+## Consideraciones y Simplificaciones
 
-CREATE TABLE PRODUCTO (
-    id_producto INT PRIMARY KEY AUTO_INCREMENT,
-    [cite_start]nombre VARCHAR(100) NOT NULL, -- [cite: 71]
-    [cite_start]descripcion TEXT, -- [cite: 71]
-    [cite_start]precio DECIMAL(10, 2) NOT NULL, -- [cite: 71]
-    [cite_start]stock INT NOT NULL DEFAULT 0 -- [cite: 71]
-);
-
--- Tabla para almacenar la cabecera de los pedidos realizados por los clientes.
-
-CREATE TABLE PEDIDO (
-    id_pedido INT PRIMARY KEY AUTO_INCREMENT,
-    id_cliente INT NOT NULL,
-    [cite_start]estado VARCHAR(50) NOT NULL, -- [cite: 69]
-    fecha_pedido DATETIME DEFAULT CURRENT_TIMESTAMP,
-    [cite_start]FOREIGN KEY (id_cliente) REFERENCES USUARIO(id_usuario) -- Un pedido es realizado por un Cliente[cite: 61, 70].
-);
-
--- Tabla de detalle para relacionar los productos con los pedidos.
--- Permite que un pedido tenga múltiples productos.
-
-CREATE TABLE DETALLE_PEDIDO (
-    id_detalle INT PRIMARY KEY AUTO_INCREMENT,
-    id_pedido INT NOT NULL,
-    id_producto INT NOT NULL,
-    cantidad INT NOT NULL,
-    precio_unitario DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (id_pedido) REFERENCES PEDIDO(id_pedido), -- Un detalle pertenece a un Pedido.
-    [cite_start]FOREIGN KEY (id_producto) REFERENCES PRODUCTO(id_producto) -- Un detalle corresponde a un Producto[cite: 72].
-);
+* **Base de Datos JSON:** Todos los datos se almacenan en archivos JSON planos (`data/*.json`). **Los cambios realizados en la aplicación se guardarán en estos archivos, pero si el servidor se reinicia y no has implementado una persistencia robusta de escritura de archivos en el backend, los datos podrían resetearse a los del JSON inicial.** Para una aplicación real, se usaría una base de datos como MongoDB, PostgreSQL, etc.
+* **Autenticación Simplificada:** No se usan tokens JWT ni hasheo de contraseñas. La autenticación se basa en la coincidencia directa de usuario/contraseña. Los roles se pasan en los headers (`x-user-role`) para simular la autorización.
+* **Polimorfismo:**
+    * **Tiempo de Ejecución (Sobreescritura):** Simulada en el `authRoutes.js` del backend, donde el rol del usuario logueado determina la redirección del frontend.
+    * **Tiempo de Compilación (Sobrecarga):** Implementada en `backend/utils/dataHandler.js` (ej. `updateProductStock`, `findProducts`) y en las rutas que los invocan.
+* **Interfaz `IGestionable`:** No se implementa una interfaz explícita como en lenguajes como Java/TypeScript, pero el concepto se refleja en cómo `AdminDashboard.vue` y `EmployeeDashboard.vue` llaman a métodos de gestión (`loadProducts`, `updateStock`) que tienen diferentes implicaciones según el rol.
+* **Validaciones y Errores:** La gestión de errores es básica.
+* **Estilos:** Mínimos, enfocados en la funcionalidad.
