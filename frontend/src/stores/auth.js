@@ -1,59 +1,39 @@
+"esto es un ejemplo de código para un store de autenticación en Vue.js que maneja el estado del usuario autenticado, incluyendo su rol y la información del token JWT."
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
-import { apiService } from '../services/apiService';
-import router from '../router';
 
-export const useAuthStore = defineStore('auth', () => {
-  const user = ref(JSON.parse(localStorage.getItem('user')));
-  const token = ref(localStorage.getItem('token'));
-
-  const isAuthenticated = computed(() => !!token.value);
-  const userRole = computed(() => user.value?.role);
-
-  async function login(email, password) {
-    try {
-      const users = await apiService.getUsers();
-      const foundUser = users.find(u => u.email === email && u.password === password);
-
-      if (foundUser) {
-        // Simular la creación de un token
-        const simulatedToken = btoa(`${email}:${password}`);
-        
-        user.value = { id: foundUser.id, name: foundUser.name, email: foundUser.email, role: foundUser.role };
-        token.value = simulatedToken;
-
-        localStorage.setItem('user', JSON.stringify(user.value));
-        localStorage.setItem('token', token.value);
-        
-        await router.push('/dashboard');
-        return true;
+export const useAuthStore = defineStore('auth', {
+  state: () => ({
+    user: null,
+    token: null, // No usado en esta simulación, pero común en apps reales
+    userRole: null
+  }),
+  getters: {
+    isAuthenticated: (state) => !!state.user,
+    getUserRole: (state) => state.userRole
+  },
+  actions: {
+    login(userData) {
+      this.user = userData;
+      this.userRole = userData.role;
+      // En una app real, guardar token en localStorage
+      localStorage.setItem('userRole', userData.role); // Para persistir el rol
+      localStorage.setItem('userId', userData.id); // Para persistir el ID del usuario
+    },
+    logout() {
+      this.user = null;
+      this.token = null;
+      this.userRole = null;
+      localStorage.removeItem('userRole');
+      localStorage.removeItem('userId');
+    },
+    // Método para cargar el estado del usuario al recargar la página
+    initializeAuth() {
+      const storedRole = localStorage.getItem('userRole');
+      const storedId = localStorage.getItem('userId');
+      if (storedRole && storedId) {
+        this.user = { id: storedId, role: storedRole };
+        this.userRole = storedRole;
       }
-      return false;
-    } catch (error) {
-      console.error('Error during login:', error);
-      return false;
     }
   }
-
-  function logout() {
-    user.value = null;
-    token.value = null;
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    router.push('/login');
-  }
-
-  function checkAuth() {
-    const storedUser = localStorage.getItem('user');
-    const storedToken = localStorage.getItem('token');
-    if (storedUser && storedToken) {
-      user.value = JSON.parse(storedUser);
-      token.value = storedToken;
-    }
-  }
-
-  // Cargar estado de autenticación al iniciar
-  checkAuth();
-
-  return { user, token, isAuthenticated, userRole, login, logout };
 });
