@@ -1,61 +1,59 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
-import AppLayout from '../components/layout/AppLayout.vue';
-import LoginView from '../views/LoginView.vue';
-import DashboardView from '../views/DashboardView.vue';
-import ProductsView from '../views/ProductsView.vue';
-import OrdersView from '../views/OrdersView.vue';
+import Login from '../views/Login.vue';
+import AdminDashboard from '../views/AdminDashboard.vue';
+import EmployeeDashboard from '../views/EmployeeDashboard.vue';
+import ClientDashboard from '../views/ClientDashboard.vue';
+import NotFound from '../views/NotFound.vue';
 
 const routes = [
   {
-    path: '/login',
+    path: '/',
     name: 'Login',
-    component: LoginView,
+    component: Login
   },
   {
-    path: '/',
-    redirect: '/dashboard',
-    component: AppLayout,
-    meta: { requiresAuth: true },
-    children: [
-      {
-        path: 'dashboard',
-        name: 'Dashboard',
-        component: DashboardView,
-      },
-      {
-        path: 'products',
-        name: 'Products',
-        component: ProductsView,
-      },
-      {
-        path: 'orders',
-        name: 'Orders',
-        component: OrdersView,
-      },
-    ],
+    path: '/admin',
+    name: 'AdminDashboard',
+    component: AdminDashboard,
+    meta: { requiresAuth: true, roles: ['admin'] }
   },
+  {
+    path: '/employee',
+    name: 'EmployeeDashboard',
+    component: EmployeeDashboard,
+    meta: { requiresAuth: true, roles: ['employee'] }
+  },
+  {
+    path: '/client',
+    name: 'ClientDashboard',
+    component: ClientDashboard,
+    meta: { requiresAuth: true, roles: ['client'] }
+  },
+  {
+    path: '/:catchAll(.*)', // Ruta para 404
+    name: 'NotFound',
+    component: NotFound
+  }
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes,
+  history: createWebHistory(process.env.BASE_URL),
+  routes
 });
 
+// Guardia de navegación para proteger rutas
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
-  
-  // Redirigir al login si no está autenticado y la ruta lo requiere
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    next('/login');
-  } 
-  // Si el usuario está autenticado y trata de acceder al login, redirigir al dashboard
-  else if (to.name === 'Login' && authStore.isAuthenticated) {
-    next('/dashboard');
-  } 
-  // Permitir la navegación
-  else {
-    next();
+  const requiresAuth = to.meta.requiresAuth;
+  const authorizedRoles = to.meta.roles;
+
+  if (requiresAuth && !authStore.isAuthenticated) {
+    next({ name: 'Login' }); // Redirigir al login si no está autenticado
+  } else if (requiresAuth && authorizedRoles && !authorizedRoles.includes(authStore.userRole)) {
+    next({ name: 'NotFound' }); // Redirigir a 404 o una página de acceso denegado
+  } else {
+    next(); // Continuar
   }
 });
 
