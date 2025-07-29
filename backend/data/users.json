@@ -1,0 +1,5 @@
+[
+  { "id": "user-1", "username": "admin@ferrepoco.com", "password": "password", "role": "admin" },
+  { "id": "user-2", "username": "empleado@ferrepoco.com", "password": "password", "role": "employee" },
+  { "id": "user-3", "username": "cliente@ferrepoco.com", "password": "password", "role": "client" }
+]

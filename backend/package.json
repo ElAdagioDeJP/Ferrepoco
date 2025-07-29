@@ -1,20 +1,26 @@
 {
   "name": "ferrepoco-backend",
   "version": "1.0.0",
-  "description": "Backend de Ferrepoco con Node.js y Express",
-  "main": "src/index.js",
+  "description": "Backend for Ferrepoco E-commerce Platform",
+  "main": "server.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "MIT",
+  "author": "Ferrepoco Dev Team",
+  "license": "ISC",
   "dependencies": {
+<<<<<<< HEAD
     "dotenv": "^17.2.0",
     "express": "^4.21.2"
+=======
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "uuid": "^9.0.1"
+>>>>>>> 9e4473e6d1dc7dd73f2db77cc9e02257ef22a126
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^3.1.0"
   }
 }

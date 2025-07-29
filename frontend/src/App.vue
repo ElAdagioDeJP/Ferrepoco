@@ -1,30 +1,60 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div id="app">
+    <nav class="navbar">
+      <router-link to="/">Login</router-link> |
+      <router-link v-if="authStore.userRole === 'admin'" to="/admin">Admin Dashboard</router-link>
+      <router-link v-if="authStore.userRole === 'employee'" to="/employee">Employee Dashboard</router-link>
+      <router-link v-if="authStore.userRole === 'client'" to="/client">Client Dashboard</router-link>
+      <button v-if="authStore.isAuthenticated" @click="logout">Logout</button>
+    </nav>
+    <router-view/>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+<script>
+import { useAuthStore } from './stores/auth'; // Importa el store de autenticación
+import { useRouter } from 'vue-router';
+
+export default {
+  setup() {
+    const authStore = useAuthStore();
+    const router = useRouter();
+
+    const logout = () => {
+      authStore.logout();
+      router.push('/');
+    };
+
+    return {
+      authStore,
+      logout
+    };
+  }
+};
+</script>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+.navbar {
+  margin-bottom: 20px;
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+.navbar a, .navbar button {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #42b983;
+}
+.navbar button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  color: #d35400;
 }
 </style>
