@@ -1,0 +1,13 @@
+[
+  {
+    "id": "order-1",
+    "clientId": "user-3",
+    "products": [
+      { "productId": "prod-1", "name": "Martillo de Uña", "quantity": 1, "price": 12.50 },
+      { "productId": "prod-4", "name": "Caja de Tornillos Variados", "quantity": 2, "price": 8.99 }
+    ],
+    "total": 30.48,
+    "status": "pending",
+    "date": "2025-07-28T10:00:00Z"
+  }
+]
