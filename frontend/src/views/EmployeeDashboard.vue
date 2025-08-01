@@ -1100,8 +1100,8 @@ video {
     flex-direction: row;
   }
   #webcrumbs .sm\:px-6 {
-    padding-left: 24px;
-    padding-right: 24px;
+    padding-left: 25px;
+    padding-right: 25px;
   }
 }
 @media (min-width: 768px) {
@@ -1135,8 +1135,8 @@ video {
 }
 @media (min-width: 1024px) {
   #webcrumbs .lg\:px-8 {
-    padding-left: 32px;
-    padding-right: 32px;
+    padding-left: 33px;
+    padding-right: 33px;
   }
 }
 
