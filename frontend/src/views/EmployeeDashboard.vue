@@ -234,6 +234,13 @@
         </form>
       </div>
     </div>
+          <h3 class="font-medium text-gray-900 mb-4">Acciones en Lote</h3>
+        </div>
+      </main>
+    </div>
+  </div>
+</template>
+
 <script setup>
 import { ref } from 'vue';
 
@@ -254,12 +261,6 @@ function saveProductEdit() {
   // Optionally show a notification or refresh data
 }
 </script>
-          <h3 class="font-medium text-gray-900 mb-4">Acciones en Lote</h3>
-        </div>
-      </main>
-    </div>
-  </div>
-</template>
 
 <style scoped>
 @import url(https://fonts.googleapis.com/css2?family=Lato&display=swap);
