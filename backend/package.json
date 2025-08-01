@@ -11,14 +11,11 @@
   "author": "Ferrepoco Dev Team",
   "license": "ISC",
   "dependencies": {
-<<<<<<< HEAD
     "dotenv": "^17.2.0",
-    "express": "^4.21.2"
-=======
+    "express": "^4.21.2",
     "cors": "^2.8.5",
-    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
     "uuid": "^9.0.1"
->>>>>>> 9e4473e6d1dc7dd73f2db77cc9e02257ef22a126
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
