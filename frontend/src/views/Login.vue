@@ -85,7 +85,7 @@ const handleLogin = async () => {
           <div class="flex items-center justify-between">
             <div class="flex items-center">
               <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded transition-colors cursor-pointer" v-model="rememberMe" />
-              <label for="remember-me" class="ml-2 block text-sm text-gray-700 cursor-pointer"> Recordarme </label>
+              <label for="remember-me" class="ml-2 block text-sm text-gray-700 cursor-pointer"> Recordar </label>
             </div>
             <div class="text-sm">
               <a href="#" class="font-medium text-primary-600 hover:text-primary-500 transition-colors"> ¿Olvidaste tu contraseña? </a>
@@ -127,7 +127,7 @@ const handleLogin = async () => {
         <div class="mt-8 text-center text-xs text-gray-500">
           <p>© 2024 Ferrepoco. Todos los derechos reservados.</p>
           <div class="mt-2 space-x-4">
-            <a href="#" class="hover:text-gray-700 transition-colors">Términos</a>
+            <a href="#" class="hover:text-gray-700 transition-colors">Términos y condiciones</a>
             <a href="#" class="hover:text-gray-700 transition-colors">Privacidad</a>
             <a href="#" class="hover:text-gray-700 transition-colors">Ayuda</a>
           </div>
@@ -222,7 +222,7 @@ const handleLogin = async () => {
   --tw-numeric-fraction: ;
   --tw-ring-inset: ;
   --tw-ring-offset-width: 0px;
-  --tw-ring-offset-color: #fff;
+  --tw-ring-offset-color: #fcfcfc;
   --tw-ring-color: rgba(59, 130, 246, 0.5);
   --tw-ring-offset-shadow: 0 0 #0000;
   --tw-ring-shadow: 0 0 #0000;

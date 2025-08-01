@@ -4,7 +4,7 @@
     <p>Bienvenido, {{ authStore.user?.username }} (Rol: {{ authStore.user?.role }})</p>
 
     <h3>Gestión de Pedidos</h3>
-    <button @click="loadOrders">Cargar Pedidos</button>
+    <button @click="loadOrders">Cargar Pedido</button>
     <div v-if="orders.length">
       <ul>
         <li v-for="order in orders" :key="order.id">
@@ -18,7 +18,7 @@
 
 
     <h3>Gestión de Stock</h3>
-    <button @click="loadProducts">Cargar Productos</button>
+    <button @click="loadProducts">Cargar Producto</button>
     <div v-if="products.length">
       <div class="product-grid">
         <ProductCard v-for="product in products" :key="product.id" :product="product">
@@ -182,18 +182,18 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.9em;
+  font-size: 0.87em;
   margin: 5px;
 }
 button:hover {
-  background-color: #368a68;
+  background-color: #388c6a;
 }
 ul {
   list-style: none;
   padding: 0;
 }
 li {
-  background-color: #f0f0f0;
+  background-color: #f2f1f1;
   margin-bottom: 5px;
   padding: 8px;
   border-radius: 4px;
