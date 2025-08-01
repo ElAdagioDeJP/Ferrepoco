@@ -988,7 +988,7 @@ video {
     padding-right: 32px;
   }
   #webcrumbs .lg\:text-5xl {
-    font-size: 48px;
+    font-size: 47px;
     line-height: 52.800000000000004px;
   }
 }
