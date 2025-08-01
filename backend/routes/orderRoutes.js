@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const { readData, writeData, uuidv4, updateProductStock } = require('../utils/dataHandler');
 
-const authorizeEmployee = (req, res, next) => {
+const authorizeEmployeeOrAdmin = (req, res, next) => {
     const userRole = req.headers['x-user-role'];
-    if (userRole !== 'employee') {
-        return res.status(403).json({ message: 'Access denied. Employee role required.' });
+    if (userRole !== 'employee' && userRole !== 'admin') {
+        return res.status(403).json({ message: 'Access denied. Employee or Admin role required.' });
     }
     next();
 };
@@ -72,14 +72,14 @@ router.get('/my-orders/:clientId', authorizeClient, (req, res) => {
     res.json(clientOrders);
 });
 
-// --- Empleado: Obtener todos los pedidos ---
-router.get('/', authorizeEmployee, (req, res) => {
+// --- Empleado o Admin: Obtener todos los pedidos ---
+router.get('/', authorizeEmployeeOrAdmin, (req, res) => {
     const orders = readData('orders.json');
     res.json(orders);
 });
 
-// --- Empleado: Procesar/Actualizar estado de un pedido ---
-router.put('/:id/status', authorizeEmployee, (req, res) => {
+// --- Empleado o Admin: Procesar/Actualizar estado de un pedido ---
+router.put('/:id/status', authorizeEmployeeOrAdmin, (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
     const orders = readData('orders.json');
