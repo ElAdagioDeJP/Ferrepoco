@@ -47,11 +47,41 @@ router.post('/login', async (req, res) => {
             userRecord = rows[0];
         } else {
             const users = readData('users.json');
-            userRecord = users.find(u => u.username === username);
+            const idx = users.findIndex(u => u.username === username);
+            userRecord = idx >= 0 ? users[idx] : null;
+            // Soportar contraseñas en texto plano de los datos semilla y migrarlas a hash en el primer login correcto
+            if (userRecord) {
+                const stored = userRecord.password || '';
+                let match = false;
+                try {
+                    // Si parece un hash bcrypt ($2), usar compare; si no, comparar texto plano
+                    if (typeof stored === 'string' && stored.startsWith('$2')) {
+                        match = await bcrypt.compare(password, stored);
+                    } else {
+                        match = password === stored;
+                    }
+                } catch (cmpErr) {
+                    // Si el hash está corrupto, rechazar
+                    match = false;
+                }
+                if (!match) return res.status(401).json({ message: 'Invalid credentials' });
+
+                // Migrar a hash si estaba en texto plano
+                if (!(typeof stored === 'string' && stored.startsWith('$2'))) {
+                    try {
+                        const hashed = await bcrypt.hash(password, 10);
+                        users[idx].password = hashed;
+                        writeData('users.json', users);
+                        userRecord = users[idx];
+                    } catch (hashErr) {
+                        // Continuar sin bloquear el login si el hash falla por IO; el próximo login volverá a intentar
+                        console.error('Password migration failed:', hashErr.message);
+                    }
+                }
+            }
         }
         if (!userRecord) return res.status(401).json({ message: 'Invalid credentials' });
-        const match = await bcrypt.compare(password, userRecord.password || password);
-        if (!match) return res.status(401).json({ message: 'Invalid credentials' });
+        // Nota: cuando USE_DB=true ya se validó arriba con bcrypt.compare
 
         const token = jwt.sign({ id: String(userRecord.id), username: userRecord.username, role: userRecord.role }, JWT_SECRET, { expiresIn: '8h' });
         return res.json({ message: 'Login successful', user: { id: String(userRecord.id), username: userRecord.username, role: userRecord.role, token } });

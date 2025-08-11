@@ -37,7 +37,8 @@ const strengthColor = computed(() => {
 
 const canSubmit = computed(() => {
   const f = form.value;
-  return !!f.nombre?.trim() && !!f.correo_electronico?.trim() && f.password?.length >= 6 && f.password === f.confirm;
+  // Permitir registro solo con correo y contraseñas válidas (nombre opcional)
+  return !!f.correo_electronico?.trim() && (f.password?.length >= 6) && f.password === f.confirm;
 });
 
 async function register() {
@@ -72,7 +73,7 @@ async function register() {
 
 <template>
   <!-- Fondo con gradiente profesional azul/gris -->
-  <div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+  <div class="reg-root text-left min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
     <div class="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-0 bg-white/5 rounded-2xl shadow-2xl ring-1 ring-white/10 overflow-hidden">
       <!-- Panel de marca -->
       <div class="relative hidden lg:flex flex-col justify-between p-10 text-white bg-gradient-to-br from-blue-700 via-blue-600 to-blue-500">
@@ -104,20 +105,20 @@ async function register() {
             <div>
               <label for="reg-nombre" class="block text-sm font-medium text-slate-700 mb-1">Nombre</label>
               <div class="relative">
-                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                   <!-- user icon -->
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm-7 8a7 7 0 1 1 14 0H3Z"/></svg>
                 </span>
-                <input id="reg-nombre" v-model="form.nombre" class="w-full border border-slate-300 rounded-lg pl-10 pr-3 py-2.5 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none" required />
+                <input id="reg-nombre" v-model="form.nombre" class="h-11 w-full border border-slate-300 rounded-lg pl-11 pr-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none" />
               </div>
             </div>
             <div>
               <label for="reg-apellido" class="block text-sm font-medium text-slate-700 mb-1">Apellido</label>
               <div class="relative">
-                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm-7 8a7 7 0 1 1 14 0H3Z"/></svg>
                 </span>
-                <input id="reg-apellido" v-model="form.apellido" class="w-full border border-slate-300 rounded-lg pl-10 pr-3 py-2.5 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none" />
+                <input id="reg-apellido" v-model="form.apellido" class="h-11 w-full border border-slate-300 rounded-lg pl-11 pr-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none" />
               </div>
             </div>
           </div>
@@ -126,12 +127,13 @@ async function register() {
           <div>
             <label for="reg-email" class="block text-sm font-medium text-slate-700 mb-1">Correo electrónico</label>
             <div class="relative">
-              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+              <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                 <!-- mail icon -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M2.25 6.75A2.25 2.25 0 0 1 4.5 4.5h15a2.25 2.25 0 0 1 2.25 2.25v10.5A2.25 2.25 0 0 1 19.5 19.5h-15A2.25 2.25 0 0 1 2.25 17.25V6.75Zm2.818-.75l6.432 5.144a.75.75 0 0 0 .96 0L18.892 6h-13.824Z"/></svg>
               </span>
-              <input id="reg-email" type="email" v-model="form.correo_electronico" class="w-full border border-slate-300 rounded-lg pl-10 pr-3 py-2.5 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none" required />
+              <input id="reg-email" type="email" v-model="form.correo_electronico" class="h-11 w-full border border-slate-300 rounded-lg pl-11 pr-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none" required />
             </div>
+            <p class="mt-1 text-xs text-slate-500">No compartiremos tu correo. Solo lo usaremos para tu cuenta y notificaciones.</p>
           </div>
 
           <!-- Passwords -->
@@ -139,11 +141,11 @@ async function register() {
             <div>
               <label for="reg-pass" class="block text-sm font-medium text-slate-700 mb-1">Contraseña</label>
               <div class="relative">
-                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                   <!-- lock icon -->
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a5 5 0 0 1 5 5v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1V7a5 5 0 0 1 5-5Zm3 8V7a3 3 0 1 0-6 0v3h6Z"/></svg>
                 </span>
-                <input :type="showPass ? 'text' : 'password'" id="reg-pass" v-model="form.password" minlength="6" class="w-full border border-slate-300 rounded-lg pl-10 pr-10 py-2.5 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none" required />
+                <input :type="showPass ? 'text' : 'password'" id="reg-pass" v-model="form.password" minlength="6" class="h-11 w-full border border-slate-300 rounded-lg pl-11 pr-10 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none" required />
                 <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700" @click="showPass = !showPass" aria-label="Mostrar u ocultar contraseña">
                   <!-- eye icon -->
                   <svg v-if="!showPass" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12Z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -171,10 +173,10 @@ async function register() {
             <div>
               <label for="reg-pass2" class="block text-sm font-medium text-slate-700 mb-1">Confirmar contraseña</label>
               <div class="relative">
-                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a5 5 0 0 1 5 5v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1V7a5 5 0 0 1 5-5Zm3 8V7a3 3 0 1 0-6 0v3h6Z"/></svg>
                 </span>
-                <input :type="showPass2 ? 'text' : 'password'" id="reg-pass2" v-model="form.confirm" minlength="6" class="w-full border border-slate-300 rounded-lg pl-10 pr-10 py-2.5 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none" required />
+                <input :type="showPass2 ? 'text' : 'password'" id="reg-pass2" v-model="form.confirm" minlength="6" class="h-11 w-full border border-slate-300 rounded-lg pl-11 pr-10 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none" required />
                 <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700" @click="showPass2 = !showPass2" aria-label="Mostrar u ocultar confirmación">
                   <svg v-if="!showPass2" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12Z"/><circle cx="12" cy="12" r="3"/></svg>
                   <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20C5 20 1 12 1 12a21.81 21.81 0 0 1 5.06-6.94M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a21.72 21.72 0 0 1-5.06 6.94M1 1l22 22"/></svg>

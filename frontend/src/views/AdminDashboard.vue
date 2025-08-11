@@ -14,10 +14,10 @@
               <h1 class="text-2xl font-bold text-primary-700">Ferrepoco</h1>
             </div>
             <nav class="hidden md:flex space-x-8">
-              <a href="#" class="text-gray-700 hover:text-primary-600 transition-colors">Inicio</a>
-              <a href="#" class="text-gray-700 hover:text-primary-600 transition-colors">Productos</a>
-              <a href="#" class="text-gray-700 hover:text-primary-600 transition-colors">Pedidos</a>
-              <a href="#" class="text-gray-700 hover:text-primary-600 transition-colors">Reportes</a>
+              <RouterLink to="/admin" class="text-gray-700 hover:text-primary-600 transition-colors">Admin</RouterLink>
+              <RouterLink to="/products" class="text-gray-700 hover:text-primary-600 transition-colors">Productos</RouterLink>
+              <RouterLink to="/orders" class="text-gray-700 hover:text-primary-600 transition-colors">Pedidos</RouterLink>
+              <RouterLink to="/admin/users" class="text-gray-700 hover:text-primary-600 transition-colors">Usuarios</RouterLink>
             </nav>
             <div class="flex items-center space-x-4">
               <div class="relative">
@@ -146,13 +146,13 @@
                 </li>
               </ul>
               <div class="pt-3 text-center">
-                <a
-                  href="#"
+                <RouterLink
+                  to="/products"
                   class="text-primary-600 hover:text-primary-800 font-medium text-sm inline-flex items-center"
                 >
                   Ver todos los productos con stock bajo
                   <span class="material-symbols-outlined ml-1 text-sm">arrow_forward</span>
-                </a>
+                </RouterLink>
               </div>
             </div>
           </div>

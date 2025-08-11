@@ -1,5 +1,26 @@
 [
-  { "id": "user-1", "username": "admin@ferrepoco.com", "password": "password", "role": "admin" },
-  { "id": "user-2", "username": "empleado@ferrepoco.com", "password": "password", "role": "employee" },
-  { "id": "user-3", "username": "cliente@ferrepoco.com", "password": "password", "role": "client" }
+  {
+    "id": "user-1",
+    "username": "admin@ferrepoco.com",
+    "password": "$2a$10$UL7tnteFHv7EzFNBXzSeyuhKW/deoiaLUqhM28Gc1IWcamdVL85DK",
+    "role": "admin"
+  },
+  {
+    "id": "user-2",
+    "username": "empleado@ferrepoco.com",
+    "password": "$2a$10$jObFJpHq.66kC2dX4UsEh.WgiQZVkkkp9urLFdxfRy5hHwq7QfHu2",
+    "role": "employee"
+  },
+  {
+    "id": "user-3",
+    "username": "cliente@ferrepoco.com",
+    "password": "$2a$10$3xk5Ac8Dncg1eEp06n6tdeyDZPSYHC.zWbYgLlcdCdU4Kyu7xCt9W",
+    "role": "client"
+  },
+  {
+    "id": "7de2b2b2-7438-4d62-a05b-c790aa83ada1",
+    "username": "juan432@gmail.com",
+    "password": "$2a$10$WY0tONRgnSlf6gKI3RNTyuJOkTjVPT.80GHsjYL.u983.YW4W8XT6",
+    "role": "client"
+  }
 ]
