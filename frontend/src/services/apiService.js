@@ -1,7 +1,7 @@
 const BASE_URL = '/api';
 
 async function fetchApi(endpoint) {
-  const response = await fetch(`${BASE_URL}/${endpoint}`);
+  const response = await fetch(`${BASE_URL}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`);
   if (!response.ok) {
     throw new Error(`Error fetching ${endpoint}: ${response.statusText}`);
   }
@@ -9,7 +9,7 @@ async function fetchApi(endpoint) {
 }
 
 export const apiService = {
-  getUsers: () => fetchApi('users.json'),
-  getProducts: () => fetchApi('products.json'),
-  getOrders: () => fetchApi('orders.json'),
+  getUsers: () => fetchApi('/users'),
+  getProducts: () => fetchApi('/products'),
+  getOrders: () => fetchApi('/orders'),
 };

@@ -49,31 +49,7 @@
                   </div>
                 </details>
               </div>
-              <div class="relative">
-                <details class="group">
-                  <summary class="list-none cursor-pointer">
-                    <div class="flex items-center space-x-2">
-                      <img
-                        src="https://images.unsplash.com/photo-1610879247468-ba0c12f0d709?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MzkyNDZ8MHwxfHNlYXJjaHwxfHxhZG1pbmlzdHJhZG9yfGVufDB8fHx8MTc1Mzc2NjMwOXww&ixlib=rb-4.1.0&q=80&w=1080"
-                        alt="Usuario Administrador"
-                        class="h-8 w-8 rounded-full border-2 border-primary-300"
-                        keywords="administrador, usuario, perfil"
-                      />
-                      <span class="hidden md:block">Admin</span>
-                      <span class="material-symbols-outlined text-sm">expand_more</span>
-                    </div>
-                  </summary>
-                  <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
-                    <div class="py-1">
-                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mi Perfil</a>
-                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Configuración</a>
-                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Ayuda</a>
-                      <div class="border-t border-gray-100 my-1"></div>
-                      <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Cerrar Sesión</a>
-                    </div>
-                  </div>
-                </details>
-              </div>
+              <UserProfileBadge />
             </div>
           </div>
         </div>
@@ -189,6 +165,9 @@
               <button class="p-2 rounded-md hover:bg-gray-100 transition-colors" @click="fetchUsers">
                 <span class="material-symbols-outlined">refresh</span>
               </button>
+              <RouterLink to="/admin/users" class="inline-flex items-center px-3 py-2 rounded-md bg-primary-600 text-white text-sm hover:bg-primary-700">
+                <span class="material-symbols-outlined mr-1">group_add</span> Gestionar usuarios
+              </RouterLink>
             </div>
           </div>
           <div class="overflow-x-auto">
@@ -374,11 +353,13 @@
 
 <script>
 
-import axios from 'axios';
+import apiClient from '../api/apiClient';
 import Chart from 'chart.js/auto';
 import { useAuthStore } from '../stores/auth';
+import UserProfileBadge from '../components/UserProfileBadge.vue';
 
 export default {
+  components: { UserProfileBadge },
   data() {
     return {
       users: [],
@@ -406,18 +387,7 @@ export default {
   methods: {
     async fetchUsers() {
       try {
-        // Use Pinia store for userRole and token
-        let userRole = this.authStore.userRole || 'employee';
-        if (userRole === 'Admin') userRole = 'employee';
-        const token = this.authStore.token || '';
-        console.log('[fetchUsers] Using token:', token);
-        console.log('[fetchUsers] Using userRole:', userRole);
-        const response = await axios.get('/api/users', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'x-user-role': userRole,
-          },
-        });
+        const response = await apiClient.get('/users');
         this.users = response.data;
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -425,17 +395,7 @@ export default {
     },
     async disableUser(userId) {
       try {
-        let userRole = this.authStore.userRole || 'employee';
-        if (userRole === 'Admin') userRole = 'employee';
-        const token = this.authStore.token || '';
-        console.log('[disableUser] Using token:', token);
-        console.log('[disableUser] Using userRole:', userRole);
-        await axios.delete(`/api/users/${userId}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'x-user-role': userRole,
-          },
-        });
+        await apiClient.delete(`/users/${userId}`);
         this.users = this.users.filter(user => user.id !== userId);
       } catch (error) {
         console.error('Error disabling user:', error);
@@ -443,17 +403,7 @@ export default {
     },
     async fetchTotalSales() {
       try {
-        let userRole = this.authStore.userRole || 'employee';
-        if (userRole === 'Admin') userRole = 'employee';
-        const token = this.authStore.token || '';
-        console.log('[fetchTotalSales] Using token:', token);
-        console.log('[fetchTotalSales] Using userRole:', userRole);
-        const response = await axios.get('/api/orders', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'x-user-role': userRole,
-          },
-        });
+        const response = await apiClient.get('/orders');
         this.orders = response.data;
         this.totalSales = this.orders.reduce((sum, order) => sum + order.total, 0);
         // Ensure chart is rendered after DOM update
@@ -466,17 +416,7 @@ export default {
     },
     async fetchLowStockProducts() {
       try {
-        let userRole = this.authStore.userRole || 'employee';
-        if (userRole === 'Admin') userRole = 'employee';
-        const token = this.authStore.token || '';
-        console.log('[fetchLowStockProducts] Using token:', token);
-        console.log('[fetchLowStockProducts] Using userRole:', userRole);
-        const response = await axios.get('/api/products', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'x-user-role': userRole,
-          },
-        });
+        const response = await apiClient.get('/products');
         this.lowStockProducts = response.data.filter(product => product.stock <= 50); // Filter products with stock <= 50
       } catch (error) {
         console.error('Error fetching low-stock products:', error);
@@ -519,37 +459,31 @@ export default {
               data: monthlyOrderCounts,
               backgroundColor: 'rgba(75, 192, 192, 0.2)',
               borderColor: 'rgba(75, 192, 192, 1)',
-              borderWidth: 1,
-            },
-          ],
+              borderWidth: 1
+            }
+          ]
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           scales: {
             y: {
-              beginAtZero: true,
-              title: {
-                display: true,
-                text: 'Number of Orders',
-              },
-            },
-          },
-        },
+              beginAtZero: true
+            }
+          }
+        }
       });
-    },
-  },
-  mounted() {
-    // Initialize Pinia store
-    this.authStore = useAuthStore();
-    // Optionally, call initializeAuth to restore state from localStorage
-    if (this.authStore.initializeAuth) {
-      this.authStore.initializeAuth();
     }
-    this.fetchUsers();
-    this.fetchTotalSales();
-    this.fetchLowStockProducts(); // Fetch low-stock products on mount
-    // Chart will be rendered after orders are fetched
   },
+  async mounted() {
+    this.authStore = useAuthStore();
+    this.authStore.initializeAuth();
+    await Promise.all([
+      this.fetchUsers(),
+      this.fetchTotalSales(),
+      this.fetchLowStockProducts()
+    ]);
+  }
 };
 </script>
 

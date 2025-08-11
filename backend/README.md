@@ -1,3 +1,16 @@
+API overview:
+
+- POST /api/auth/register – create client account
+- POST /api/auth/login – returns JWT and role
+- GET /api/users – admin only
+- CRUD /api/products – admin add/update/delete; everyone can GET
+- PUT /api/inventory/stock/:productId – admin/employee
+- GET /api/inventory/alerts – admin/employee
+- POST /api/orders – client creates order
+- GET /api/orders – employee/admin list all
+- GET /api/reports/sales – sales summary
+- GET /api/reports/top-products – top products
+- GET /api/reports/low-stock – low stock list
 # Plataforma Ferrepoco
 
 Este repositorio contiene el código base para la plataforma Ferrepoco, un sistema comercial para la gestión de inventario y la interacción con clientes, desarrollado con Vue.js (Frontend) y Node.js (Backend). La base de datos está simulada con archivos JSON.

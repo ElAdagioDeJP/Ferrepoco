@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
-import axios from 'axios';
+import apiClient from '../api/apiClient';
 
 const email = ref('');
 const password = ref('');
@@ -16,7 +16,7 @@ const handleLogin = async () => {
   error.value = '';
   loading.value = true;
   try {
-    const response = await axios.post('/api/auth/login', {
+  const response = await apiClient.post('/auth/login', {
       username: email.value,
       password: password.value
     });
@@ -33,7 +33,7 @@ const handleLogin = async () => {
       localStorage.removeItem('rememberMe');
     }
     // Only redirect if role is recognized
-    if (user.role === 'admin') {
+  if (user.role === 'admin') {
       router.push('/admin');
     } else if (user.role === 'employee') {
       router.push('/employee');
@@ -122,7 +122,9 @@ const handleLogin = async () => {
           </div>
         </div>
         <div class="text-center mt-4 text-sm text-gray-600">
-          <p>¿No tienes una cuenta? <a href="#" class="font-medium text-primary-600 hover:text-primary-500 transition-colors">Solicitar acceso</a></p>
+          <p>¿No tienes una cuenta?
+            <router-link to="/register" class="font-medium text-primary-600 hover:text-primary-500 transition-colors">Crear cuenta</router-link>
+          </p>
         </div>
         <div class="mt-8 text-center text-xs text-gray-500">
           <p>© 2024 Ferrepoco. Todos los derechos reservados.</p>

@@ -1,19 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const { readData, writeData, updateProductStock } = require('../utils/dataHandler');
-
-const authorizeAdminOrEmployee = (req, res, next) => {
-    const userRole = req.headers['x-user-role'];
-    if (userRole !== 'admin' && userRole !== 'employee') {
-        return res.status(403).json({ message: 'Access denied. Admin or Employee role required.' });
-    }
-    next();
-};
+const { authorize } = require('../src/middleware/auth');
 
 const MIN_STOCK_THRESHOLD = 10; // Umbral para alertas de bajo stock
 
 // Actualizar stock de producto (Admin o Empleado)
-router.put('/stock/:productId', authorizeAdminOrEmployee, (req, res) => {
+router.put('/stock/:productId', authorize(['admin', 'employee']), (req, res) => {
     const { productId } = req.params;
     const { quantity, motivo } = req.body; // 'motivo' es opcional para la sobrecarga
 
@@ -39,7 +32,7 @@ router.put('/stock/:productId', authorizeAdminOrEmployee, (req, res) => {
 // Generar alertas de bajo stock (Admin o Empleado)
 // --- Polimorfismo en Tiempo de Compilación (Sobrecarga de Método: generarAlertas) ---
 // Aquí simulamos dos versiones: una general y otra filtrada por tipo de alerta (aunque simple)
-router.get('/alerts', authorizeAdminOrEmployee, (req, res) => {
+router.get('/alerts', authorize(['admin', 'employee']), (req, res) => {
     const { type } = req.query; // 'type' para simular la sobrecarga (ej. ?type=low_stock)
     const products = readData('products.json');
     let alerts = [];

@@ -1,25 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { readData, writeData, uuidv4, updateProductStock } = require('../utils/dataHandler');
-
-const authorizeEmployeeOrAdmin = (req, res, next) => {
-    const userRole = req.headers['x-user-role'];
-    if (userRole !== 'employee' && userRole !== 'admin') {
-        return res.status(403).json({ message: 'Access denied. Employee or Admin role required.' });
-    }
-    next();
-};
-
-const authorizeClient = (req, res, next) => {
-    const userRole = req.headers['x-user-role'];
-    if (userRole !== 'client') {
-        return res.status(403).json({ message: 'Access denied. Client role required.' });
-    }
-    next();
-};
+const { authorize } = require('../src/middleware/auth');
 
 // --- Cliente: Crear un nuevo pedido (realizar compra) ---
-router.post('/', authorizeClient, (req, res) => {
+router.post('/', authorize(['client']), (req, res) => {
     const { clientId, products: cartProducts } = req.body; // 'products' en el cuerpo es el carrito
     if (!clientId || !cartProducts || cartProducts.length === 0) {
         return res.status(400).json({ message: 'Client ID and products are required for an order.' });
@@ -65,7 +50,7 @@ router.post('/', authorizeClient, (req, res) => {
 });
 
 // --- Cliente: Obtener sus pedidos ---
-router.get('/my-orders/:clientId', authorizeClient, (req, res) => {
+router.get('/my-orders/:clientId', authorize(['client']), (req, res) => {
     const { clientId } = req.params;
     const orders = readData('orders.json');
     const clientOrders = orders.filter(o => o.clientId === clientId);
@@ -73,13 +58,13 @@ router.get('/my-orders/:clientId', authorizeClient, (req, res) => {
 });
 
 // --- Empleado o Admin: Obtener todos los pedidos ---
-router.get('/', authorizeEmployeeOrAdmin, (req, res) => {
+router.get('/', authorize(['employee', 'admin']), (req, res) => {
     const orders = readData('orders.json');
     res.json(orders);
 });
 
 // --- Empleado o Admin: Procesar/Actualizar estado de un pedido ---
-router.put('/:id/status', authorizeEmployeeOrAdmin, (req, res) => {
+router.put('/:id/status', authorize(['employee', 'admin']), (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
     const orders = readData('orders.json');

@@ -9,8 +9,12 @@ const apiClient = axios.create({
 // Esto simula la autenticación basada en roles para el backend JSON
 apiClient.interceptors.request.use(config => {
   const userRole = localStorage.getItem('userRole');
+  const token = localStorage.getItem('token');
   if (userRole) {
     config.headers['x-user-role'] = userRole;
+  }
+  if (token) {
+    config.headers['Authorization'] = `Bearer ${token}`;
   }
   return config;
 }, error => {

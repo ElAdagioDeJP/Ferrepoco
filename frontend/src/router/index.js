@@ -5,12 +5,28 @@ import AdminDashboard from '../views/AdminDashboard.vue';
 import EmployeeDashboard from '../views/EmployeeDashboard.vue';
 import ClientDashboard from '../views/ClientDashboard.vue';
 import NotFound from '../views/NotFound.vue';
+import Register from '../views/Register.vue';
+import ProductsManager from '../views/ProductsManager.vue';
+import OrdersManager from '../views/OrdersManager.vue';
+import AdminUsers from '../views/AdminUsers.vue';
 
 const routes = [
   {
     path: '/',
     name: 'Login',
-    component: Login
+  component: Login,
+  alias: ['/login']
+  },
+  {
+    path: '/admin/users',
+    name: 'AdminUsers',
+    component: AdminUsers,
+    meta: { requiresAuth: true, roles: ['admin'] }
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
   },
   {
     path: '/admin',
@@ -31,20 +47,36 @@ const routes = [
     meta: { requiresAuth: true, roles: ['client'] }
   },
   {
+    path: '/products',
+    name: 'ProductsManager',
+    component: ProductsManager,
+    meta: { requiresAuth: true, roles: ['admin', 'employee'] }
+  },
+  {
+    path: '/orders',
+    name: 'OrdersManager',
+    component: OrdersManager,
+    meta: { requiresAuth: true, roles: ['admin', 'employee'] }
+  },
+  {
     path: '/:catchAll(.*)', // Ruta para 404
     name: 'NotFound',
     component: NotFound
   }
 ];
 
+const base = (import.meta?.env?.BASE_URL) ?? (globalThis?.process?.env?.BASE_URL) ?? '/';
+
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  // Works in both Vite (import.meta.env.BASE_URL) and Vue CLI (process.env.BASE_URL)
+  history: createWebHistory(base),
   routes
 });
 
 // Guardia de navegación para proteger rutas
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
+  if (!authStore.user) authStore.initializeAuth();
   const requiresAuth = to.meta.requiresAuth;
   const authorizedRoles = to.meta.roles;
 

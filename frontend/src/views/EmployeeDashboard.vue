@@ -44,26 +44,7 @@
                   </div>
                 </details>
               </div>
-              <div class="relative">
-                <details class="group">
-                  <summary class="list-none cursor-pointer">
-                    <div class="flex items-center space-x-2">
-                      <img src="https://images.unsplash.com/photo-1632406898177-95f7acd8854f?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3w3MzkyNDZ8MHwxfHNlYXJjaHwxfHxhZG1pbmlzdHJhZG9yfGVufDB8fHx8MTc1NDAxNDg4N3ww&amp;ixlib=rb-4.1.0&amp;q=80&amp;w=1080" alt="Usuario Administrador" class="h-8 w-8 rounded-full border-2 border-primary-300" keywords="administrador, usuario, perfil" />
-                      <span class="hidden md:block">Admin</span>
-                      <span class="material-symbols-outlined text-sm">expand_more</span>
-                    </div>
-                  </summary>
-                  <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
-                    <div class="py-1">
-                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mi Perfil</a>
-                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Configuración</a>
-                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Ayuda</a>
-                      <div class="border-t border-gray-100 my-1"></div>
-                      <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Cerrar Sesión</a>
-                    </div>
-                  </div>
-                </details>
-              </div>
+              <UserProfileBadge />
             </div>
           </div>
         </div>
@@ -81,14 +62,14 @@
               </span>
               <input type="text" placeholder="Buscar productos..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 w-full" />
             </div>
-            <button class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-md flex items-center justify-center transition-colors">
+            <RouterLink to="/products" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-md flex items-center justify-center transition-colors">
               <span class="material-symbols-outlined mr-2">add</span>
               Nuevo Producto
-            </button>
-            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md flex items-center justify-center transition-colors" @click="showEditProductModal = true">
+            </RouterLink>
+            <RouterLink to="/orders" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md flex items-center justify-center transition-colors">
               <span class="material-symbols-outlined mr-2">edit</span>
-              Editar Productos
-            </button>
+              Gestionar Pedidos
+            </RouterLink>
           </div>
         </div>
         <div class="bg-white rounded-lg shadow mb-6">
@@ -243,6 +224,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import UserProfileBadge from '../components/UserProfileBadge.vue';
 
 // Modal state
 const showEditProductModal = ref(false);

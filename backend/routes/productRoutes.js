@@ -1,14 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { readData, writeData, uuidv4, updateProductStock, findProducts } = require('../utils/dataHandler');
-
-const authorizeAdmin = (req, res, next) => {
-    const userRole = req.headers['x-user-role'];
-    if (userRole !== 'admin') {
-        return res.status(403).json({ message: 'Access denied. Admin role required.' });
-    }
-    next();
-};
+const { authorize } = require('../src/middleware/auth');
 
 // Obtener todos los productos (accesible por todos)
 router.get('/', (req, res) => {
@@ -28,7 +21,7 @@ router.get('/:id', (req, res) => {
 });
 
 // Añadir producto (solo Admin)
-router.post('/', authorizeAdmin, (req, res) => {
+router.post('/', authorize(['admin']), (req, res) => {
     const { name, description, price, stock, category } = req.body;
     if (!name || !price || !stock || !category) {
         return res.status(400).json({ message: 'Missing required product fields.' });
@@ -41,7 +34,7 @@ router.post('/', authorizeAdmin, (req, res) => {
 });
 
 // Actualizar producto (solo Admin)
-router.put('/:id', authorizeAdmin, (req, res) => {
+router.put('/:id', authorize(['admin']), (req, res) => {
     const { id } = req.params;
     const updatedFields = req.body;
     let products = readData('products.json');
@@ -57,7 +50,7 @@ router.put('/:id', authorizeAdmin, (req, res) => {
 });
 
 // Eliminar producto (solo Admin)
-router.delete('/:id', authorizeAdmin, (req, res) => {
+router.delete('/:id', authorize(['admin']), (req, res) => {
     const { id } = req.params;
     let products = readData('products.json');
     const initialLength = products.length;
