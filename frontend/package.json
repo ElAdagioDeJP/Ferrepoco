@@ -1,0 +1,28 @@
+{
+  "name": "frontend",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vue-cli-service serve",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "chart.js": "^4.5.0",
+    "core-js": "^3.8.3",
+    "pinia": "^3.0.3",
+    "vue": "^3.5.18",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@types/vue": "^1.0.31",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "autoprefixer": "^10.4.21",
+    "axios": "^1.7.2",
+    "postcss": "^8.5.6",
+    "tailwindcss": "3.4.1",
+    "vite": "^7.0.4"
+  }
+}

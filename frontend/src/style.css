@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light; /* Forzar modo claro para consistencia */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background-color: #f1f5f9; /* Fondo gris claro y neutro */
+  color: #0f172a; /* Texto oscuro para contraste */
+}
+
+#app {
+  /* Permitir que el contenido de la app controle su propio layout */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Nota: Evitamos resets agresivos en botones para no anular utilidades de Tailwind. */
+
