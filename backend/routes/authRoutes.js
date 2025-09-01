@@ -8,6 +8,15 @@ const { USE_DB, query } = require('../src/db');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'ferrepoco_super_secret_key';
 
+function normalizeRole(dbRole) {
+    if (!dbRole) return 'client';
+    const r = String(dbRole).toLowerCase();
+    if (r.startsWith('admin')) return 'admin';
+    if (r.startsWith('emple')) return 'employee';
+    if (r.startsWith('client') || r.startsWith('clien')) return 'client';
+    return r;
+}
+
 // Register new user (client only from public endpoint)
 router.post('/register', async (req, res) => {
     try {
@@ -45,6 +54,10 @@ router.post('/login', async (req, res) => {
         if (USE_DB) {
             const rows = await query('SELECT u.id_usuario as id, u.correo_electronico as username, u.contrasena as password, r.nombre_rol as role FROM usuarios u LEFT JOIN roles r ON u.id_rol = r.id_rol WHERE u.correo_electronico = ? LIMIT 1', [username]);
             userRecord = rows[0];
+            if (!userRecord) return res.status(401).json({ message: 'Invalid credentials' });
+            const ok = await bcrypt.compare(password, userRecord.password);
+            if (!ok) return res.status(401).json({ message: 'Invalid credentials' });
+            userRecord.role = normalizeRole(userRecord.role);
         } else {
             const users = readData('users.json');
             const idx = users.findIndex(u => u.username === username);
@@ -83,8 +96,8 @@ router.post('/login', async (req, res) => {
         if (!userRecord) return res.status(401).json({ message: 'Invalid credentials' });
         // Nota: cuando USE_DB=true ya se validó arriba con bcrypt.compare
 
-        const token = jwt.sign({ id: String(userRecord.id), username: userRecord.username, role: userRecord.role }, JWT_SECRET, { expiresIn: '8h' });
-        return res.json({ message: 'Login successful', user: { id: String(userRecord.id), username: userRecord.username, role: userRecord.role, token } });
+    const token = jwt.sign({ id: String(userRecord.id), username: userRecord.username, role: userRecord.role }, JWT_SECRET, { expiresIn: '8h' });
+    return res.json({ message: 'Login successful', user: { id: String(userRecord.id), username: userRecord.username, role: userRecord.role, token } });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: 'server error' });

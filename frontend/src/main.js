@@ -16,6 +16,7 @@ import NotFound from "./views/NotFound.vue"
 
 // Import styles
 import "./assets/styles/main.css"
+import "./style.css"
 
 // Create router
 const router = createRouter({

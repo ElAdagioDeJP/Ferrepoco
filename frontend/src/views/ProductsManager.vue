@@ -1,5 +1,4 @@
 <template>
-   Updated header with new design system and better typography 
   <div class="max-w-7xl mx-auto p-6">
     <div class="flex items-center justify-between mb-8">
       <div>
@@ -21,8 +20,7 @@
         </button>
       </div>
     </div>
-
-     Enhanced search section with better styling 
+    
     <div class="bg-white rounded-xl shadow-sm border border-neutral-200 p-6 mb-8">
       <div class="flex gap-4 items-end flex-wrap">
         <div class="flex-1 min-w-[280px]">
@@ -50,8 +48,7 @@
       </div>
     </div>
 
-    <div class="grid lg:grid-cols-3 gap-8">
-       Enhanced products table with better styling and icons 
+  <div class="grid lg:grid-cols-3 gap-8">
       <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-neutral-200 overflow-hidden">
         <div class="px-6 py-4 border-b border-neutral-200 bg-neutral-50">
           <h2 class="text-lg font-heading font-semibold text-neutral-900">Lista de Productos</h2>
@@ -134,8 +131,7 @@
         </div>
       </div>
 
-      <div class="space-y-6">
-         Enhanced product form with better styling 
+  <div class="space-y-6">
         <div class="bg-white rounded-xl shadow-sm border border-neutral-200 p-6" v-if="isAdmin">
           <h2 class="font-heading font-semibold text-lg text-neutral-900 mb-4">{{ form.id ? 'Editar producto' : 'Nuevo producto' }}</h2>
           <form class="space-y-4" @submit.prevent="form.id ? updateProduct() : createProduct()">
@@ -171,8 +167,7 @@
             </div>
           </form>
         </div>
-
-         Enhanced alerts section with better visual hierarchy 
+        
         <div class="bg-white rounded-xl shadow-sm border border-neutral-200 p-6" v-if="canAdjustStock">
           <div class="flex items-center justify-between mb-4">
             <h2 class="font-heading font-semibold text-lg text-neutral-900">Alertas de Inventario</h2>

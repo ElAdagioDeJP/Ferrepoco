@@ -8,6 +8,7 @@ const inventoryRoutes = require('./routes/inventoryRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const reportRoutes = require('./routes/reportRoutes');
+const dbRoutes = require('./routes/dbRoutes');
 const { authenticate } = require('./src/middleware/auth');
 
 const app = express();
@@ -24,6 +25,7 @@ app.use('/api/inventory', authenticate, inventoryRoutes); // Admin/Empleado para
 app.use('/api/orders', authenticate, orderRoutes); // Cliente para crear, Empleado para gestionar
 app.use('/api/cart', authenticate, cartRoutes);
 app.use('/api/reports', authenticate, reportRoutes);
+app.use('/api/db', authenticate, dbRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {

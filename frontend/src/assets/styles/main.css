@@ -1,9 +1,9 @@
+/* Importar fuentes de Google */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;500;600&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Importar fuentes de Google */
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;500;600&display=swap");
 
 /* Variables CSS para el sistema de diseño */
 :root {
@@ -67,6 +67,34 @@
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+    /* Semantic tokens mapped to the palette above */
+    --token-background: #ffffff;
+    --token-foreground: var(--color-neutral-700);
+    --token-card: #ffffff;
+    --token-card-foreground: var(--color-neutral-900);
+    --token-popover: #ffffff;
+    --token-popover-foreground: var(--color-neutral-700);
+    --token-muted: var(--color-neutral-100);
+    --token-muted-foreground: var(--color-neutral-500);
+    --token-primary: var(--color-primary);
+    --token-primary-foreground: #ffffff;
+    --token-secondary: var(--color-accent);
+    --token-secondary-foreground: #ffffff;
+    --token-accent: var(--color-accent);
+    --token-accent-foreground: #ffffff;
+    --token-destructive: #dc2626; /* red-600 */
+    --token-destructive-foreground: #ffffff;
+    --token-border: var(--color-neutral-200);
+    --token-input: #ffffff;
+    --token-ring: rgba(8, 145, 178, 0.5); /* cyan-600 @ 50% */
+
+    /* RGB helpers for opacity variants */
+    --token-primary-rgb: 22, 78, 99;       /* cyan-900-ish */
+    --token-secondary-rgb: 234, 88, 12;    /* orange-600 */
+    --token-accent-rgb: 234, 88, 12;       /* same as secondary */
+    --token-destructive-rgb: 220, 38, 38;  /* red-600 */
+    --token-muted-rgb: 241, 245, 249;      /* neutral-100 */
 }
 
 /* Clases utilitarias personalizadas */
@@ -119,21 +147,103 @@ h6 {
 
 /* Componentes personalizados */
 .btn-primary {
-    @apply bg-cyan-800 hover:bg-cyan-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+    background-color: var(--color-primary);
+    color: #ffffff;
+    font-weight: 500;
+    padding: 0.5rem 1rem; /* py-2 px-4 */
+    border-radius: var(--border-radius-lg);
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter;
+    transition-duration: 200ms;
+}
+.btn-primary:hover {
+    background-color: var(--color-primary-light);
 }
 
 .btn-secondary {
-    @apply bg-neutral-200 hover:bg-neutral-300 text-neutral-700 font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+    background-color: var(--color-neutral-200);
+    color: var(--color-neutral-700);
+    font-weight: 500;
+    padding: 0.5rem 1rem; /* py-2 px-4 */
+    border-radius: var(--border-radius-lg);
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter;
+    transition-duration: 200ms;
+}
+.btn-secondary:hover {
+    background-color: var(--color-neutral-300);
 }
 
 .btn-accent {
-    @apply bg-orange-600 hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+    background-color: var(--color-accent);
+    color: #ffffff;
+    font-weight: 500;
+    padding: 0.5rem 1rem; /* py-2 px-4 */
+    border-radius: var(--border-radius-lg);
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter;
+    transition-duration: 200ms;
+}
+.btn-accent:hover {
+    background-color: var(--color-accent-dark);
 }
 
 .card {
-    @apply bg-white rounded-lg shadow-md border border-neutral-200;
+    background-color: #ffffff;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-neutral-200);
 }
 
 .input-field {
-    @apply w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent;
+    width: 100%;
+    padding: 0.5rem 0.75rem; /* py-2 px-3 */
+    border: 1px solid var(--color-neutral-300);
+    border-radius: var(--border-radius-lg);
+    outline: none;
+    transition: box-shadow 150ms ease, border-color 150ms ease;
 }
+.input-field:focus {
+    box-shadow: 0 0 0 2px var(--token-ring);
+    border-color: transparent;
+}
+
+/* Semantic token utilities to support classes used across views */
+/* Backgrounds */
+.bg-background { background-color: var(--token-background) !important; }
+.bg-card { background-color: var(--token-card) !important; }
+.bg-popover { background-color: var(--token-popover) !important; }
+.bg-input { background-color: var(--token-input) !important; }
+.bg-muted { background-color: var(--token-muted) !important; }
+.bg-destructive { background-color: var(--token-destructive) !important; }
+.bg-secondary { background-color: var(--token-secondary) !important; }
+
+/* Background opacity variants used in templates */
+.bg-primary\/10 { background-color: rgba(var(--token-primary-rgb), 0.10) !important; }
+.bg-secondary\/10 { background-color: rgba(var(--token-secondary-rgb), 0.10) !important; }
+.bg-accent\/10 { background-color: rgba(var(--token-accent-rgb), 0.10) !important; }
+.bg-destructive\/10 { background-color: rgba(var(--token-destructive-rgb), 0.10) !important; }
+.bg-muted\/30 { background-color: rgba(var(--token-muted-rgb), 0.30) !important; }
+.hover\:bg-muted:hover { background-color: var(--token-muted) !important; }
+.hover\:bg-muted\/50:hover { background-color: rgba(var(--token-muted-rgb), 0.50) !important; }
+.hover\:bg-primary\/90:hover { background-color: rgba(var(--token-primary-rgb), 0.90) !important; }
+
+/* Foreground/Text */
+.text-foreground { color: var(--token-foreground) !important; }
+.text-card-foreground { color: var(--token-card-foreground) !important; }
+.text-popover-foreground { color: var(--token-popover-foreground) !important; }
+.text-muted-foreground { color: var(--token-muted-foreground) !important; }
+.text-primary-foreground { color: var(--token-primary-foreground) !important; }
+.text-secondary-foreground { color: var(--token-secondary-foreground) !important; }
+.text-accent-foreground { color: var(--token-accent-foreground) !important; }
+.text-destructive { color: var(--token-destructive) !important; }
+.text-destructive-foreground { color: var(--token-destructive-foreground) !important; }
+
+/* Foreground opacity variants used */
+.text-primary-foreground\/90 { color: rgba(255,255,255,0.90) !important; }
+.text-primary-foreground\/80 { color: rgba(255,255,255,0.80) !important; }
+
+/* Border & Ring */
+.border-border { border-color: var(--token-border) !important; }
+.focus\:ring-ring:focus { box-shadow: 0 0 0 2px var(--token-ring) !important; }
+
+/* Chart helper color utilities */
+.bg-chart-4 { background-color: #16a34a !important; } /* green-600 */
+.bg-chart-5 { background-color: #eab308 !important; } /* yellow-500 */

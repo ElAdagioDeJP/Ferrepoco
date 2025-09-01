@@ -7,11 +7,7 @@
         <div class="flex justify-between items-center py-4">
            <!-- Updated logo section with new branding -->
           <div class="flex items-center space-x-4">
-            <div class="w-12 h-12 bg-gradient-to-br from-cyan-800 to-cyan-600 rounded-lg flex items-center justify-center">
-              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
-              </svg>
-            </div>
+            <img src="/logo.png" alt="Ferrepoco" class="w-12 h-12 rounded-lg object-cover" />
             <div>
               <h1 class="text-2xl font-heading font-bold text-cyan-800">Ferrepoco</h1>
               <p class="text-xs text-neutral-500 font-body">Tu ferretería de confianza</p>
@@ -108,8 +104,8 @@
         <div class="relative rounded-xl overflow-hidden h-[300px] md:h-[400px] shadow-xl">
           <div class="absolute inset-0 bg-gradient-to-r from-cyan-800/90 to-cyan-600/70"></div>
           <img 
-            src="/placeholder.svg?height=400&width=1200" 
-            alt="Herramientas profesionales" 
+            src="/logo.png" 
+            alt="Ferrepoco" 
             class="w-full h-full object-cover"
           />
           <div class="absolute inset-0 flex flex-col justify-center px-8 md:px-16">
@@ -523,7 +519,6 @@ onMounted(() => {
 
 <style scoped>
 /* Updated to use new design system variables */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;500;600&display=swap');
 
 .font-heading {
   font-family: 'Montserrat', sans-serif;

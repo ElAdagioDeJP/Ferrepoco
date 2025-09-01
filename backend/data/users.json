@@ -22,5 +22,17 @@
     "username": "juan432@gmail.com",
     "password": "$2a$10$WY0tONRgnSlf6gKI3RNTyuJOkTjVPT.80GHsjYL.u983.YW4W8XT6",
     "role": "client"
+  },
+  {
+    "id": "ceacefb5-80e5-4485-b5dc-e43f181e6a18",
+    "username": "juan@gmail.com",
+    "password": "$2a$10$HqwkB2BXVEL2WB3LFzw6COqDURXTFgIOiYDX5eiG2cb1biydQwm8K",
+    "role": "client"
+  },
+  {
+    "id": "7b8907ad-06b4-4e73-aeac-623a71c0d756",
+    "username": "jp@gmail.com",
+    "password": "$2a$10$RxK.bHIXULyM1Bf4Shnfsu4W7iP3EpB3KmNRwgebj6qDaV5BuqWj.",
+    "role": "client"
   }
 ]

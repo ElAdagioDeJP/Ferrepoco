@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// Configura la base URL para todas las peticiones
+// Configura la base URL para todas las peticiones (usa el proxy de Vite: vite.config.js)
 const apiClient = axios.create({
-  baseURL: '/api' // Esto usará el proxy configurado en vue.config.js
+  baseURL: '/api' // Proxy configurado en vite.config.js
 });
 
 // Opcional: Interceptor para enviar el rol del usuario en cada petición

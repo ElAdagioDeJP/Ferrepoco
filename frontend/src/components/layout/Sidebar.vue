@@ -1,19 +1,13 @@
 <template>
-  <aside class="w-64 bg-gradient-to-b from-cyan-900 to-cyan-800 text-white flex-shrink-0 shadow-xl">
-    <!-- Enhanced sidebar header with better branding -->
+  <aside class="w-64 bg-gradient-to-b from-cyan-900 to-cyan-800 text-white flex-shrink-0 shadow-xl relative">
     <div class="p-6 border-b border-cyan-700">
       <div class="flex items-center space-x-3">
-        <div class="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
-          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-          </svg>
-        </div>
+        <img src="/iconoferre.png" alt="Ferrepoco" class="w-8 h-8 rounded-lg object-cover" />
         <h2 class="text-lg font-heading font-semibold">Navegación</h2>
       </div>
     </div>
     
-    <!-- Enhanced navigation with icons and better styling -->
-    <nav class="mt-6 px-4">
+  <nav class="mt-6 px-4 pb-16 overflow-y-auto">
       <div class="space-y-2">
         <!-- Dashboard Links -->
         <router-link 
@@ -94,8 +88,7 @@
       </div>
     </nav>
     
-    <!-- Added bottom section with user info -->
-    <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-cyan-700">
+  <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-cyan-700 bg-cyan-900/80 backdrop-blur">
       <div class="flex items-center space-x-3 text-sm">
         <div class="w-2 h-2 bg-green-400 rounded-full"></div>
         <span class="text-cyan-200">Sistema Activo</span>

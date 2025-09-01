@@ -1,10 +1,9 @@
 <template>
-   Enhanced layout with better background and structure 
   <div class="flex h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
     <Sidebar />
-    <div class="flex-1 flex flex-col overflow-hidden">
+    <div class="flex-1 flex flex-col overflow-hidden min-w-0">
       <Navbar />
-      <main class="flex-1 overflow-x-hidden overflow-y-auto bg-neutral-50">
+      <main class="flex-1 min-h-0 overflow-x-hidden overflow-y-auto bg-neutral-50">
         <div class="container mx-auto px-6 py-8">
           <router-view />
         </div>
@@ -12,6 +11,7 @@
       <Footer />
     </div>
   </div>
+  
 </template>
 
 <script setup>

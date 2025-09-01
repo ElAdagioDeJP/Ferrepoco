@@ -1,5 +1,4 @@
 <template>
-   Complete redesign with modern styling and better UX 
   <div class="max-w-7xl mx-auto p-6">
     <div class="flex items-center justify-between mb-8">
       <div>

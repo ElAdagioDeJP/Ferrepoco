@@ -21,6 +21,8 @@ CREATE TABLE usuarios (
     apellido VARCHAR(100) NOT NULL,
     correo_electronico VARCHAR(255) UNIQUE NOT NULL,
     contrasena VARCHAR(255) NOT NULL,
+    -- URL o ruta de la imagen del usuario (un usuario solo puede tener una imagen)
+    imagen_url VARCHAR(255) NULL,
     id_rol INT,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_rol) REFERENCES roles(id_rol)
@@ -45,6 +47,34 @@ CREATE TABLE productos (
     id_categoria INT,
     FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria)
 );
+
+-- Tabla para las imágenes de los productos (máximo 10 por producto)
+CREATE TABLE imagenes_producto (
+    id_imagen INT PRIMARY KEY AUTO_INCREMENT,
+    id_producto INT NOT NULL,
+    url_imagen VARCHAR(255) NOT NULL,
+    posicion TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_imagen_producto FOREIGN KEY (id_producto) REFERENCES productos(id_producto) ON DELETE CASCADE,
+    -- Asegura que cada posición (1..10) solo se use una vez por producto
+    CONSTRAINT uq_producto_posicion UNIQUE (id_producto, posicion),
+    -- Limitar el rango de posición a 1..10
+    CONSTRAINT chk_posicion_rango CHECK (posicion BETWEEN 1 AND 10)
+);
+
+-- Trigger para evitar más de 10 imágenes por producto
+DELIMITER //
+CREATE TRIGGER trg_max_10_imagenes_producto
+BEFORE INSERT ON imagenes_producto
+FOR EACH ROW
+BEGIN
+    DECLARE img_count INT;
+    SELECT COUNT(*) INTO img_count FROM imagenes_producto WHERE id_producto = NEW.id_producto;
+    IF img_count >= 10 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Un producto no puede tener más de 10 imágenes';
+    END IF;
+END //
+DELIMITER ;
 
 -- Tabla para la gestión del inventario
 CREATE TABLE inventario (

@@ -1,15 +1,11 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
     <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-0 bg-card border border-border rounded-2xl shadow-xl overflow-hidden">
-       Brand panel with hardware store theme 
-      <div class="relative hidden lg:flex flex-col justify-between p-10 text-card-foreground bg-gradient-to-br from-primary via-primary/90 to-primary/80">
+      
+  <div class="relative hidden lg:flex flex-col justify-between p-10 text-card-foreground bg-gradient-to-br from-primary via-primary/90 to-primary/80">
         <div>
           <div class="flex items-center gap-3 mb-10">
-            <div class="w-12 h-12 bg-primary-foreground/20 rounded-xl flex items-center justify-center">
-              <svg class="w-7 h-7 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 7.172V5L8 4z"/>
-              </svg>
-            </div>
+    <img src="/logo.png" alt="Ferrepoco" class="w-12 h-12 rounded-xl object-cover" />
             <h2 class="font-heading text-3xl font-bold text-primary-foreground">Ferrepoco</h2>
           </div>
           
@@ -48,29 +44,21 @@
           
           <div class="flex items-center gap-3 text-primary-foreground/90">
             <div class="flex -space-x-2">
-              <div class="w-8 h-8 bg-secondary rounded-full border-2 border-primary flex items-center justify-center">
-                <span class="text-xs font-bold text-secondary-foreground">A</span>
-              </div>
-              <div class="w-8 h-8 bg-accent rounded-full border-2 border-primary flex items-center justify-center">
-                <span class="text-xs font-bold text-accent-foreground">E</span>
-              </div>
-              <div class="w-8 h-8 bg-muted rounded-full border-2 border-primary flex items-center justify-center">
-                <span class="text-xs font-bold text-muted-foreground">C</span>
-              </div>
+              <img src="/iconoferre.png" alt="A" class="w-8 h-8 rounded-full border-2 border-primary" />
+              <img src="/iconoferre.png" alt="E" class="w-8 h-8 rounded-full border-2 border-primary" />
+              <img src="/iconoferre.png" alt="C" class="w-8 h-8 rounded-full border-2 border-primary" />
             </div>
             <span class="text-sm">Roles: Admin, Empleado, Cliente</span>
           </div>
         </div>
       </div>
 
-       Login form panel with modern design 
+      
       <div class="p-8 lg:p-12 bg-background">
         <div class="max-w-md mx-auto">
           <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
-              <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-              </svg>
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4 overflow-hidden">
+              <img src="/iconoferre.png" alt="Logo" class="w-12 h-12 object-cover" />
             </div>
             <h1 class="font-heading text-2xl font-bold text-foreground mb-2">Iniciar Sesión</h1>
             <p class="text-muted-foreground">Accede a tu panel de control</p>
