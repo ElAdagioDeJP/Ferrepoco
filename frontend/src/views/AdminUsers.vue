@@ -223,15 +223,15 @@ const createUser = async () => {
   }
 }
 
-// Eliminar usuario
+// deshabilitar usuario
 const deleteUser = async (userId) => {
-  if (!confirm('¿Estás seguro de que quieres eliminar este usuario?')) return
+  if (!confirm('¿Estás seguro de que quieres deshabilitar este usuario?')) return
   
   try {
     await apiClient.delete(`/users/${userId}`)
     await fetchUsers() // Recargar lista
   } catch (err) {
-    error.value = 'Error al eliminar usuario'
+    error.value = 'Error al deshabilitar usuario'
     console.error(err)
   }
 }

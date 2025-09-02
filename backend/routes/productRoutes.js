@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { readData, writeData, uuidv4, updateProductStock, findProducts } = require('../utils/dataHandler');
-const { authorize } = require('../src/middleware/auth');
+const { authenticate, authorize } = require('../src/middleware/auth');
 
 // Obtener todos los productos (accesible por todos)
 router.get('/', (req, res) => {
@@ -21,7 +21,7 @@ router.get('/:id', (req, res) => {
 });
 
 // Añadir producto (solo Admin)
-router.post('/', authorize(['admin']), (req, res) => {
+router.post('/', authenticate, authorize(['admin']), (req, res) => {
     const { name, description, price, stock, category } = req.body;
     if (!name || !price || !stock || !category) {
         return res.status(400).json({ message: 'Missing required product fields.' });
@@ -34,7 +34,7 @@ router.post('/', authorize(['admin']), (req, res) => {
 });
 
 // Actualizar producto (solo Admin)
-router.put('/:id', authorize(['admin']), (req, res) => {
+router.put('/:id', authenticate, authorize(['admin']), (req, res) => {
     const { id } = req.params;
     const updatedFields = req.body;
     let products = readData('products.json');

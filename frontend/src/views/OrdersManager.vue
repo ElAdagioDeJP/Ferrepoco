@@ -144,6 +144,9 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { apiService } from '@/services/apiService' // Ajusta la ruta según donde tengas el archivo
+import { useAuthStore } from '../stores/auth';
+const auth = useAuthStore();
+auth.initializeAuth();
 
 const orders = ref([])
 const statusFilter = ref('')

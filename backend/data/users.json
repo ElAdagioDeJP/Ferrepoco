@@ -2,7 +2,7 @@
   {
     "id": "user-1",
     "username": "admin@ferrepoco.com",
-    "password": "$2a$10$UL7tnteFHv7EzFNBXzSeyuhKW/deoiaLUqhM28Gc1IWcamdVL85DK",
+    "password": "$2a$10$lURfSYwO1RbN7C/dnMZIqOlN5NxJZSQoRR1CFRVYV2M6dTxwM6GQC",
     "role": "admin"
   },
   {
@@ -30,9 +30,9 @@
     "role": "client"
   },
   {
-    "id": "7b8907ad-06b4-4e73-aeac-623a71c0d756",
-    "username": "jp@gmail.com",
-    "password": "$2a$10$RxK.bHIXULyM1Bf4Shnfsu4W7iP3EpB3KmNRwgebj6qDaV5BuqWj.",
-    "role": "client"
+    "id": "ebb088e9-e931-4b26-963f-ee7f092863d3",
+    "username": "angelfabian2000@hotmail.com",
+    "password": "$2a$10$u/Mn2sC79QwqyHzACaDDCuPd3DXVVxNXP1WKy9tlBdWK2.xOdQFDu",
+    "role": "admin"
   }
 ]
