@@ -223,11 +223,7 @@
                     <p class="text-xs text-muted-foreground">{{ product.stock }} unidades</p>
                   </div>
                 </div>
-                <button class="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                  </svg>
-                </button>
+                
               </div>
             </div>
             <div class="pt-4 text-center border-t border-border mt-4">
@@ -305,70 +301,7 @@
         </div>
       </div>
 
-       Enhanced activity feed and analytics with modern cards 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div class="bg-card border border-border rounded-xl overflow-hidden">
-          <div class="p-6 border-b border-border">
-            <h3 class="font-heading text-lg font-semibold text-card-foreground">Actividades Recientes</h3>
-          </div>
-          <div class="p-6">
-            <div class="space-y-4">
-              <div class="flex items-start gap-4">
-                <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                  </svg>
-                </div>
-                <div class="flex-1">
-                  <p class="text-sm text-card-foreground">
-                    <span class="font-medium">Ana Sánchez</span> ha actualizado el inventario de
-                    <span class="font-medium">Tuercas 5mm</span>.
-                  </p>
-                  <p class="text-xs text-muted-foreground mt-1">Hace 10 minutos</p>
-                </div>
-              </div>
-              
-              <div class="flex items-start gap-4">
-                <div class="w-10 h-10 bg-secondary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                  </svg>
-                </div>
-                <div class="flex-1">
-                  <p class="text-sm text-card-foreground">
-                    <span class="font-medium">Pedro González</span> ha procesado el pedido
-                    <span class="font-medium">#1082</span>.
-                  </p>
-                  <p class="text-xs text-muted-foreground mt-1">Hace 30 minutos</p>
-                </div>
-              </div>
-              
-              <div class="flex items-start gap-4">
-                <div class="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
-                  </svg>
-                </div>
-                <div class="flex-1">
-                  <p class="text-sm text-card-foreground">
-                    <span class="font-medium">Admin</span> ha registrado un nuevo cliente:
-                    <span class="font-medium">Roberto Méndez</span>.
-                  </p>
-                  <p class="text-xs text-muted-foreground mt-1">Hace 2 horas</p>
-                </div>
-              </div>
-            </div>
-            <div class="pt-4 text-center border-t border-border mt-6">
-              <button class="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium text-sm transition-colors">
-                Ver todas las actividades
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
         <div class="bg-card border border-border rounded-xl overflow-hidden">
           <div class="p-6 border-b border-border">
             <h3 class="font-heading text-lg font-semibold text-card-foreground">Categorías Más Vendidas</h3>
