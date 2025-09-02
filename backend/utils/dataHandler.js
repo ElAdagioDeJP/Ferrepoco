@@ -4,6 +4,7 @@ const { v4: uuidv4 } = require('uuid'); // Para generar IDs únicos
 
 const dataPath = path.join(__dirname, '..', 'data');
 
+<<<<<<< HEAD
 const readData = (fileName) => {
     try {
         const filePath = path.join(dataPath, fileName);
@@ -12,11 +13,40 @@ const readData = (fileName) => {
     } catch (error) {
         console.error(`Error reading ${fileName}:`, error.message);
         return []; // Retorna un array vacío si el archivo no existe o hay un error
+=======
+function ensureDataDir() {
+    try {
+        if (!fs.existsSync(dataPath)) {
+            fs.mkdirSync(dataPath, { recursive: true });
+        }
+    } catch (e) {
+        console.error('Error ensuring data directory:', e.message);
+    }
+}
+
+const readData = (fileName) => {
+    try {
+        ensureDataDir();
+        const filePath = path.join(dataPath, fileName);
+        if (!fs.existsSync(filePath)) {
+            // initialize missing file with empty array
+            fs.writeFileSync(filePath, '[]', 'utf8');
+        }
+        const data = fs.readFileSync(filePath, 'utf8');
+        return JSON.parse(data || '[]');
+    } catch (error) {
+        console.error(`Error reading ${fileName}:`, error.message);
+        return [];
+>>>>>>> unificado
     }
 };
 
 const writeData = (fileName, data) => {
     try {
+<<<<<<< HEAD
+=======
+        ensureDataDir();
+>>>>>>> unificado
         const filePath = path.join(dataPath, fileName);
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
     } catch (error) {

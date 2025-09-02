@@ -9,6 +9,13 @@ import Register from '../views/Register.vue';
 import ProductsManager from '../views/ProductsManager.vue';
 import OrdersManager from '../views/OrdersManager.vue';
 import AdminUsers from '../views/AdminUsers.vue';
+<<<<<<< HEAD
+=======
+import PasarelaDePago from '../views/PasarelaDePago.vue';
+import Payment from '../views/Payment.vue';
+import CategoryView from '../views/CategoryView.vue';
+import ClientProfile from '../views/ClientProfile.vue';
+>>>>>>> unificado
 
 const routes = [
   {
@@ -47,6 +54,33 @@ const routes = [
     meta: { requiresAuth: true, roles: ['client'] }
   },
   {
+<<<<<<< HEAD
+=======
+    path: '/checkout',
+    name: 'Checkout',
+    component: PasarelaDePago,
+    meta: { requiresAuth: true, roles: ['client'] }
+  },
+  {
+    path: '/payment',
+    name: 'Payment',
+    component: Payment,
+    meta: { requiresAuth: true, roles: ['client'] }
+  },
+  {
+    path: '/me',
+    name: 'ClientProfile',
+    component: ClientProfile,
+    meta: { requiresAuth: true, roles: ['client'] }
+  },
+  {
+    path: '/categories/:id',
+    name: 'Category',
+    component: CategoryView,
+    meta: { requiresAuth: true, roles: ['client'] }
+  },
+  {
+>>>>>>> unificado
     path: '/products',
     name: 'ProductsManager',
     component: ProductsManager,

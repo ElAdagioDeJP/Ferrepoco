@@ -17,7 +17,12 @@
     "jsonwebtoken": "^9.0.2",
   "uuid": "^9.0.1",
   "bcryptjs": "^2.4.3",
+<<<<<<< HEAD
   "mysql2": "^3.11.4"
+=======
+  "mysql2": "^3.11.4",
+  "multer": "^1.4.5-lts.1"
+>>>>>>> unificado
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
