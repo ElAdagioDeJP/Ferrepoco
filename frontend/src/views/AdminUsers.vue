@@ -1,12 +1,12 @@
 <template>
-   Complete redesign with modern styling and better user experience 
+   
   <div class="max-w-6xl mx-auto p-6">
     <div class="mb-8">
       <h1 class="text-3xl font-heading font-bold text-neutral-900">Gestión de Usuarios</h1>
       <p class="text-neutral-600 font-body mt-1">Solo administradores pueden crear empleados y administradores</p>
     </div>
 
-     Enhanced user creation form with better styling 
+    
     <div class="bg-white rounded-xl shadow-sm border border-neutral-200 p-6 mb-8">
       <div class="flex items-center mb-6">
         <div class="w-10 h-10 bg-gradient-to-br from-cyan-100 to-cyan-200 rounded-lg flex items-center justify-center mr-3">
@@ -100,7 +100,7 @@
       </form>
     </div>
 
-     Enhanced users table with better styling and visual hierarchy 
+     
     <div class="bg-white rounded-xl shadow-sm border border-neutral-200 overflow-hidden">
       <div class="px-6 py-4 border-b border-neutral-200 bg-neutral-50 flex items-center justify-between">
         <h2 class="text-lg font-heading font-semibold text-neutral-900">Lista de Usuarios</h2>
