@@ -206,7 +206,7 @@ async function register() {
   }
   loading.value = true;
   try {
-    const payload = { username: form.value.correo_electronico, password: form.value.password, role: 'client' };
+    const payload = { username: form.value.correo_electronico, password: form.value.password, role: 'client', nombre: form.value.nombre, apellido: form.value.apellido };
     const { data } = await apiClient.post('/auth/register', payload);
     const user = data.user || { username: payload.username, role: 'client' };
     user.nombre = form.value.nombre;

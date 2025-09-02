@@ -137,11 +137,11 @@
               </td>
               <td class="px-6 py-4">
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium font-body"
-                  :class="u.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'">
+                  :class="u.role === 'admin' ? 'bg-purple-100 text-purple-800' : (u.role === 'employee' ? 'bg-blue-100 text-blue-800' : 'bg-emerald-100 text-emerald-800')">
                   <div class="w-2 h-2 rounded-full mr-2"
-                    :class="u.role === 'admin' ? 'bg-purple-500' : 'bg-blue-500'">
+                    :class="u.role === 'admin' ? 'bg-purple-500' : (u.role === 'employee' ? 'bg-blue-500' : 'bg-emerald-500')">
                   </div>
-                  {{ u.role === 'admin' ? 'Administrador' : 'Empleado' }}
+                  {{ u.role_label || (u.role === 'admin' ? 'Administrador' : (u.role === 'employee' ? 'Empleado' : 'Cliente')) }}
                 </span>
               </td>
               <td class="px-6 py-4">
@@ -170,16 +170,36 @@
       </div>
     </div>
   </div>
+  <!-- Pagination controls -->
+  <div class="max-w-6xl mx-auto mt-4 mb-8 flex items-center justify-between">
+    <div class="text-sm text-neutral-600 font-body">
+      Mostrando <span class="font-medium">{{ users.length }}</span> de <span class="font-medium">{{ total }}</span> usuarios
+    </div>
+    <div class="flex items-center gap-2">
+      <button @click="goPrev" :disabled="!canPrev" class="px-3 py-2 rounded-lg border border-neutral-300 text-neutral-700 disabled:opacity-50">Anterior</button>
+      <span class="text-sm text-neutral-700 font-body">Página {{ page }} de {{ totalPages }}</span>
+      <button @click="goNext" :disabled="!canNext" class="px-3 py-2 rounded-lg border border-neutral-300 text-neutral-700 disabled:opacity-50">Siguiente</button>
+      <select @change="onPageSizeChange" :value="pageSize" class="ml-3 px-2 py-2 border border-neutral-300 rounded-lg text-sm">
+        <option :value="5">5</option>
+        <option :value="10">10</option>
+        <option :value="20">20</option>
+        <option :value="50">50</option>
+      </select>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import apiClient from '@/api/apiClient'
 
 // Variables reactivas
 const users = ref([])
 const loading = ref(false)
 const error = ref('')
+const page = ref(1)
+const pageSize = ref(10)
+const total = ref(0)
 const form = reactive({
   username: '',
   password: '',
@@ -191,8 +211,17 @@ const fetchUsers = async () => {
   loading.value = true
   error.value = ''
   try {
-    const response = await apiClient.get('/users')
-    users.value = response.data
+    const response = await apiClient.get('/users', { params: { page: page.value, pageSize: pageSize.value } })
+    // Soportar respuesta paginada y no paginada
+    if (Array.isArray(response.data)) {
+      users.value = response.data
+      total.value = response.data.length
+    } else {
+      users.value = response.data.data || []
+      total.value = response.data.total || 0
+      page.value = response.data.page || 1
+      pageSize.value = response.data.pageSize || pageSize.value
+    }
   } catch (err) {
     error.value = 'Error al cargar usuarios'
     console.error(err)
@@ -213,8 +242,9 @@ const createUser = async () => {
     form.password = ''
     form.role = 'employee'
     
-    // Recargar lista de usuarios
-    await fetchUsers()
+  // Recargar lista de usuarios desde la primera página
+  page.value = 1
+  await fetchUsers()
   } catch (err) {
     error.value = 'Error al crear usuario'
     console.error(err)
@@ -229,7 +259,11 @@ const deleteUser = async (userId) => {
   
   try {
     await apiClient.delete(`/users/${userId}`)
-    await fetchUsers() // Recargar lista
+  // Ajustar página si la actual queda vacía
+  const newTotal = Math.max(total.value - 1, 0)
+  const maxPage = Math.max(1, Math.ceil(newTotal / pageSize.value))
+  if (page.value > maxPage) page.value = maxPage
+  await fetchUsers() // Recargar lista
   } catch (err) {
     error.value = 'Error al eliminar usuario'
     console.error(err)
@@ -238,6 +272,14 @@ const deleteUser = async (userId) => {
 
 // Computed property para validar formulario
 const canSubmit = ref(true)
+
+// Paginación
+const totalPages = computed(() => Math.max(1, Math.ceil(total.value / pageSize.value)))
+const canPrev = computed(() => page.value > 1)
+const canNext = computed(() => page.value < totalPages.value)
+const goPrev = async () => { if (canPrev.value) { page.value -= 1; await fetchUsers() } }
+const goNext = async () => { if (canNext.value) { page.value += 1; await fetchUsers() } }
+const onPageSizeChange = async (e) => { pageSize.value = parseInt(e.target.value, 10) || 10; page.value = 1; await fetchUsers() }
 
 // Cargar usuarios al iniciar
 onMounted(() => {

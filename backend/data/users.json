@@ -28,11 +28,5 @@
     "username": "juan@gmail.com",
     "password": "$2a$10$HqwkB2BXVEL2WB3LFzw6COqDURXTFgIOiYDX5eiG2cb1biydQwm8K",
     "role": "client"
-  },
-  {
-    "id": "7b8907ad-06b4-4e73-aeac-623a71c0d756",
-    "username": "jp@gmail.com",
-    "password": "$2a$10$RxK.bHIXULyM1Bf4Shnfsu4W7iP3EpB3KmNRwgebj6qDaV5BuqWj.",
-    "role": "client"
   }
 ]
