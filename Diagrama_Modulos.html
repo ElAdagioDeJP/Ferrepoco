@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagrama de Arquitectura - Ferrepoco SIGC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Gris oscuro de Tailwind */
+            color: #F9FAFB; /* Gris claro de Tailwind */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
+        }
+        canvas {
+            background-color: #1F2937; /* Gris más oscuro */
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        h1 {
+            color: #E5E7EB;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        p {
+            color: #9CA3AF;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 class="text-2xl md:text-3xl font-bold">Diagrama de Arquitectura del Sistema</h1>
+    <p class="text-sm md:text-base">Visualización de los módulos y flujos de interacción para el proyecto <strong>Ferrepoco SIGC</strong>.</p>
+
+    <canvas id="architectureCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('architectureCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // --- CONFIGURACIÓN DE ESTILOS ---
+        const COLORS = {
+            bg: '#1F2937',
+            text: '#F9FAFB',
+            textSecondary: '#9CA3AF',
+            line: '#4B5563',
+            actor: '#BE123C', // Rojo
+            module: '#047857', // Verde
+            subModule: '#1D4ED8', // Azul
+            core: '#7E22CE', // Púrpura
+        };
+
+        const FONT_SIZES = {
+            title: 16,
+            subtitle: 14,
+            text: 12,
+        };
+
+        // --- DATOS DEL DIAGRAMA ---
+        // Basado en los documentos y diagramas proporcionados
+        const diagramData = {
+            actors: [
+                { id: 'admin', label: 'Administrador', details: ['Gestiona todo el sistema'] },
+                { id: 'employee', label: 'Empleado', details: ['Opera POS', 'Consulta inventario'] },
+                { id: 'client', label: 'Cliente', details: ['Realiza compras', 'Consulta productos'] }
+            ],
+            core: {
+                id: 'sigc',
+                label: 'SIGC Ferrepoco',
+                details: ['Núcleo del Sistema Integral']
+            },
+            modules: [
+                { id: 'inventory', label: 'Módulo de Inventario', details: ['Control de stock', 'Catálogo', 'Alertas'] },
+                { id: 'pos', label: 'Módulo de Punto de Venta (POS)', details: ['Ventas', 'Facturación', 'Devoluciones'] },
+                { id: 'crm', label: 'Módulo de Clientes (CRM)', details: ['Registro de clientes', 'Historial'] },
+                { id: 'reports', label: 'Módulo de Reportes', details: ['Análisis de ventas', 'Dashboards'] },
+                { id: 'security', label: 'Módulo de Admin. y Seguridad', details: ['Usuarios', 'Roles y permisos'] }
+            ],
+            connections: [
+                { from: 'admin', to: 'security', label: 'Gestiona' },
+                { from: 'admin', to: 'inventory', label: 'Gestiona' },
+                { from: 'admin', to: 'reports', label: 'Consulta' },
+                { from: 'employee', to: 'pos', label: 'Opera' },
+                { from: 'employee', to: 'inventory', label: 'Consulta/Reduce' },
+                { from: 'client', to: 'pos', label: 'Interactúa en' },
+                { from: 'pos', to: 'inventory', label: 'Actualiza' },
+                { from: 'pos', to: 'crm', label: 'Registra en' },
+                { from: 'pos', to: 'reports', label: 'Alimenta' },
+                { from: 'inventory', to: 'reports', label: 'Alimenta' },
+                { from: 'crm', to: 'reports', label: 'Alimenta' },
+                { from: 'security', to: 'sigc', label: 'Soporta' },
+                { from: 'inventory', to: 'sigc', label: 'Soporta' },
+                { from: 'pos', to: 'sigc', label: 'Soporta' },
+                { from: 'crm', to: 'sigc', label: 'Soporta' },
+                { from: 'reports', to: 'sigc', label: 'Soporta' },
+            ]
+        };
+
+        let elements = {}; // Almacenará las coordenadas de los elementos dibujados
+
+        // --- FUNCIONES DE DIBUJO ---
+
+        function drawBox(x, y, width, height, color, title, details = []) {
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+
+            // Dibuja el rectángulo con bordes redondeados
+            ctx.beginPath();
+            ctx.moveTo(x + 10, y);
+            ctx.lineTo(x + width - 10, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + 10);
+            ctx.lineTo(x + width, y + height - 10);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - 10, y + height);
+            ctx.lineTo(x + 10, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - 10);
+            ctx.lineTo(x, y + 10);
+            ctx.quadraticCurveTo(x, y, x + 10, y);
+            ctx.closePath();
+            ctx.stroke();
+            
+            // Dibuja el título
+            ctx.fillStyle = COLORS.text;
+            ctx.font = `bold ${FONT_SIZES.title}px Inter`;
+            ctx.textAlign = 'center';
+            ctx.fillText(title, x + width / 2, y + 25);
+
+            // Dibuja la línea separadora
+            ctx.beginPath();
+            ctx.moveTo(x + 10, y + 35);
+            ctx.lineTo(x + width - 10, y + 35);
+            ctx.strokeStyle = COLORS.line;
+            ctx.stroke();
+
+            // Dibuja los detalles
+            ctx.fillStyle = COLORS.textSecondary;
+            ctx.font = `${FONT_SIZES.text}px Inter`;
+            details.forEach((detail, index) => {
+                ctx.fillText(detail, x + width / 2, y + 55 + (index * 18));
+            });
+        }
+
+        function drawArrow(fromX, fromY, toX, toY, color, label) {
+            const headlen = 10; // length of head in pixels
+            const dx = toX - fromX;
+            const dy = toY - fromY;
+            const angle = Math.atan2(dy, dx);
+
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1.5;
+
+            // Dibuja la línea
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            ctx.stroke();
+
+            // Dibuja la punta de la flecha
+            ctx.beginPath();
+            ctx.moveTo(toX, toY);
+            ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
+            ctx.moveTo(toX, toY);
+            ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
+            ctx.stroke();
+            
+            // Dibuja la etiqueta
+            if (label) {
+                ctx.save();
+                ctx.translate((fromX + toX) / 2, (fromY + toY) / 2);
+                const rotationAngle = (Math.abs(angle) > Math.PI / 2) ? angle + Math.PI : angle;
+                ctx.rotate(rotationAngle);
+                ctx.fillStyle = COLORS.textSecondary;
+                ctx.font = `italic ${FONT_SIZES.text - 2}px Inter`;
+                ctx.textAlign = 'center';
+                ctx.fillText(label, 0, -5);
+                ctx.restore();
+            }
+        }
+
+        // --- LÓGICA PRINCIPAL DE DIBUJO ---
+        function drawDiagram() {
+            const isMobile = window.innerWidth < 768;
+            
+            ctx.fillStyle = COLORS.bg;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            elements = {}; // Limpia las coordenadas
+
+            const boxWidth = isMobile ? canvas.width * 0.8 : 180;
+            const boxHeight = 100;
+            
+            let positions;
+
+            // Ajuste de posiciones para layout móvil
+            if (isMobile) {
+                canvas.width = window.innerWidth * 0.95;
+                canvas.height = 1150;
+                positions = {
+                    admin: { x: canvas.width / 2 - boxWidth / 2, y: 20 },
+                    employee: { x: canvas.width / 2 - boxWidth / 2, y: 140 },
+                    client: { x: canvas.width / 2 - boxWidth / 2, y: 260 },
+                    pos: { x: canvas.width / 2 - boxWidth / 2, y: 380 },
+                    inventory: { x: canvas.width / 2 - boxWidth / 2, y: 500 },
+                    crm: { x: canvas.width / 2 - boxWidth / 2, y: 620 },
+                    reports: { x: canvas.width / 2 - boxWidth / 2, y: 740 },
+                    security: { x: canvas.width / 2 - boxWidth / 2, y: 860 },
+                    sigc: { x: canvas.width / 2 - boxWidth / 2, y: 980 }
+                };
+            } else {
+                // Posiciones en layout de escritorio (más espaciado)
+                canvas.width = 1000;
+                canvas.height = 800;
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2 + 30;
+
+                positions = {
+                    admin:    { x: centerX - boxWidth / 2, y: 20 },
+                    employee: { x: 50, y: 150 },
+                    client:   { x: canvas.width - boxWidth - 50, y: 150 },
+                    
+                    sigc:     { x: centerX - boxWidth / 2, y: centerY - boxHeight / 2 },
+
+                    pos:      { x: centerX - boxWidth / 2, y: centerY - boxHeight / 2 - 200 },
+                    inventory:{ x: centerX - boxWidth / 2 - 250, y: centerY - boxHeight / 2 - 50 },
+                    crm:      { x: centerX - boxWidth / 2 + 250, y: centerY - boxHeight / 2 - 50 },
+                    reports:  { x: centerX - boxWidth / 2 - 180, y: centerY - boxHeight / 2 + 180 },
+                    security: { x: centerX - boxWidth / 2 + 180, y: centerY - boxHeight / 2 + 180 },
+                };
+            }
+
+
+            // Dibujar Actores
+            diagramData.actors.forEach(actor => {
+                const pos = positions[actor.id];
+                drawBox(pos.x, pos.y, boxWidth, boxHeight, COLORS.actor, actor.label, actor.details);
+                elements[actor.id] = { x: pos.x, y: pos.y, width: boxWidth, height: boxHeight };
+            });
+
+            // Dibujar Núcleo
+            const corePos = positions.sigc;
+            drawBox(corePos.x, corePos.y, boxWidth, boxHeight, COLORS.core, diagramData.core.label, diagramData.core.details);
+            elements.sigc = { x: corePos.x, y: corePos.y, width: boxWidth, height: boxHeight };
+
+            // Dibujar Módulos
+            diagramData.modules.forEach(module => {
+                const pos = positions[module.id];
+                drawBox(pos.x, pos.y, boxWidth, boxHeight, COLORS.module, module.label, module.details);
+                elements[module.id] = { x: pos.x, y: pos.y, width: boxWidth, height: boxHeight };
+            });
+
+            // Dibujar Conexiones
+            diagramData.connections.forEach(conn => {
+                const fromEl = elements[conn.from];
+                const toEl = elements[conn.to];
+                if (fromEl && toEl) {
+                    // Centros de las cajas
+                    const fromXCenter = fromEl.x + fromEl.width / 2;
+                    const fromYCenter = fromEl.y + fromEl.height / 2;
+                    const toXCenter = toEl.x + toEl.width / 2;
+                    const toYCenter = toEl.y + toEl.height / 2;
+
+                    // Calcula los puntos de intersección con los bordes
+                    const dx = toXCenter - fromXCenter;
+                    const dy = toYCenter - fromYCenter;
+                    
+                    let fromX, fromY, toX, toY;
+
+                    const fromRatio = fromEl.height / fromEl.width;
+                    const toRatio = toEl.height / toEl.width;
+                    const lineRatio = Math.abs(dy / dx);
+
+                    if (lineRatio < fromRatio) {
+                        fromX = fromXCenter + (dx > 0 ? fromEl.width / 2 : -fromEl.width / 2);
+                        fromY = fromYCenter;
+                    } else {
+                        fromX = fromXCenter;
+                        fromY = fromYCenter + (dy > 0 ? fromEl.height / 2 : -fromEl.height / 2);
+                    }
+
+                    if (lineRatio < toRatio) {
+                        toX = toXCenter - (dx > 0 ? toEl.width / 2 : -toEl.width / 2);
+                        toY = toYCenter;
+                    } else {
+                        toX = toXCenter;
+                        toY = toYCenter - (dy > 0 ? toEl.height / 2 : -toEl.height / 2);
+                    }
+                    
+                    drawArrow(fromX, fromY, toX, toY, COLORS.line, conn.label);
+                }
+            });
+        }
+
+        // --- INICIALIZACIÓN Y RESPONSIVIDAD ---
+        window.addEventListener('resize', drawDiagram);
+        window.addEventListener('load', drawDiagram);
+
+    </script>
+</body>
+</html>

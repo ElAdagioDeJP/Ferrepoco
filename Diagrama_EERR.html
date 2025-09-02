@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ferrepoco SIGC — Diagrama Entidad‑Relación Extendido (EER)</title>
+    <style>
+        :root{
+            --bg:#0f172a;          /* slate-900 */
+            --panel:#111827;       /* gray-900 */
+            --muted:#9ca3af;       /* gray-400 */
+            --text:#e5e7eb;        /* gray-200 */
+            --accent:#38bdf8;      /* sky-400 */
+            --accent2:#34d399;     /* emerald-400 */
+            --accent3:#a78bfa;     /* violet-400 */
+            --danger:#fb7185;      /* rose-400 */
+            --warn:#fbbf24;        /* amber-400 */
+            --line:#374151;        /* gray-700 */
+        }
+        html,body{height:100%}
+        body{
+            margin:0; padding:0; display:flex; flex-direction:column; align-items:center;
+            background:var(--bg); color:var(--text); font-family: Inter, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+        }
+        header{ width:100%; max-width:1200px; padding:20px 16px 8px; box-sizing:border-box; }
+        h1{font-size:clamp(20px, 2.6vw, 28px); margin:0 0 6px; font-weight:800; letter-spacing:.2px}
+        .sub{color:var(--muted); margin:0 0 8px; line-height:1.5}
+        .controls{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+        .badge{background:var(--panel); color:var(--muted); border:1px solid var(--line); padding:6px 10px; border-radius:8px; font-size:12px}
+        .btn{cursor:pointer; border:1px solid var(--line); background:#0b1220; color:var(--text); padding:6px 10px; border-radius:8px; font-size:12px}
+        .btn:hover{border-color:#4b5563}
+        .wrap{ width:100%; max-width:1200px; padding:10px 16px 24px; box-sizing:border-box; }
+        .stage{ position:relative; background:var(--panel); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+        canvas{ display:block; width:100%; height:auto; }
+        footer{ width:100%; max-width:1200px; color:var(--muted); font-size:12px; padding:8px 16px 20px; box-sizing:border-box; }
+        .legend{ display:flex; gap:10px; flex-wrap:wrap; margin-top:8px }
+        .legend .sw{ width:12px; height:12px; border-radius:3px; display:inline-block; vertical-align:middle; margin-right:6px }
+        .sw-entity{ background:var(--accent) }
+        .sw-relation{ background:var(--accent2) }
+        .sw-spec{ background:var(--accent3) }
+        .lg{ background:#0b1220; border:1px solid var(--line); padding:10px; border-radius:10px }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Ferrepoco SIGC — Diagrama Entidad‑Relación Extendido (EER)</h1>
+        <p class="sub">Sistema Integral de Gestión Comercial. Módulos cubiertos: Inventario, POS/Facturación, CRM y Administración de Usuarios/Roles. Diagrama interactivo en HTML5 Canvas.</p>
+        <div class="controls">
+            <span class="badge">Zoom:</span>
+            <button class="btn" id="zoomOut">−</button>
+            <button class="btn" id="zoomReset">100%</button>
+            <button class="btn" id="zoomIn">+</button>
+            <span class="badge">Arrastra para desplazar</span>
+        </div>
+    </header>
+
+    <div class="wrap">
+        <div class="stage">
+            <canvas id="eerCanvas" aria-label="Diagrama EER SIGC"></canvas>
+        </div>
+    </div>
+
+    <footer>
+        <div class="legend lg">
+            <span><span class="sw sw-entity"></span>Entidad</span>
+            <span><span class="sw sw-relation"></span>Relación</span>
+            <span><span class="sw sw-spec"></span>Especialización</span>
+            <span>Cardinalidades: 1, N, M en extremos; N:M materializada con entidad de intersección</span>
+        </div>
+    </footer>
+
+    <script>
+    // Utilidad para device pixel ratio nítido
+    function fitHiDPICanvas(canvas, width, height){
+        const dpr = Math.max(1, window.devicePixelRatio || 1);
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        const ctx = canvas.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        return ctx;
+    }
+
+    // Estilos
+    const COLORS = {
+        bg: getComputedStyle(document.documentElement).getPropertyValue('--panel').trim(),
+        grid: getComputedStyle(document.documentElement).getPropertyValue('--line').trim(),
+        text: getComputedStyle(document.documentElement).getPropertyValue('--text').trim(),
+        muted: getComputedStyle(document.documentElement).getPropertyValue('--muted').trim(),
+        entity: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),
+        relation: getComputedStyle(document.documentElement).getPropertyValue('--accent2').trim(),
+        spec: getComputedStyle(document.documentElement).getPropertyValue('--accent3').trim(),
+        warn: getComputedStyle(document.documentElement).getPropertyValue('--warn').trim(),
+        rose: getComputedStyle(document.documentElement).getPropertyValue('--danger').trim(),
+    };
+
+    const FONT = {
+        title: 'bold 14px Inter, system-ui, sans-serif',
+        text: '12px Inter, system-ui, sans-serif',
+        italic: 'italic 12px Inter, system-ui, sans-serif',
+        small: '11px Inter, system-ui, sans-serif'
+    };
+
+    // Primitivas de dibujo
+    function roundRect(ctx, x, y, w, h, r){
+        const rr = Math.min(r, w/2, h/2);
+        ctx.beginPath();
+        ctx.moveTo(x+rr, y);
+        ctx.lineTo(x+w-rr, y);
+        ctx.quadraticCurveTo(x+w, y, x+w, y+rr);
+        ctx.lineTo(x+w, y+h-rr);
+        ctx.quadraticCurveTo(x+w, y+h, x+w-rr, y+h);
+        ctx.lineTo(x+rr, y+h);
+        ctx.quadraticCurveTo(x, y+h, x, y+h-rr);
+        ctx.lineTo(x, y+rr);
+        ctx.quadraticCurveTo(x, y, x+rr, y);
+        ctx.closePath();
+    }
+
+    function drawEntityBox(ctx, x, y, w, title, pk=[], attrs=[]){
+        const headerH = 22;
+        const lineH = 16;
+        const h = headerH + (pk.length + attrs.length) * lineH + 12;
+
+        // Caja
+        ctx.save();
+        ctx.strokeStyle = COLORS.entity; ctx.lineWidth = 2;
+        roundRect(ctx, x, y, w, h, 8); ctx.stroke();
+
+        // Header
+        ctx.beginPath(); ctx.moveTo(x, y+headerH); ctx.lineTo(x+w, y+headerH);
+        ctx.strokeStyle = COLORS.grid; ctx.lineWidth = 1; ctx.stroke();
+
+        // Título
+        ctx.fillStyle = COLORS.text; ctx.font = FONT.title; ctx.textBaseline='middle';
+        ctx.textAlign='center'; ctx.fillText(title, x+w/2, y+headerH/2);
+
+        // Atributos
+        ctx.font = FONT.text; ctx.textAlign='left'; ctx.fillStyle = COLORS.text;
+        let cy = y + headerH + 8;
+        const drawRow = (name, isKey=false) => {
+            if(isKey){ ctx.font = 'bold 12px Inter, system-ui, sans-serif'; }
+            else { ctx.font = FONT.text; }
+            ctx.fillText((isKey?'PK: ':'') + name, x+8, cy);
+            cy += lineH;
+        };
+        pk.forEach(k => drawRow(k, true));
+        attrs.forEach(a => drawRow(a, false));
+
+        ctx.restore();
+        return {x, y, w, h};
+    }
+
+    function drawDiamond(ctx, cx, cy, w, h, label){
+        ctx.save();
+        ctx.strokeStyle = COLORS.relation; ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy-h/2); // top
+        ctx.lineTo(cx+w/2, cy); // right
+        ctx.lineTo(cx, cy+h/2); // bottom
+        ctx.lineTo(cx-w/2, cy); // left
+        ctx.closePath(); ctx.stroke();
+        ctx.font = FONT.text; ctx.fillStyle = COLORS.text; ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.fillText(label, cx, cy);
+        ctx.restore();
+        return {x:cx-w/2, y:cy-h/2, w, h};
+    }
+
+    // Helpers para conexiones ortogonales
+    function anchor(box, side){
+        if(side === 'left') return {x: box.x, y: box.y + box.h/2};
+        if(side === 'right') return {x: box.x + box.w, y: box.y + box.h/2};
+        if(side === 'top') return {x: box.x + box.w/2, y: box.y};
+        return {x: box.x + box.w/2, y: box.y + box.h}; // bottom
+    }
+    function chooseSides(a, b){
+        const ac = {x: a.x + a.w/2, y: a.y + a.h/2};
+        const bc = {x: b.x + b.w/2, y: b.y + b.h/2};
+        if (Math.abs(ac.y - bc.y) < Math.abs(ac.x - bc.x)){
+            return { aSide: ac.x < bc.x ? 'right' : 'left', bSide: ac.x < bc.x ? 'left' : 'right' };
+        }
+        return { aSide: ac.y < bc.y ? 'bottom' : 'top', bSide: ac.y < bc.y ? 'top' : 'bottom' };
+    }
+    function drawOrthogonal(ctx, p1, p2){
+        ctx.beginPath(); ctx.moveTo(p1.x, p1.y);
+        const horiz = Math.abs(p1.y - p2.y) < Math.abs(p1.x - p2.x);
+        if(horiz){
+            const midX = (p1.x + p2.x)/2; ctx.lineTo(midX, p1.y); ctx.lineTo(midX, p2.y); ctx.lineTo(p2.x, p2.y);
+        } else {
+            const midY = (p1.y + p2.y)/2; ctx.lineTo(p1.x, midY); ctx.lineTo(p2.x, midY); ctx.lineTo(p2.x, p2.y);
+        }
+        ctx.stroke();
+    }
+    function connectBoxes(ctx, a, b, opts={}){
+        // Dibuja conexión ortogonal con etiquetas de cardinalidad en extremos
+        const {labelA, labelB, color=COLORS.grid} = opts;
+        const {aSide, bSide} = chooseSides(a, b);
+        const p1 = anchor(a, aSide); const p2 = anchor(b, bSide);
+        ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = 1.5; drawOrthogonal(ctx, p1, p2);
+        ctx.font = FONT.title; ctx.fillStyle = COLORS.text;
+        if(labelA){ ctx.fillText(labelA, p1.x + (aSide==='left'?-16:8), p1.y + (aSide==='top'?-6:14)); }
+        if(labelB){ ctx.fillText(labelB, p2.x + (bSide==='left'?-16:8), p2.y + (bSide==='top'?-6:14)); }
+        ctx.restore();
+    }
+
+    function connectViaDiamond(ctx, a, diamondRect, b, labels){
+        // Conecta a -> rombo -> b, con rutas ortogonales y cardinalidades en a y b
+        const dBox = {x: diamondRect.x, y: diamondRect.y, w: diamondRect.w, h: diamondRect.h};
+        connectBoxes(ctx, a, dBox, {labelA: labels?.a, labelB: ''});
+        connectBoxes(ctx, dBox, b, {labelA: '', labelB: labels?.b});
+    }
+
+    function drawSpecialization(ctx, parentBox, childBoxes, {label='disjunta total'}={}){
+        const cx = parentBox.x + parentBox.w/2;
+        const cy = parentBox.y + parentBox.h + 24;
+        const r = 12;
+        ctx.save();
+        ctx.strokeStyle = COLORS.spec; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.stroke();
+        ctx.font = FONT.small; ctx.fillStyle = COLORS.muted; ctx.textAlign='center';
+        ctx.fillText('⊕', cx, cy+4); // marca simple
+        // líneas
+        ctx.beginPath(); ctx.moveTo(cx, cy-r); ctx.lineTo(cx, parentBox.y+parentBox.h); ctx.strokeStyle = COLORS.grid; ctx.lineWidth = 1; ctx.stroke();
+        childBoxes.forEach(box=>{
+            ctx.beginPath(); ctx.moveTo(cx, cy+r); ctx.lineTo(box.x+box.w/2, box.y); ctx.stroke();
+        });
+        ctx.font = FONT.italic; ctx.fillStyle = COLORS.muted; ctx.fillText(label, cx, cy + 18);
+        ctx.restore();
+    }
+
+    // Datos del EER (alineado con SIGC)
+    const model = {
+        // Entidades principales
+        entities: {
+            Usuario: { pk:['id_usuario'], attrs:['nombre', 'apellido', 'email', 'telefono', 'password', 'status'] },
+            Cliente: { pk:['id_usuario'], attrs:['cedula_rif', 'direccion'] }, // subtipo (hereda PK)
+            Empleado: { pk:['id_usuario'], attrs:['puesto', 'fecha_ingreso'] }, // subtipo
+            Rol: { pk:['id_rol'], attrs:['nombre'] },
+            Producto: { pk:['id_producto'], attrs:['sku','nombre','descripcion','marca','costo','precio_unit','stock','stock_min','status'] },
+            Categoria: { pk:['id_categoria'], attrs:['nombre'] },
+            MovimientoStock: { pk:['id_mov'], attrs:['fecha','tipo','cantidad','comentario'] },
+            AlertaStock: { pk:['id_alerta'], attrs:['fecha','nivel','atendida'] },
+            Pedido: { pk:['id_pedido'], attrs:['fecha','estado','total','descuento'] },
+            DetallePedido: { pk:['id_detalle'], attrs:['cantidad','precio_unit'] },
+            Pago: { pk:['id_pago'], attrs:['metodo','monto','fecha'] },
+        },
+        // Relaciones (solo nombres; las unimos por código)
+        rels: {
+            Realiza: { a:'Cliente', b:'Pedido', cardA:'1', cardB:'N' },
+            Contiene: { a:'Pedido', b:'Producto', via:'DetallePedido', cardA:'N', cardB:'M' },
+            Pertenece: { a:'Producto', b:'Categoria', cardA:'N', cardB:'1' },
+            Afecta: { a:'MovimientoStock', b:'Producto', cardA:'N', cardB:'1' },
+            Genera: { a:'Producto', b:'AlertaStock', cardA:'1', cardB:'N' },
+            TieneRol: { a:'Usuario', b:'Rol', cardA:'N', cardB:'M' },
+            Paga: { a:'Pedido', b:'Pago', cardA:'1', cardB:'N' },
+        },
+        // Especialización Usuario -> {Cliente, Empleado}
+        specialization: ['Usuario', ['Cliente','Empleado'], 'disjunta total'],
+    };
+
+    // Layout (coordenadas base, escalables)
+    function computeLayout(W){
+        const col = (i) => 60 + i * (W/5.2);
+        return {
+            // Fila 1 (Administración)
+            Usuario:       {x: col(2)-120, y: 20,  w: 240},
+            Rol:           {x: col(4)-110, y: 20,  w: 200},
+            // Fila 2 (Especialización)
+            Cliente:       {x: col(1)-120, y: 180, w: 240},
+            Empleado:      {x: col(3)-120, y: 180, w: 240},
+            // Fila 3 (POS/CRM a la izquierda; Inventario a la derecha)
+            Pedido:        {x: col(1)-120, y: 340, w: 240},
+            Producto:      {x: col(3)-130, y: 340, w: 260},
+            // Fila 4 (Intersecciones y auxiliares)
+            DetallePedido: {x: col(2)-140, y: 560, w: 260},
+            Pago:          {x: col(0)-90,  y: 590, w: 180},
+            Categoria:     {x: col(4)-110, y: 220, w: 200},
+            MovimientoStock:{x: col(5)-130, y: 560, w: 240},
+            AlertaStock:   {x: col(3)-100, y: 650, w: 240},
+        };
+    }
+
+    // Interactividad básica: zoom y pan
+    let zoom = 1, offsetX = 0, offsetY = 0;
+    let isDragging = false, dragStart = {x:0,y:0};
+
+    function draw(){
+        const container = document.querySelector('.stage');
+        const canvas = document.getElementById('eerCanvas');
+        const width = Math.min(1200, container.clientWidth);
+    const height = 940;
+        const ctx = fitHiDPICanvas(canvas, width, height);
+
+        // fondo
+        ctx.fillStyle = COLORS.bg; ctx.fillRect(0,0,width,height);
+
+        // grid suave
+        ctx.save();
+        ctx.translate(offsetX, offsetY); ctx.scale(zoom, zoom);
+        ctx.strokeStyle = COLORS.grid; ctx.lineWidth = 1;
+        for(let x=-1000; x<width+1000; x+=40){ ctx.beginPath(); ctx.moveTo(x, -1000); ctx.lineTo(x, height+1000); ctx.stroke(); }
+        for(let y=-1000; y<height+1000; y+=40){ ctx.beginPath(); ctx.moveTo(-1000, y); ctx.lineTo(width+1000, y); ctx.stroke(); }
+        ctx.restore();
+
+        // capa de diagrama
+        ctx.save();
+        ctx.translate(offsetX, offsetY); ctx.scale(zoom, zoom);
+
+        const L = computeLayout(width/zoom);
+        const boxes = {};
+        // 1) Dibujar entidades
+        Object.entries(model.entities).forEach(([name, def])=>{
+            const p = L[name];
+            if(!p){
+                return;
+            }
+            boxes[name] = drawEntityBox(ctx, p.x, p.y, p.w, name, def.pk, def.attrs);
+        });
+
+        // 2) Relación Usuario-Rol (N:M) con rombo intermedio real
+        if(boxes.Usuario && boxes.Rol){
+            const midX = (boxes.Usuario.x + boxes.Usuario.w + boxes.Rol.x)/2;
+            const d = drawDiamond(ctx, midX, boxes.Usuario.y + 60, 120, 50, 'Tiene');
+            connectViaDiamond(ctx, boxes.Usuario, d, boxes.Rol, {a: model.rels.TieneRol.cardA, b: model.rels.TieneRol.cardB});
+        }
+
+        // 3) Especialización Usuario -> Cliente, Empleado
+        drawSpecialization(ctx, boxes.Usuario, [boxes.Cliente, boxes.Empleado], {label: model.specialization[2]});
+
+    // 4) Relaciones de ventas
+    // Cliente 1:N Pedido (Realiza) con rombo intermedio, colocado entre ambas cajas
+    const dRealizaX = (boxes.Cliente.x + boxes.Cliente.w + boxes.Pedido.x) / 2 + 20;
+    const dRealiza = drawDiamond(ctx, dRealizaX, boxes.Pedido.y - 48, 120, 50, 'Realiza');
+    connectViaDiamond(ctx, boxes.Cliente, dRealiza, boxes.Pedido, {a:model.rels.Realiza.cardA, b:model.rels.Realiza.cardB});
+
+    // Pedido N:M Producto materializado vía DetallePedido (dos enlaces 1:N, sin rombo redundante)
+    connectBoxes(ctx, boxes.Pedido, boxes.DetallePedido, {labelA:'1', labelB:'N'});
+    connectBoxes(ctx, boxes.Producto, boxes.DetallePedido, {labelA:'1', labelB:'N'});
+
+    // Pedido 1:N Pago (Paga) con rombo entre ambos (alineado sobre Pago)
+    const dPagaX = (boxes.Pedido.x + boxes.Pago.x + boxes.Pago.w) / 2;
+    const dPaga = drawDiamond(ctx, dPagaX, boxes.Pago.y - 54, 110, 50, 'Paga');
+    connectViaDiamond(ctx, boxes.Pedido, dPaga, boxes.Pago, {a: model.rels.Paga.cardA, b: model.rels.Paga.cardB});
+
+        // Inventario
+    const dPert = drawDiamond(ctx, boxes.Categoria.x - 70, boxes.Categoria.y + 100, 130, 52, 'Pertenece');
+    connectViaDiamond(ctx, boxes.Producto, dPert, boxes.Categoria, {a: model.rels.Pertenece.cardA, b: model.rels.Pertenece.cardB});
+
+    const dAfectaX = (boxes.MovimientoStock.x + boxes.MovimientoStock.w + boxes.Producto.x) / 2 + 20;
+    const dAfecta = drawDiamond(ctx, dAfectaX, boxes.MovimientoStock.y - 56, 140, 54, 'Afecta');
+    connectViaDiamond(ctx, boxes.MovimientoStock, dAfecta, boxes.Producto, {a: model.rels.Afecta.cardA, b: model.rels.Afecta.cardB});
+
+    const dGeneraX = boxes.Producto.x + boxes.Producto.w/2 - 70;
+    const dGeneraY = (boxes.Producto.y + boxes.Producto.h + boxes.AlertaStock.y) / 2 - 16;
+    const dGenera = drawDiamond(ctx, dGeneraX, dGeneraY, 130, 52, 'Genera');
+    connectViaDiamond(ctx, boxes.Producto, dGenera, boxes.AlertaStock, {a: model.rels.Genera.cardA, b: model.rels.Genera.cardB});
+
+        ctx.restore();
+    }
+
+    // Eventos de zoom/pan
+    const canvasEl = document.getElementById('eerCanvas');
+    function toLocal(x, y){ return { x: (x - offsetX)/zoom, y: (y - offsetY)/zoom }; }
+    canvasEl.addEventListener('mousedown', (e)=>{ isDragging = true; dragStart = {x: e.clientX - offsetX, y: e.clientY - offsetY}; });
+    window.addEventListener('mousemove', (e)=>{
+        if(!isDragging){
+            return;
+        }
+        offsetX = e.clientX - dragStart.x;
+        offsetY = e.clientY - dragStart.y;
+        draw();
+    });
+    window.addEventListener('mouseup', ()=>{ isDragging = false; });
+    canvasEl.addEventListener('wheel', (e)=>{
+        e.preventDefault();
+        const delta = Math.sign(e.deltaY) * -0.1;
+        const factor = 1 + delta;
+        const rect = canvasEl.getBoundingClientRect();
+        const mx = e.clientX - rect.left; const my = e.clientY - rect.top;
+        const wx = (mx - offsetX) / zoom; const wy = (my - offsetY) / zoom;
+        zoom = Math.min(2.2, Math.max(0.6, zoom * factor));
+        offsetX = mx - wx * zoom; offsetY = my - wy * zoom;
+        draw();
+    }, {passive:false});
+
+    // Botones zoom
+    document.getElementById('zoomIn').onclick = ()=>{ zoom = Math.min(2.2, zoom*1.2); draw(); };
+    document.getElementById('zoomOut').onclick = ()=>{ zoom = Math.max(0.6, zoom/1.2); draw(); };
+    document.getElementById('zoomReset').onclick = ()=>{ zoom = 1; offsetX = 0; offsetY = 0; draw(); };
+
+    // Resize
+    window.addEventListener('resize', draw);
+    window.addEventListener('load', draw);
+    </script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagrama de Jerarquía de Generalización</title>
+    <style>
+        body {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #3498db;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        canvas {
+            background-color: #34495e;
+            border-radius: 8px;
+            border: 2px solid #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Diagrama de Generalización: Usuario del Sistema</h1>
+    <canvas id="hierarchyDiagram" width="800" height="600"></canvas>
+
+    <script>
+        const canvas = document.getElementById('hierarchyDiagram');
+        const ctx = canvas.getContext('2d');
+
+        // --- Configuración de Estilos ---
+        const colors = {
+            bg: '#34495e',
+            text: '#ecf0f1',
+            entityBg: '#2c3e50',
+            entityBorder: '#3498db',
+            line: '#7f8c8d',
+            specialization: '#f1c40f'
+        };
+
+        const fonts = {
+            title: 'bold 18px Segoe UI',
+            attribute: '14px Segoe UI'
+        };
+
+        // --- Entidades y sus Atributos ---
+        const entities = {
+            usuario: {
+                x: 325, y: 50, width: 150, height: 130,
+                title: 'Usuario',
+                attributes: ['id_usuario', 'nombre', 'apellido', 'correo', 'contrasena']
+            },
+            cliente: {
+                x: 150, y: 450, width: 150, height: 100,
+                title: 'Cliente',
+                attributes: ['(heredado)', 'cedula_rif', 'historial...']
+            },
+            empleado: {
+                x: 500, y: 450, width: 150, height: 100,
+                title: 'Empleado',
+                attributes: ['(heredado)', 'cargo', 'fecha_ingreso']
+            }
+        };
+
+        // --- Función para dibujar una entidad ---
+        function drawEntity(entity) {
+            // Sombra
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowBlur = 7;
+            ctx.shadowOffsetX = 5;
+            ctx.shadowOffsetY = 5;
+
+            // Caja
+            ctx.fillStyle = colors.entityBg;
+            ctx.strokeStyle = colors.entityBorder;
+            ctx.lineWidth = 2;
+            ctx.fillRect(entity.x, entity.y, entity.width, entity.height);
+            ctx.strokeRect(entity.x, entity.y, entity.width, entity.height);
+            
+            // Resetear sombra para el texto
+            ctx.shadowColor = 'transparent';
+
+            // Título
+            ctx.fillStyle = colors.text;
+            ctx.font = fonts.title;
+            ctx.textAlign = 'center';
+            ctx.fillText(entity.title, entity.x + entity.width / 2, entity.y + 25);
+
+            // Línea separadora
+            ctx.beginPath();
+            ctx.moveTo(entity.x + 10, entity.y + 35);
+            ctx.lineTo(entity.x + entity.width - 10, entity.y + 35);
+            ctx.strokeStyle = colors.line;
+            ctx.stroke();
+
+            // Atributos
+            ctx.font = fonts.attribute;
+            ctx.textAlign = 'left';
+            let yPos = entity.y + 55;
+            entity.attributes.forEach(attr => {
+                ctx.fillText(attr, entity.x + 15, yPos);
+                yPos += 20;
+            });
+        }
+        
+        // --- Función para dibujar el triángulo de generalización ---
+        function drawGeneralizationSymbol(x, y, size) {
+            ctx.beginPath();
+            ctx.moveTo(x, y - size); // Punto superior
+            ctx.lineTo(x - size, y + size / 2); // Punto inferior izquierdo
+            ctx.lineTo(x + size, y + size / 2); // Punto inferior derecho
+            ctx.closePath();
+            
+            ctx.fillStyle = colors.specialization;
+            ctx.fill();
+            
+            ctx.font = 'bold 14px Segoe UI';
+            ctx.fillStyle = colors.entityBg;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('es un', x, y);
+        }
+
+        // --- Función para dibujar líneas de conexión ---
+        function drawConnector(startX, startY, endX, endY) {
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(endX, endY);
+            ctx.strokeStyle = colors.line;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        // --- Dibujar todo el diagrama ---
+        function drawDiagram() {
+            // Limpiar lienzo
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Dibujar entidades
+            drawEntity(entities.usuario);
+            drawEntity(entities.cliente);
+            drawEntity(entities.empleado);
+
+            // Coordenadas del símbolo y conexiones
+            const user = entities.usuario;
+            const client = entities.cliente;
+            const employee = entities.empleado;
+            
+            const symbolX = canvas.width / 2;
+            const symbolY = 300;
+            const symbolSize = 40;
+
+            // Dibujar símbolo
+            drawGeneralizationSymbol(symbolX, symbolY, symbolSize);
+
+            // Conectar Superclase al símbolo
+            drawConnector(user.x + user.width / 2, user.y + user.height, symbolX, symbolY - symbolSize);
+
+            // Conectar Subclases al símbolo
+            const subConnectY = symbolY + symbolSize / 2;
+            drawConnector(client.x + client.width / 2, client.y, symbolX, subConnectY);
+            drawConnector(employee.x + employee.width / 2, employee.y, symbolX, subConnectY);
+        }
+
+        // Iniciar el dibujo
+        drawDiagram();
+
+    </script>
+
+</body>
+</html>
