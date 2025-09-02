@@ -20,7 +20,7 @@
     "name": "Taladro Inalámbrico",
     "description": "Taladro de 18V con batería",
     "price": 85.75,
-    "stock": 20,
+    "stock": 2,
     "category": "Herramientas Eléctricas"
   },
   {
@@ -30,5 +30,13 @@
     "price": 8.99,
     "stock": 155,
     "category": "Ferretería"
+  },
+  {
+    "id": "44e47233-4ee8-492a-b91a-dcd43a7fead0",
+    "name": "Taladro",
+    "description": "asad",
+    "price": 12,
+    "stock": 222,
+    "category": "Herramientas Eléctricas"
   }
 ]

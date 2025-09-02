@@ -210,6 +210,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import apiClient from '@/api/apiClient'
 
+
 // Variables reactivas
 const products = ref([])
 const loading = ref(false)
@@ -240,8 +241,10 @@ const stockForm = reactive({
 
 // Store de autenticación
 const authStore = useAuthStore()
+authStore.initializeAuth()
 const isAdmin = computed(() => authStore.user?.role === 'admin')
 const canAdjustStock = computed(() => ['admin', 'employee'].includes(authStore.user?.role))
+
 
 // Computed: Productos filtrados
 const filtered = computed(() => {
@@ -274,7 +277,10 @@ const loadProducts = async () => {
 const loadAlerts = async () => {
   alertsLoading.value = true
   try {
-    const lowStockProducts = products.value.filter(p => p.stock <= 10)
+    const response = await apiClient.get('/products');
+    const allProducts = response.data;
+    const lowStockProducts = allProducts.filter(p => p.stock <= 50);
+    console.log('Low stock products:', lowStockProducts);
     alerts.value = lowStockProducts.map(p => ({
       productId: p.id,
       productName: p.name,
@@ -282,15 +288,15 @@ const loadAlerts = async () => {
       message: `Stock crítico: ${p.stock} unidades restantes`,
       currentStock: p.stock,
       threshold: 10
-    }))
-    
+    }));
+    console.log('Alerts value:', alerts.value);
     if (alerts.value.length === 0) {
-      alertsMessage.value = 'No hay productos con stock bajo'
+      alertsMessage.value = 'No hay productos con stock bajo';
     }
   } catch (err) {
-    console.error('Error loading alerts:', err)
+    console.error('Error loading alerts:', err);
   } finally {
-    alertsLoading.value = false
+    alertsLoading.value = false;
   }
 }
 
@@ -327,6 +333,11 @@ const resetStockForm = (product = null) => {
 
 // Crear producto
 const createProduct = async () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    error.value = 'No hay token de autenticación. Por favor inicia sesión.';
+    return;
+  }
   try {
     await apiClient.post('/products', form)
     resetForm()
@@ -340,6 +351,11 @@ const createProduct = async () => {
 
 // Actualizar producto
 const updateProduct = async () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    error.value = 'No hay token de autenticación. Por favor inicia sesión.';
+    return;
+  }
   try {
     await apiClient.put(`/products/${form.id}`, form)
     resetForm()
@@ -353,6 +369,11 @@ const updateProduct = async () => {
 
 // Eliminar producto
 const confirmDelete = async (productId) => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    error.value = 'No hay token de autenticación. Por favor inicia sesión.';
+    return;
+  }
   if (!confirm('¿Estás seguro de eliminar este producto?')) return
   
   try {
@@ -366,6 +387,11 @@ const confirmDelete = async (productId) => {
 
 // Ajustar stock
 const adjustStock = async () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    error.value = 'No hay token de autenticación. Por favor inicia sesión.';
+    return;
+  }
   try {
     const product = products.value.find(p => p.id === stockForm.productId)
     if (product) {
@@ -383,7 +409,8 @@ const adjustStock = async () => {
 
 // Cargar datos iniciales
 onMounted(() => {
-  loadProducts()
+  loadProducts();
+  loadAlerts();
 })
 </script>
 
