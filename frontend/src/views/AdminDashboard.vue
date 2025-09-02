@@ -255,8 +255,8 @@ const fetchUsers = async () => {
 
 const disableUser = async (userId) => {
   try {
-    await apiClient.delete(`/users/${userId}`)
-    users.value = users.value.filter(user => user.id !== userId)
+    await apiClient.post(`/users/${userId}/disable`)
+    // Opcional: no eliminamos al usuario de la lista; podría marcarse como inactivo si backend lo soporta
   } catch (error) {
     console.error('Error disabling user:', error)
   }

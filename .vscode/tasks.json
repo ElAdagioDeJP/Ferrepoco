@@ -11,6 +11,14 @@
 				"$eslint-stylish"
 			],
 			"group": "build"
+		},
+		{
+			"label": "Run backend server",
+			"type": "shell",
+			"command": "node backend/server.js",
+			"args": [],
+			"isBackground": true,
+			"group": "build"
 		}
 	]
 }

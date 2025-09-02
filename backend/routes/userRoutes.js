@@ -3,6 +3,7 @@ const router = express.Router();
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
+const crypto = require('crypto');
 const { readData, writeData, uuidv4 } = require('../utils/dataHandler');
 const bcrypt = require('bcryptjs');
 const { authorize } = require('../src/middleware/auth');
@@ -295,6 +296,32 @@ router.delete('/:id', authorize(['admin']), async (req, res) => {
         if (users.length === initialLength) return res.status(404).json({ message: 'User not found' });
         writeData('users.json', users);
         return res.json({ message: 'User deleted' });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ message: 'server error' });
+    }
+});
+
+// Deshabilitar usuario (solo Admin) -> resetea la contraseña a un valor aleatorio desconocido
+router.post('/:id/disable', authorize(['admin']), async (req, res) => {
+    try {
+        const { id } = req.params;
+        // Generar una contraseña aleatoria fuerte
+        const randomPassword = crypto.randomBytes(24).toString('hex');
+        const hashed = await bcrypt.hash(randomPassword, 10);
+
+        if (USE_DB) {
+            const result = await query('UPDATE usuarios SET contrasena = ? WHERE id_usuario = ?', [hashed, id]);
+            if (result.affectedRows === 0) return res.status(404).json({ message: 'User not found' });
+            return res.json({ message: 'User disabled' });
+        }
+
+        const users = readData('users.json');
+        const idx = users.findIndex(u => String(u.id) === String(id));
+        if (idx === -1) return res.status(404).json({ message: 'User not found' });
+        users[idx].password = hashed;
+        writeData('users.json', users);
+        return res.json({ message: 'User disabled' });
     } catch (e) {
         console.error(e);
         return res.status(500).json({ message: 'server error' });

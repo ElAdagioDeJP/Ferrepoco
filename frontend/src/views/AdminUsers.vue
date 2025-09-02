@@ -151,10 +151,8 @@
                 </span>
               </td>
               <td class="px-6 py-4 text-right">
-                <button @click="deleteUser(u.id)" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                  </svg>
+                <button @click="disableUser(u.id)" class="px-3 py-2 text-red-700 border border-red-200 hover:bg-red-50 rounded-lg transition-colors text-sm font-body">
+                  Deshabilitar
                 </button>
               </td>
             </tr>
@@ -253,17 +251,13 @@ const createUser = async () => {
   }
 }
 
-// deshabilitar usuario
-const deleteUser = async (userId) => {
+// deshabilitar usuario: cambia su contraseña a una aleatoria para bloquear acceso
+const disableUser = async (userId) => {
   if (!confirm('¿Estás seguro de que quieres deshabilitar este usuario?')) return
-  
   try {
-    await apiClient.delete(`/users/${userId}`)
-  // Ajustar página si la actual queda vacía
-  const newTotal = Math.max(total.value - 1, 0)
-  const maxPage = Math.max(1, Math.ceil(newTotal / pageSize.value))
-  if (page.value > maxPage) page.value = maxPage
-  await fetchUsers() // Recargar lista
+    await apiClient.post(`/users/${userId}/disable`)
+    // No eliminamos el usuario; solo recargamos la lista
+    await fetchUsers()
   } catch (err) {
     error.value = 'Error al deshabilitar usuario'
     console.error(err)
