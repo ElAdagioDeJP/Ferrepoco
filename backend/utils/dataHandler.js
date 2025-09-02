@@ -1,10 +1,13 @@
 const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid'); // Para generar IDs únicos
+const { USE_DB } = require('../src/db');
 
 const dataPath = path.join(__dirname, '..', 'data');
 
 function ensureDataDir() {
+    // Cuando trabajamos con base de datos, no crear la carpeta "data"
+    if (USE_DB) return;
     try {
         if (!fs.existsSync(dataPath)) {
             fs.mkdirSync(dataPath, { recursive: true });
@@ -16,6 +19,10 @@ function ensureDataDir() {
 
 const readData = (fileName) => {
     try {
+        if (USE_DB) {
+            // En modo DB, no leer ni crear archivos; devolver arreglo vacío
+            return [];
+        }
         ensureDataDir();
         const filePath = path.join(dataPath, fileName);
         if (!fs.existsSync(filePath)) {
@@ -32,6 +39,10 @@ const readData = (fileName) => {
 
 const writeData = (fileName, data) => {
     try {
+        if (USE_DB) {
+            // En modo DB, no escribir archivos ni crear carpeta
+            return;
+        }
         ensureDataDir();
         const filePath = path.join(dataPath, fileName);
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');

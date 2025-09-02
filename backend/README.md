@@ -76,7 +76,7 @@ Abre tu navegador web y ve a `http://localhost:8080`.
 
 ## Consideraciones y Simplificaciones
 
-* **Base de Datos JSON:** Todos los datos se almacenan en archivos JSON planos (`data/*.json`). **Los cambios realizados en la aplicación se guardarán en estos archivos, pero si el servidor se reinicia y no has implementado una persistencia robusta de escritura de archivos en el backend, los datos podrían resetearse a los del JSON inicial.** Para una aplicación real, se usaría una base de datos como MongoDB, PostgreSQL, etc.
+* Persistencia: El backend soporta dos modos. Si `USE_DB=true` (recomendado), TODAS las operaciones usan MySQL y no se crea ni usa la carpeta `data/`. Si `USE_DB=false`, el backend usa archivos JSON (`backend/data/*.json`) como respaldo de desarrollo.
 * **Autenticación Simplificada:** No se usan tokens JWT ni hasheo de contraseñas. La autenticación se basa en la coincidencia directa de usuario/contraseña. Los roles se pasan en los headers (`x-user-role`) para simular la autorización.
 * **Polimorfismo:**
     * **Tiempo de Ejecución (Sobreescritura):** Simulada en el `authRoutes.js` del backend, donde el rol del usuario logueado determina la redirección del frontend.
