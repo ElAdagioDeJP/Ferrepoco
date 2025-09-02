@@ -5,20 +5,7 @@
         <h1 class="text-3xl font-heading font-bold text-neutral-900">Gestión de Productos</h1>
         <p class="text-neutral-600 font-body mt-1">Administra catálogo, stock y alertas de inventario</p>
       </div>
-      <div class="flex gap-3">
-        <RouterLink to="/" class="px-4 py-2 rounded-lg border border-neutral-300 text-neutral-700 hover:bg-neutral-50 transition-colors font-body">
-          <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m0 0h18"></path>
-          </svg>
-          Volver
-        </RouterLink>
-        <button v-if="isAdmin" @click="resetForm(); showProductModal = true" class="px-4 py-2 rounded-lg bg-cyan-800 text-white hover:bg-cyan-700 transition-colors font-body">
-          <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-          </svg>
-          Nuevo producto
-        </button>
-      </div>
+      
     </div>
     
     <div class="bg-white rounded-xl shadow-sm border border-neutral-200 p-6 mb-8">
@@ -133,7 +120,7 @@
 
   <div class="space-y-6">
         <div class="bg-white rounded-xl shadow-sm border border-neutral-200 p-6" v-if="isAdmin">
-          <h2 class="font-heading font-semibold text-lg text-neutral-900 mb-4">{{ form.id ? 'Editar producto' : 'Nuevo producto' }}</h2>
+          <h2 class="font-heading font-semibold text-lg text-neutral-900 mb-4">{{ form.id ? 'Editar producto' : 'Info. de Producto' }}</h2>
           <form class="space-y-4" @submit.prevent="form.id ? updateProduct() : createProduct()">
             <div>
               <label for="pm-name" class="block text-sm font-medium text-neutral-700 mb-2 font-body">Nombre del producto</label>
@@ -159,7 +146,7 @@
             </div>
             <div class="flex gap-3 pt-2">
               <button type="submit" class="flex-1 px-4 py-3 rounded-lg bg-cyan-800 hover:bg-cyan-700 text-white font-medium transition-colors font-body">
-                {{ form.id ? 'Guardar cambios' : 'Crear producto' }}
+                {{ form.id ? 'Guardar cambios' : 'Crear/Editar producto' }}
               </button>
               <button type="button" @click="resetForm(); selected=null" class="px-4 py-3 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-medium transition-colors font-body">
                 Limpiar
