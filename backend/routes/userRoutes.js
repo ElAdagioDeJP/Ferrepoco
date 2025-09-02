@@ -9,6 +9,23 @@ const bcrypt = require('bcryptjs');
 const { authorize } = require('../src/middleware/auth');
 const { USE_DB, query } = require('../src/db');
 
+// Ensure schema has an 'activo' column for usuarios (idempotent)
+if (USE_DB) {
+    (async () => {
+        try {
+            const rows = await query(
+                "SELECT 1 FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'usuarios' AND COLUMN_NAME = 'activo' LIMIT 1"
+            );
+            const exists = Array.isArray(rows) && rows.length > 0;
+            if (!exists) {
+                await query('ALTER TABLE usuarios ADD COLUMN activo TINYINT(1) NOT NULL DEFAULT 1');
+            }
+        } catch (e) {
+            console.warn('Could not ensure usuarios.activo column:', e.message);
+        }
+    })();
+}
+
 function normalizeRole(dbRole) {
     if (!dbRole) return 'client';
     const r = String(dbRole).toLowerCase();
@@ -181,7 +198,8 @@ router.get('/', authorize(['admin']), async (req, res) => {
                                              u.nombre,
                                              u.apellido,
                                              u.correo_electronico AS username,
-                                             r.nombre_rol AS role
+                                             r.nombre_rol AS role,
+                                             u.activo AS activo
                                          FROM usuarios u
                                          LEFT JOIN roles r ON u.id_rol = r.id_rol
                                          ORDER BY u.id_usuario DESC
@@ -190,7 +208,8 @@ router.get('/', authorize(['admin']), async (req, res) => {
                 const data = rows.map(r => {
                     const role = normalizeRole(r.role);
                     const role_label = role === 'admin' ? 'Administrador' : role === 'employee' ? 'Empleado' : 'Cliente';
-                    return { id: String(r.id), username: r.username, nombre: r.nombre, apellido: r.apellido, role, role_label };
+                    const activo = Number(r.activo ?? 1) === 1;
+                    return { id: String(r.id), username: r.username, nombre: r.nombre, apellido: r.apellido, role, role_label, activo };
                 });
                 return res.json({ data, page, pageSize, total });
             }
@@ -198,7 +217,8 @@ router.get('/', authorize(['admin']), async (req, res) => {
             const all = readData('users.json').map(u => {
                 const role = normalizeRole(u.role);
                 const role_label = role === 'admin' ? 'Administrador' : role === 'employee' ? 'Empleado' : 'Cliente';
-                return { id: u.id, username: u.username, role, role_label };
+                const activo = u.hasOwnProperty('activo') ? Boolean(u.activo) : true;
+                return { id: u.id, username: u.username, role, role_label, activo };
             });
         const total = all.length;
         const start = (page - 1) * pageSize;
@@ -311,7 +331,7 @@ router.post('/:id/disable', authorize(['admin']), async (req, res) => {
         const hashed = await bcrypt.hash(randomPassword, 10);
 
         if (USE_DB) {
-            const result = await query('UPDATE usuarios SET contrasena = ? WHERE id_usuario = ?', [hashed, id]);
+            const result = await query('UPDATE usuarios SET contrasena = ?, activo = 0 WHERE id_usuario = ?', [hashed, id]);
             if (result.affectedRows === 0) return res.status(404).json({ message: 'User not found' });
             return res.json({ message: 'User disabled' });
         }
@@ -320,6 +340,7 @@ router.post('/:id/disable', authorize(['admin']), async (req, res) => {
         const idx = users.findIndex(u => String(u.id) === String(id));
         if (idx === -1) return res.status(404).json({ message: 'User not found' });
         users[idx].password = hashed;
+        users[idx].activo = false;
         writeData('users.json', users);
         return res.json({ message: 'User disabled' });
     } catch (e) {

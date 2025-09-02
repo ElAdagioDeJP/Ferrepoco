@@ -246,8 +246,8 @@ const clientsCount = computed(() => {
 const fetchUsers = async () => {
   try {
     const response = await apiClient.get('/users')
-    const payload = response.data
-    users.value = Array.isArray(payload) ? payload : (payload.data || [])
+  const payload = response.data
+  users.value = Array.isArray(payload) ? payload : (payload.data || [])
   } catch (error) {
     console.error('Error fetching users:', error)
   }

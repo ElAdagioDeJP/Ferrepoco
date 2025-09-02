@@ -145,9 +145,15 @@
                 </span>
               </td>
               <td class="px-6 py-4">
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 font-body">
-                  <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                  Activo
+                <span
+                  class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium font-body"
+                  :class="u.activo !== false ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
+                >
+                  <div
+                    class="w-2 h-2 rounded-full mr-2"
+                    :class="u.activo !== false ? 'bg-green-500' : 'bg-red-500'"
+                  ></div>
+                  {{ u.activo !== false ? 'Activo' : 'Inactivo' }}
                 </span>
               </td>
               <td class="px-6 py-4 text-right">
@@ -256,8 +262,11 @@ const disableUser = async (userId) => {
   if (!confirm('¿Estás seguro de que quieres deshabilitar este usuario?')) return
   try {
     await apiClient.post(`/users/${userId}/disable`)
-    // No eliminamos el usuario; solo recargamos la lista
-    await fetchUsers()
+  // Reflejar inmediatamente el estado inactivo en la UI
+  const idx = users.value.findIndex(u => String(u.id) === String(userId))
+  if (idx !== -1) users.value[idx].activo = false
+  // Refrescar desde el servidor por consistencia
+  await fetchUsers()
   } catch (err) {
     error.value = 'Error al deshabilitar usuario'
     console.error(err)
