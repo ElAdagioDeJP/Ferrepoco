@@ -53,9 +53,7 @@
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-2xl font-heading font-bold text-neutral-900">Productos destacados</h2>
           <div class="flex items-center gap-3">
-            <button v-if="auth.userRole === 'client'" @click="openAddModal" class="inline-flex items-center px-3 py-2 bg-cyan-800 hover:bg-cyan-700 text-white rounded-md text-sm font-medium">
-              Agregar producto
-            </button>
+            
             <div class="flex space-x-2">
             <button class="p-2 rounded-lg bg-neutral-100 hover:bg-neutral-200 transition-colors">
               <svg class="w-5 h-5 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
