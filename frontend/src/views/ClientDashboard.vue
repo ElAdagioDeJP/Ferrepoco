@@ -12,8 +12,8 @@
             <h2 class="text-white text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 text-balance">Herramientas para profesionales</h2>
             <p class="text-white text-lg md:text-xl mb-6 max-w-md font-body text-pretty">Descubre nuestra selección especial con un 25% de descuento en herramientas eléctricas</p>
             <div>
-              <a href="#" class="inline-flex items-center px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg shadow-lg transition-all duration-200 transform hover:-translate-y-0.5 font-body">
-                Ver ofertas
+              <a href="https://wa.me/584244252744?text=Hola!%20quiero%20saber%20mas%20sobre%20el%20programa%20de%20profesionales!" target="_blank" rel="noopener" class="inline-flex items-center px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg shadow-sm transition-all font-body">
+                Ver Programa de profesionales
                 <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
                 </svg>

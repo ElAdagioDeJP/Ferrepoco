@@ -41,6 +41,15 @@
               <div class="flex justify-between"><span class="text-neutral-600">Subtotal</span><span class="font-medium">${{ subtotal.toFixed(2) }}</span></div>
               <div class="flex justify-between"><span class="text-neutral-600">Envío</span><span class="font-medium">${{ shipping.toFixed(2) }}</span></div>
               <div class="flex justify-between"><span class="text-neutral-600">Impuestos ({{ (taxRate*100).toFixed(0) }}%)</span><span class="font-medium">${{ taxes.toFixed(2) }}</span></div>
+              <div class="flex justify-between items-center mt-2">
+                <input v-model="couponCode" placeholder="Código de cupón" class="border rounded px-2 py-1 text-sm" />
+                <button @click="applyCoupon" class="ml-2 px-3 py-1 bg-cyan-800 text-white rounded hover:bg-cyan-700">Aplicar</button>
+              </div>
+              <div v-if="couponError" class="text-xs text-red-600">{{ couponError }}</div>
+              <div v-if="discount > 0" class="flex justify-between">
+                <span class="text-neutral-600">Descuento</span>
+                <span class="font-medium">- ${{ discount.toFixed(2) }}</span>
+              </div>
               <div class="h-px bg-neutral-200 my-2"></div>
               <div class="flex justify-between text-base font-heading font-bold"><span>Total</span><span>${{ total.toFixed(2) }}</span></div>
             </div>
@@ -68,6 +77,9 @@ auth.initializeAuth();
 
 const items = ref([]);
 const router = useRouter();
+const couponCode = ref('');
+const discount = ref(0);
+const couponError = ref('');
 
 function image(it){
   const url = it.product?.imageUrl;
@@ -87,6 +99,18 @@ async function loadCart(){
   if (auth.userRole !== 'client') { items.value = []; return; }
   const res = await apiClient.get('/cart');
   items.value = res.data?.items || [];
+}
+
+
+function applyCoupon() {
+  // Example: "FERRE25" gives 25% off subtotal
+  if (couponCode.value.trim().toUpperCase() === 'FERRE25') {
+    discount.value = subtotal.value * 0.25;
+    couponError.value = '';
+  } else {
+    discount.value = 0;
+    couponError.value = 'Cupón inválido o Expirado';
+  }
 }
 
 async function updateQty(productId, quantity){
