@@ -28,8 +28,11 @@ function mapRoleToDbName(role) {
 async function getRoleIdByName(dbRoleName) {
     try {
         const rows = await query('SELECT id_rol FROM roles WHERE LOWER(nombre_rol) = LOWER(?) LIMIT 1', [dbRoleName]);
-        if (rows && rows.length) return rows[0].id_rol;
-    } catch (_) { /* ignore and fallback */ }
+        const id = rows?.[0]?.id_rol;
+        if (id) return id;
+    } catch (err) {
+        console.warn('getRoleIdByName failed, using default role id. Reason:', err?.message);
+    }
     // Fallback to conventional id for Cliente
     return 3;
 }
@@ -81,7 +84,7 @@ router.post('/login', async (req, res) => {
         if (!username || !password) return res.status(400).json({ message: 'username and password required' });
         let userRecord = null;
         if (USE_DB) {
-            const rows = await query('SELECT u.id_usuario as id, u.nombre, u.apellido, u.correo_electronico as username, u.contrasena as password, r.nombre_rol as role FROM usuarios u LEFT JOIN roles r ON u.id_rol = r.id_rol WHERE u.correo_electronico = ? LIMIT 1', [username]);
+            const rows = await query('SELECT u.id_usuario as id, u.nombre, u.apellido, u.correo_electronico as username, u.contrasena as password, u.imagen_url as imagen_url, r.nombre_rol as role FROM usuarios u LEFT JOIN roles r ON u.id_rol = r.id_rol WHERE u.correo_electronico = ? LIMIT 1', [username]);
             userRecord = rows[0];
             if (!userRecord) return res.status(401).json({ message: 'Invalid credentials' });
             const ok = await bcrypt.compare(password, userRecord.password);
@@ -126,7 +129,13 @@ router.post('/login', async (req, res) => {
         // Nota: cuando USE_DB=true ya se validó arriba con bcrypt.compare
 
     const token = jwt.sign({ id: String(userRecord.id), username: userRecord.username, role: userRecord.role }, JWT_SECRET, { expiresIn: '8h' });
-    return res.json({ message: 'Login successful', user: { id: String(userRecord.id), username: userRecord.username, role: userRecord.role, token, nombre: userRecord.nombre, apellido: userRecord.apellido } });
+    // Normalize avatar URL: when using DB, imagen_url may be stored as '/uploads/...'. Also expose via '/api' prefix for proxy.
+    let imagen_url = null;
+    if (userRecord.imagen_url) {
+        const raw = String(userRecord.imagen_url);
+        imagen_url = raw.startsWith('/api/') ? raw : `/api${raw.startsWith('/') ? '' : '/'}${raw}`;
+    }
+    return res.json({ message: 'Login successful', user: { id: String(userRecord.id), username: userRecord.username, role: userRecord.role, token, nombre: userRecord.nombre, apellido: userRecord.apellido, imagen_url } });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: 'server error' });

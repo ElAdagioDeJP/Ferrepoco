@@ -1,67 +1,5 @@
 <template>
   <div class="min-h-screen bg-background">
-     Modern header with semantic design tokens and employee-focused navigation 
-    <header class="bg-card border-b border-border shadow-sm">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center py-4">
-          <div class="flex items-center gap-4">
-            <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-              <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 7.172V5L8 4z"/>
-              </svg>
-            </div>
-            <div>
-              <h1 class="font-heading text-xl font-bold text-card-foreground">Ferrepoco</h1>
-              <p class="text-xs text-muted-foreground">Panel de Empleado</p>
-            </div>
-          </div>
-          
-          <nav class="hidden md:flex items-center gap-6">
-            <RouterLink to="/employee" class="text-muted-foreground hover:text-primary transition-colors font-medium">Dashboard</RouterLink>
-            <RouterLink to="/products" class="text-muted-foreground hover:text-primary transition-colors font-medium">Productos</RouterLink>
-            <RouterLink to="/orders" class="text-muted-foreground hover:text-primary transition-colors font-medium">Pedidos</RouterLink>
-          </nav>
-          
-          <div class="flex items-center gap-3">
-             Modern notification system with semantic colors 
-            <div class="relative">
-              <details class="group">
-                <summary class="list-none cursor-pointer">
-                  <button class="relative p-2 rounded-lg hover:bg-muted transition-colors">
-                    <svg class="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                    </svg>
-                    <span class="absolute -top-1 -right-1 h-5 w-5 bg-destructive rounded-full text-destructive-foreground text-xs flex items-center justify-center font-medium">{{ alerts.length }}</span>
-                  </button>
-                </summary>
-                <div class="absolute right-0 mt-2 w-80 bg-popover border border-border rounded-lg shadow-lg z-50 overflow-hidden">
-                  <div class="p-4 border-b border-border">
-                    <h3 class="font-heading font-semibold text-popover-foreground">Alertas de Trabajo</h3>
-                  </div>
-                  <div class="max-h-96 overflow-y-auto">
-                    <div v-for="alert in alerts" :key="alert.id" class="p-4 hover:bg-muted/50 border-b border-border transition-colors">
-                      <div class="flex items-start gap-3">
-                        <div class="w-8 h-8 bg-destructive/10 rounded-full flex items-center justify-center flex-shrink-0">
-                          <svg class="w-4 h-4 text-destructive" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                          </svg>
-                        </div>
-                        <div class="flex-1">
-                          <p class="font-medium text-sm text-popover-foreground">{{ alert.message }}</p>
-                          <p class="text-xs text-muted-foreground mt-1">{{ alert.time }}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </details>
-            </div>
-            <UserProfileBadge />
-          </div>
-        </div>
-      </div>
-    </header>
-
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
        Employee-focused dashboard with task prioritization 
       <div class="mb-8">
@@ -312,8 +250,8 @@
         <h2 class="font-heading text-xl font-bold text-card-foreground mb-4">Ajustar Stock</h2>
         <form @submit.prevent="saveStockAdjustment" class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-foreground mb-1">Producto</label>
-            <select v-model="stockAdjustment.productId" class="w-full border border-border rounded-lg p-3 bg-input focus:ring-2 focus:ring-ring focus:border-primary">
+            <label for="stock-product" class="block text-sm font-medium text-foreground mb-1">Producto</label>
+            <select id="stock-product" v-model="stockAdjustment.productId" class="w-full border border-border rounded-lg p-3 bg-input focus:ring-2 focus:ring-ring focus:border-primary">
               <option value="">Seleccionar producto</option>
               <option v-for="product in products" :key="product.id" :value="product.id">
                 {{ product.name }} (Stock: {{ product.stock }})
@@ -321,12 +259,12 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-foreground mb-1">Cantidad (+/-)</label>
-            <input v-model="stockAdjustment.quantity" type="number" class="w-full border border-border rounded-lg p-3 bg-input focus:ring-2 focus:ring-ring focus:border-primary" />
+            <label for="stock-quantity" class="block text-sm font-medium text-foreground mb-1">Cantidad (+/-)</label>
+            <input id="stock-quantity" v-model="stockAdjustment.quantity" type="number" class="w-full border border-border rounded-lg p-3 bg-input focus:ring-2 focus:ring-ring focus:border-primary" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-foreground mb-1">Motivo</label>
-            <input v-model="stockAdjustment.reason" type="text" placeholder="Venta, reposición, pérdida..." class="w-full border border-border rounded-lg p-3 bg-input focus:ring-2 focus:ring-ring focus:border-primary" />
+            <label for="stock-reason" class="block text-sm font-medium text-foreground mb-1">Motivo</label>
+            <input id="stock-reason" v-model="stockAdjustment.reason" type="text" placeholder="Venta, reposición, pérdida..." class="w-full border border-border rounded-lg p-3 bg-input focus:ring-2 focus:ring-ring focus:border-primary" />
           </div>
           <div class="flex items-center justify-end gap-3 pt-4">
             <button type="button" @click="showStockModal = false" class="px-4 py-2 rounded-lg border border-border text-muted-foreground hover:bg-muted transition-colors">
@@ -346,7 +284,6 @@
 import { ref, onMounted, computed } from 'vue';
 import { useAuthStore } from '../stores/auth';
 import apiClient from '../api/apiClient';
-import UserProfileBadge from '../components/UserProfileBadge.vue';
 
 const auth = useAuthStore();
 auth.initializeAuth();

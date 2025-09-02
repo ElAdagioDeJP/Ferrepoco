@@ -4,7 +4,8 @@
       <summary class="list-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring rounded-lg">
         <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
           <div class="relative">
-            <div class="h-10 w-10 rounded-full bg-primary/10 border-2 border-primary/20 flex items-center justify-center">
+            <img v-if="avatarUrl" :src="avatarUrl" alt="avatar" class="h-10 w-10 rounded-full object-cover border-2 border-primary/20"/>
+            <div v-else class="h-10 w-10 rounded-full bg-primary/10 border-2 border-primary/20 flex items-center justify-center">
               <span class="text-sm font-bold text-primary">{{ roleLetter }}</span>
             </div>
             <div class="absolute -bottom-1 -right-1 h-4 w-4 bg-green-500 border-2 border-background rounded-full"></div>
@@ -22,7 +23,8 @@
       <div class="absolute right-0 mt-2 w-64 bg-popover border border-border rounded-lg shadow-lg z-50 overflow-hidden">
         <div class="p-4 border-b border-border bg-muted/30">
           <div class="flex items-center gap-3">
-            <div class="h-12 w-12 rounded-full bg-primary/10 border-2 border-primary/20 flex items-center justify-center">
+            <img v-if="avatarUrl" :src="avatarUrl" alt="avatar" class="h-12 w-12 rounded-full object-cover border-2 border-primary/20"/>
+            <div v-else class="h-12 w-12 rounded-full bg-primary/10 border-2 border-primary/20 flex items-center justify-center">
               <span class="text-lg font-bold text-primary">{{ roleLetter }}</span>
             </div>
             <div class="flex-1 min-w-0">
@@ -35,7 +37,7 @@
         <div class="py-2">
           <router-link 
             v-if="userRole === 'client'" 
-            to="/client" 
+            to="/me" 
             class="flex items-center gap-3 px-4 py-3 text-sm text-popover-foreground hover:bg-muted/50 transition-colors"
           >
             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,7 +105,7 @@ import { useAuthStore } from '../stores/auth';
 
 const auth = useAuthStore();
 const router = useRouter();
-const { isAuthenticated, displayName, userRole, roleLetter } = storeToRefs(auth);
+const { isAuthenticated, displayName, userRole, roleLetter, avatarUrl } = storeToRefs(auth);
 
 auth.initializeAuth();
 

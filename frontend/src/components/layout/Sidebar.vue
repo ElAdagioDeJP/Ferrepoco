@@ -1,5 +1,5 @@
 <template>
-  <aside class="w-64 bg-gradient-to-b from-cyan-900 to-cyan-800 text-white flex-shrink-0 shadow-xl relative">
+  <aside v-if="showSidebar" class="w-64 bg-gradient-to-b from-cyan-900 to-cyan-800 text-white flex-shrink-0 shadow-xl relative">
     <div class="p-6 border-b border-cyan-700">
       <div class="flex items-center space-x-3">
         <img src="/iconoferre.png" alt="Ferrepoco" class="w-8 h-8 rounded-lg object-cover" />
@@ -99,7 +99,7 @@
 
 <script setup>
 import { useAuthStore } from '../../stores/auth';
-import { onMounted } from 'vue';
+import { onMounted, computed } from 'vue';
 
 const auth = useAuthStore();
 
@@ -107,4 +107,7 @@ const auth = useAuthStore();
 onMounted(() => {
   auth.initializeAuth();
 });
+
+// Show sidebar only if NOT a client
+const showSidebar = computed(() => auth.userRole !== 'client');
 </script>

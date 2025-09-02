@@ -80,8 +80,17 @@ router.get('/alertas_stock', authorize(['admin','employee']), async (req, res) =
 
 router.get('/pedidos', authorize(['admin','employee']), async (req, res) => {
   try {
+    if (USE_DB) {
+      const rows = await query(`
+        SELECT p.*, CONCAT(u.nombre, ' ', u.apellido) AS cliente
+        FROM pedidos p
+        LEFT JOIN usuarios u ON u.id_usuario = p.id_cliente
+        ORDER BY p.id_pedido DESC
+      `);
+      return res.json(rows);
+    }
     const rows = await fetchAll('pedidos', 'orders.json');
-    res.json(rows);
+    return res.json(rows);
   } catch (e) { res.status(500).json({ message: e.message }); }
 });
 
@@ -102,6 +111,14 @@ router.get('/metodos_pago', authorize(['admin','employee']), async (req, res) =>
 router.get('/pagos', authorize(['admin','employee']), async (req, res) => {
   try {
     const rows = await fetchAll('pagos');
+    res.json(rows);
+  } catch (e) { res.status(500).json({ message: e.message }); }
+});
+
+// Imágenes de producto (hasta 10 por producto según esquema)
+router.get('/imagenes_producto', authorize(['admin','employee']), async (req, res) => {
+  try {
+    const rows = await fetchAll('imagenes_producto');
     res.json(rows);
   } catch (e) { res.status(500).json({ message: e.message }); }
 });

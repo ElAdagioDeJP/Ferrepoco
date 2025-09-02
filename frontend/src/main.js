@@ -1,45 +1,18 @@
-import { createApp } from "vue"
-import { createRouter, createWebHistory } from "vue-router"
-import { createPinia } from "pinia"
-import App from "./App.vue"
+import { createApp } from "vue";
+import { createPinia } from "pinia";
+import App from "./App.vue";
+import router from "./router"; // Use central router with named routes and guards
 
-// Import views
-import Login from "./views/Login.vue"
-import Register from "./views/Register.vue"
-import AdminDashboard from "./views/AdminDashboard.vue"
-import EmployeeDashboard from "./views/EmployeeDashboard.vue"
-import ClientDashboard from "./views/ClientDashboard.vue"
-import ProductsManager from "./views/ProductsManager.vue"
-import OrdersManager from "./views/OrdersManager.vue"
-import AdminUsers from "./views/AdminUsers.vue"
-import NotFound from "./views/NotFound.vue"
+// Styles
+import "./assets/styles/main.css";
+import "./style.css";
 
-// Import styles
-import "./assets/styles/main.css"
-import "./style.css"
+// Pinia
+const pinia = createPinia();
 
-// Create router
-const router = createRouter({
-    history: createWebHistory(),
-    routes: [
-        { path: "/", redirect: "/login" },
-        { path: "/login", component: Login },
-        { path: "/register", component: Register },
-        { path: "/admin", component: AdminDashboard },
-        { path: "/employee", component: EmployeeDashboard },
-        { path: "/client", component: ClientDashboard },
-        { path: "/products", component: ProductsManager },
-        { path: "/orders", component: OrdersManager },
-        { path: "/admin/users", component: AdminUsers },
-        { path: "/:pathMatch(.*)*", component: NotFound },
-    ],
-})
-
-// Create Pinia store
-const pinia = createPinia()
-
-// Create and mount app
-const app = createApp(App)
-app.use(router)
-app.use(pinia)
-app.mount("#app")
+// App
+const app = createApp(App);
+// Important: register Pinia before Router since guards use the store
+app.use(pinia);
+app.use(router);
+app.mount("#app");

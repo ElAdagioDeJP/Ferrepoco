@@ -173,12 +173,8 @@ const loadOrders = async () => {
 
 const updateStatus = async (order, newStatus) => {
   try {
-    // Para actualizar el estado, necesitarías agregar esta función a tu apiService
-    // Por ahora solo actualizamos localmente
-    order.status = newStatus
-    
-    // Si necesitas persistir en el backend, agregarías:
-    // await apiService.updateOrderStatus(order.id, newStatus)
+    await apiService.updateOrderStatus(order.id, newStatus)
+    await loadOrders()
   } catch (err) {
     error.value = 'Error al actualizar el estado'
     console.error('Error updating order:', err)
