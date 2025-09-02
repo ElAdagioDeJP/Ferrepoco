@@ -40,13 +40,7 @@
           </template>
 
           <!-- Notificaciones (admin/employee) -->
-          <button v-if="userRole !== 'client'" class="relative p-2 text-neutral-600 hover:text-cyan-800 hover:bg-neutral-100 rounded-lg transition-colors duration-200" aria-label="Notificaciones">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM10.07 2.82l3.12 3.12c.944.944.944 2.475 0 3.419L8.5 14.04a1 1 0 01-.707.293H6v-1.793c0-.265.105-.52.293-.707l4.69-4.69c.944-.944 2.475-.944 3.419 0z"></path>
-            </svg>
-            <span class="sr-only">Notificaciones</span>
-            <span class="absolute -top-1 -right-1 w-3 h-3 bg-orange-500 rounded-full"></span>
-          </button>
+          
 
           <UserProfileBadge />
         </div>

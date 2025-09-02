@@ -266,7 +266,7 @@ const loadAlerts = async () => {
   try {
     const response = await apiClient.get('/products');
     const allProducts = response.data;
-    const lowStockProducts = allProducts.filter(p => p.stock <= 50);
+    const lowStockProducts = allProducts.filter(p => p.stock <= 10);
     console.log('Low stock products:', lowStockProducts);
     alerts.value = lowStockProducts.map(p => ({
       productId: p.id,
