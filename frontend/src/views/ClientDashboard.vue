@@ -155,9 +155,9 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="bg-gradient-to-r from-cyan-50 to-cyan-100 rounded-xl overflow-hidden relative shadow-lg border border-cyan-200">
             <div class="p-6 md:p-8 relative z-10">
-              <h3 class="text-2xl font-heading font-bold text-neutral-900 mb-2">Ahorra en tu próximo proyecto</h3>
-              <p class="text-neutral-700 mb-4 font-body">Descuentos hasta del 30% en herramientas eléctricas</p>
-              <a href="#" class="inline-flex items-center px-4 py-2 bg-cyan-800 hover:bg-cyan-700 text-white font-medium rounded-lg shadow-sm transition-all font-body">Ver ofertas</a>
+              <h3 class="text-2xl font-heading font-bold text-neutral-900 mb-2">Devoluciones</h3>
+              <p class="text-neutral-700 mb-4 font-body">Agenda una cita en nuestra tienda aqui!</p>
+              <a href="https://wa.me/584244252744?text=Quiero%20hacer%20una%20devolucion!" target="_blank" rel="noopener" class="inline-flex items-center px-4 py-2 bg-cyan-800 hover:bg-cyan-700 text-white font-medium rounded-lg shadow-sm transition-all font-body">Cita</a>
             </div>
             <div class="absolute bottom-0 right-0 w-2/5 h-full">
               <img src="/placeholder.svg?height=200&width=200" alt="Herramientas en oferta" class="h-full object-cover object-left" />
@@ -167,7 +167,7 @@
             <div class="p-6 md:p-8 relative z-10">
               <h3 class="text-2xl font-heading font-bold text-neutral-900 mb-2">Programa de profesionales</h3>
               <p class="text-neutral-700 mb-4 font-body">Regístrate y obtén beneficios exclusivos para contratistas</p>
-              <a href="#" class="inline-flex items-center px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg shadow-sm transition-all font-body">Saber más</a>
+              <a href="https://wa.me/584244252744?text=Hola!%20quiero%20saber%20mas%20sobre%20el%20programa%20de%20profesionales!" target="_blank" rel="noopener" class="inline-flex items-center px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg shadow-sm transition-all font-body">Saber más</a>
             </div>
             <div class="absolute bottom-0 right-0 w-2/5 h-full">
               <img src="/placeholder.svg?height=200&width=200" alt="Profesional de la construcción" class="h-full object-cover object-left" />
