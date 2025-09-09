@@ -3,7 +3,7 @@
     <div class="container mx-auto px-6 py-4">
       <div class="grid grid-cols-12 items-center gap-4">
         <!-- Brand -->
-        <div class="col-span-12 md:col-span-4 flex items-center gap-3 min-w-0">
+        <div class="col-span-12 md:col-span-4 flex items-center gap-3 min-w-0 cursor-pointer" @click="goToDashboard">
           <img src="/logo.png" alt="Ferrepoco" class="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
           <div class="truncate">
             <h1 class="text-2xl font-heading font-bold text-cyan-800 truncate">Ferrepoco</h1>
@@ -66,6 +66,18 @@ const favoriteCount = ref(Number(localStorage.getItem('favoritesCount') || 0));
 const cartCount = ref(0);
 
 const userRole = auth.userRole;
+
+function goToDashboard() {
+  if (userRole === 'admin') {
+    router.push({ name: 'AdminDashboard' });
+  } else if (userRole === 'employee') {
+    router.push({ name: 'EmployeeDashboard' });
+  } else if (userRole === 'client') {
+    router.push({ name: 'ClientDashboard' });
+  } else {
+    router.push({ name: 'Login' });
+  }
+}
 
 const emitGlobalSearch = () => {
   const event = new CustomEvent('global-search', { detail: searchQuery.value });

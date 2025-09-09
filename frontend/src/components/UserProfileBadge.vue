@@ -47,6 +47,17 @@
           </router-link>
           
           <router-link 
+            v-if="userRole === 'client'" 
+            to="/mis-pedidos" 
+            class="flex items-center gap-3 px-4 py-3 text-sm text-popover-foreground hover:bg-muted/50 transition-colors"
+          >
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"/>
+            </svg>
+            Mis Pedidos
+          </router-link>
+          
+          <router-link 
             v-if="userRole === 'employee'" 
             to="/employee" 
             class="flex items-center gap-3 px-4 py-3 text-sm text-popover-foreground hover:bg-muted/50 transition-colors"
@@ -67,6 +78,16 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
             </svg>
             Panel Admin
+          </router-link>
+          
+          <router-link 
+            to="/faqs" 
+            class="flex items-center gap-3 px-4 py-3 text-sm text-popover-foreground hover:bg-muted/50 transition-colors"
+          >
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 17l4 4m0 0l4-4m-4 4V3"/>
+            </svg>
+            Preguntas Frecuentes
           </router-link>
           
           <div class="border-t border-border my-2"></div>

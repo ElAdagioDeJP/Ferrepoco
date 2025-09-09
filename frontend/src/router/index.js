@@ -14,6 +14,8 @@ import Payment from '../views/Payment.vue';
 import CategoryView from '../views/CategoryView.vue';
 import ClientProfile from '../views/ClientProfile.vue';
 import Terminos from '../views/Terminos.vue';
+import FAQs from '../views/FAQs.vue';
+import MisPedidos from '../views/MisPedidos.vue';
 
 const routes = [
   {
@@ -91,6 +93,17 @@ const routes = [
     path: '/terminos',
     name: 'Terminos',
     component: Terminos
+  },
+  {
+    path: '/faqs',
+    name: 'FAQs',
+    component: FAQs
+  },
+  {
+    path: '/mis-pedidos',
+    name: 'MisPedidos',
+    component: MisPedidos,
+    meta: { requiresAuth: true, roles: ['client'] }
   },
   {
     path: '/:catchAll(.*)', // Ruta para 404
