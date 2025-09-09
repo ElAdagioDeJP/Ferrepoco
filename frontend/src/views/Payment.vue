@@ -22,13 +22,18 @@
   
 </template>
 
+
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import apiClient from '@/api/apiClient';
+import { useAuthStore } from '@/stores/auth';
+import jsPDF from 'jspdf';
 
 const route = useRoute();
 const router = useRouter();
+const auth = useAuthStore();
+auth.initializeAuth();
 
 const orderId = ref(String(route.query.orderId || ''));
 const amount = ref(Number(route.query.amount || 0));
@@ -47,12 +52,30 @@ async function loadMethods(){
   }
 }
 
+function generarFacturaPDF() {
+  const doc = new jsPDF();
+  const nombreCliente = auth.user?.nombre && auth.user?.apellido
+    ? `${auth.user.nombre} ${auth.user.apellido}`
+    : (auth.user?.nombre || auth.displayName || 'Cliente');
+  doc.setFontSize(18);
+  doc.text('Factura de compra', 20, 20);
+  doc.setFontSize(12);
+  doc.text(`Cliente: ${nombreCliente}`, 20, 35);
+  doc.text(`N° Orden: ${orderId.value}`, 20, 45);
+  doc.text(`Total pagado: $${amount.value.toFixed(2)}`, 20, 55);
+  const metodo = methods.value.find(m => String(m.id_metodo) === methodId.value)?.nombre_metodo || 'N/A';
+  doc.text(`Método de pago: ${metodo}`, 20, 65);
+  doc.text(`Fecha: ${(new Date()).toLocaleString()}`, 20, 75);
+  doc.save(`Factura_Ferrepoco_${orderId.value || Date.now()}.pdf`);
+}
+
 async function confirm(){
   if (!orderId.value || !methodId.value) return;
   processing.value = true; error.value='';
   try {
     await apiClient.post('/payments', { orderId: Number(orderId.value), methodId: Number(methodId.value), amount: amount.value });
     done.value = true;
+    generarFacturaPDF();
     setTimeout(() => { router.push({ name: 'ClientDashboard' }); }, 1200);
   } catch (e) {
     console.error(e);
