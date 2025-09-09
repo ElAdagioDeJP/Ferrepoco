@@ -1,9 +1,14 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 flex flex-col items-center p-4">
-    <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg p-6 border border-neutral-200 mt-8 mb-4">
-      <button @click="goBack" class="mb-6 px-4 py-2 bg-cyan-800 text-white rounded hover:bg-cyan-700 font-medium">← Volver</button>
-      <h1 class="text-3xl font-heading font-bold mb-6 text-neutral-900 text-center">Términos y Condiciones de Ferrepoco</h1>
-      <div class="space-y-6 text-neutral-800 text-base">
+  <div class="min-h-screen bg-gradient-to-br from-neutral-200 via-neutral-100 to-neutral-200 flex items-center justify-center p-4">
+    <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-0 bg-white border border-neutral-200 rounded-2xl shadow-xl overflow-hidden">
+      <AuthMarketingPanel />
+      <div class="p-8 lg:p-10 overflow-y-auto max-h-[90vh]"> 
+        <div class="max-w-2xl mx-auto">
+          <div class="flex items-center justify-between mb-6">
+            <h1 class="text-3xl font-heading font-bold text-neutral-900">Términos y Condiciones</h1>
+            <button @click="goBack" class="px-4 py-2 bg-cyan-800 text-white rounded hover:bg-cyan-700 font-medium">Volver</button>
+          </div>
+          <div class="space-y-6 text-neutral-800 text-base leading-relaxed">
         <section>
           <h2 class="text-xl font-bold mb-2">1. Aceptación de los Términos</h2>
           <p>Al registrarte y utilizar los servicios de Ferrepoco, aceptas de manera irrevocable estos términos y condiciones. Si no estás de acuerdo, debes abandonar la plataforma inmediatamente. El uso indebido de la plataforma será perseguido legalmente.</p>
@@ -75,9 +80,11 @@
           <h2 class="text-xl font-bold mb-2">11. Contacto</h2>
           <p>Para dudas, reclamos o denuncias, contáctanos a través de WhatsApp al <a href="https://wa.me/584244252755" target="_blank" class="text-primary underline">0424-4252755</a> o por correo electrónico. El usuario acepta que cualquier comunicación podrá ser registrada y utilizada como evidencia.</p>
         </section>
-      </div>
-      <div class="mt-8 flex justify-center">
-        <button @click="goRegister" class="px-6 py-3 bg-primary text-white rounded-lg font-heading font-bold hover:bg-primary/90">He leído todo</button>
+          </div>
+          <div class="mt-8 flex justify-center">
+            <button @click="goRegister" class="px-6 py-3 bg-cyan-700 text-white rounded-lg font-heading font-bold hover:bg-cyan-800">He leído todo</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -85,6 +92,7 @@
 
 <script setup>
 import { RouterLink, useRouter } from 'vue-router'
+import AuthMarketingPanel from '../components/AuthMarketingPanel.vue'
 
 const router = useRouter();
 function goBack() {
@@ -95,8 +103,4 @@ function goRegister() {
 }
 </script>
 
-<style scoped>
-.font-heading {
-  font-family: 'Montserrat', sans-serif;
-}
-</style>
+<style scoped></style>

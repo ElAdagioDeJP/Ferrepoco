@@ -25,7 +25,10 @@ const logout = () => {
   router.push('/login');
 };
 
-const isAuthRoute = computed(() => ['Login', 'Register', 'Terminos'].includes(route.name));
+// Rutas "públicas" que no deben mostrar el layout (sin sidebar/navbar principal)
+const isAuthRoute = computed(() => [
+  'Login','Register','Terminos','ForgotPassword','ResetPassword','FAQs','ManualUsuario'
+].includes(route.name));
 
 const { isAuthenticated, userRole } = authStore;
 </script>

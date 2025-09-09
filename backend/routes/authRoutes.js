@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { authenticate } = require('../src/middleware/auth');
 const { USE_DB, query } = require('../src/db');
+const crypto = require('crypto');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'ferrepoco_super_secret_key';
 
@@ -148,3 +149,122 @@ router.get('/me', authenticate, (req, res) => {
 });
 
 module.exports = router;
+
+// ---------------------- Password Recovery ----------------------
+// Nota: Se añade al final del archivo para minimizar conflictos.
+// Rutas: POST /api/auth/forgot-password y POST /api/auth/reset-password
+
+/**
+ * Genera un token seguro en base64 URL-safe
+ */
+function generateResetToken() {
+    return crypto.randomBytes(32).toString('hex');
+}
+
+async function ensurePasswordResetTable() {
+    if (!USE_DB) return;
+    try {
+        await query(`CREATE TABLE IF NOT EXISTS password_resets (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            email VARCHAR(255) NOT NULL,
+            token VARCHAR(128) NOT NULL,
+            expires_at TIMESTAMP NOT NULL,
+            INDEX (token),
+            INDEX (email)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4`);
+    } catch (e) {
+        console.error('Failed ensuring password_resets table:', e.message);
+    }
+}
+
+// Persistencia en modo FILE: reutilizamos readData/writeData
+function readResetsFile() {
+    try { return readData('password_resets.json'); } catch { return []; }
+}
+function writeResetsFile(arr) {
+    try { writeData('password_resets.json', arr); } catch { /* ignore */ }
+}
+
+// Solicitar recuperación (si el correo existe, genera token y responde genérico)
+router.post('/forgot-password', async (req, res) => {
+    const { email } = req.body || {};
+    const correo = (email || '').trim();
+    if (!correo) return res.status(400).json({ message: 'email required' });
+    const genericMsg = 'Si el correo existe, se han enviado instrucciones';
+    try {
+        const token = generateResetToken();
+        const expiresAt = new Date(Date.now() + 1000 * 60 * 60); // 1 hora
+        if (USE_DB) {
+            await ensurePasswordResetTable();
+            // Verificar que el usuario exista (no revelar si no)
+            let userRows = [];
+            try {
+                userRows = await query('SELECT id_usuario FROM usuarios WHERE correo_electronico = ? LIMIT 1', [correo]);
+            } catch (e) {
+                // ignorar
+            }
+            if (userRows.length) {
+                await query('INSERT INTO password_resets (email, token, expires_at) VALUES (?, ?, ?)', [correo, token, expiresAt]);
+            }
+        } else {
+            const resets = readResetsFile();
+            // Limpiar expirados
+            const now = Date.now();
+            const filtered = resets.filter(r => new Date(r.expiresAt).getTime() > now && r.email !== correo);
+            // Verificar que el usuario exista en archivo users.json
+            const users = readData('users.json');
+            if (users.find(u => (u.username || '').toLowerCase() === correo.toLowerCase() || (u.correo_electronico || '').toLowerCase() === correo.toLowerCase())) {
+                filtered.push({ id: uuidv4(), email: correo, token, expiresAt: expiresAt.toISOString() });
+            }
+            writeResetsFile(filtered);
+        }
+        // Simulación de envío de correo: log en servidor
+        console.log(`[PasswordReset] Token generado para ${correo}: ${token}`);
+        return res.json({ message: genericMsg });
+    } catch (e) {
+        console.error('forgot-password error:', e.message);
+        return res.json({ message: genericMsg }); // Siempre genérico
+    }
+});
+
+// Resetear contraseña usando token
+router.post('/reset-password', async (req, res) => {
+    const { token, password } = req.body || {};
+    if (!token || !password) return res.status(400).json({ message: 'token and password required' });
+    try {
+        const now = new Date();
+        let email = null;
+        if (USE_DB) {
+            await ensurePasswordResetTable();
+            const rows = await query('SELECT email, expires_at FROM password_resets WHERE token = ? LIMIT 1', [token]);
+            if (!rows.length) return res.status(400).json({ message: 'Invalid token' });
+            const row = rows[0];
+            if (new Date(row.expires_at) < now) return res.status(400).json({ message: 'Expired token' });
+            email = row.email;
+            // Actualizar contraseña
+            const hashed = await bcrypt.hash(password, 10);
+            await query('UPDATE usuarios SET contrasena = ? WHERE correo_electronico = ? LIMIT 1', [hashed, email]);
+            // Borrar token usado
+            await query('DELETE FROM password_resets WHERE token = ? LIMIT 1', [token]);
+        } else {
+            const resets = readResetsFile();
+            const entry = resets.find(r => r.token === token);
+            if (!entry) return res.status(400).json({ message: 'Invalid token' });
+            if (new Date(entry.expiresAt) < now) return res.status(400).json({ message: 'Expired token' });
+            email = entry.email;
+            const users = readData('users.json');
+            const idx = users.findIndex(u => (u.username || u.correo_electronico) === email);
+            if (idx === -1) return res.status(400).json({ message: 'Invalid token' });
+            const hashed = await bcrypt.hash(password, 10);
+            users[idx].password = hashed;
+            writeData('users.json', users);
+            // eliminar token
+            const remaining = resets.filter(r => r.token !== token);
+            writeResetsFile(remaining);
+        }
+        return res.json({ message: 'Password updated' });
+    } catch (e) {
+        console.error('reset-password error:', e.message);
+        return res.status(500).json({ message: 'server error' });
+    }
+});

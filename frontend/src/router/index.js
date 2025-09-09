@@ -16,6 +16,9 @@ import ClientProfile from '../views/ClientProfile.vue';
 import Terminos from '../views/Terminos.vue';
 import FAQs from '../views/FAQs.vue';
 import MisPedidos from '../views/MisPedidos.vue';
+import ForgotPassword from '../views/ForgotPassword.vue';
+import ResetPassword from '../views/ResetPassword.vue';
+import ManualUsuario from '../views/ManualUsuario.vue';
 
 const routes = [
   {
@@ -34,6 +37,17 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register
+  },
+  {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: ForgotPassword
+  },
+  {
+    path: '/reset-password/:token',
+    name: 'ResetPassword',
+    component: ResetPassword,
+    props: true
   },
   {
     path: '/admin',
@@ -98,6 +112,11 @@ const routes = [
     path: '/faqs',
     name: 'FAQs',
     component: FAQs
+  },
+  {
+    path: '/manual-usuario',
+    name: 'ManualUsuario',
+    component: ManualUsuario
   },
   {
     path: '/mis-pedidos',
