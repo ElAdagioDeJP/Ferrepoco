@@ -278,7 +278,7 @@ const fetchTotalSales = async () => {
 const fetchLowStockProducts = async () => {
   try {
     const response = await apiClient.get('/products')
-    lowStockProducts.value = response.data.filter(product => product.stock <= 50)
+    lowStockProducts.value = response.data.filter(product => product.stock <= 25)
   } catch (error) {
     console.error('Error fetching low-stock products:', error)
   }
