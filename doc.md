@@ -1,139 +1,146 @@
+# Manual de Usuario de la Plataforma Ferrepoco  
+**Gestión Inteligente para tu Ferretería**
 
-Manual de Usuario de la Plataforma Ferrepoco
-Gestión Inteligente para tu Ferretería
+---
 
-Índice
-Introducción
+## Índice  
+- [Introducción](#1-introducción)  
+- [Perfiles de Usuario y Roles de Acceso](#2-perfiles-de-usuario-y-roles-de-acceso)  
+- [Guía para el Administrador](#3-guía-para-el-administrador)  
+  - [Gestión de Usuarios](#31-gestión-de-usuarios)  
+  - [Gestión de Productos e Inventario](#32-gestión-de-productos-e-inventario)  
+  - [Reportes y Análisis](#33-reportes-y-análisis)  
+- [Guía para el Empleado](#4-guía-para-el-empleado)  
+  - [Gestión del Inventario](#41-gestión-del-inventario)  
+  - [Gestión de Pedidos](#42-gestión-de-pedidos)  
+- [Guía para el Cliente](#5-guía-para-el-cliente)  
+  - [Navegación y Búsqueda de Productos](#51-navegación-y-búsqueda-de-productos)  
+  - [Carrito de Compras y Proceso de Pago](#52-carrito-de-compras-y-proceso-de-pago)  
+  - [Seguimiento de Pedidos](#53-seguimiento-de-pedidos)  
+- [Anexo Técnico: Referencia a los Diagramas](#6-anexo-técnico-referencia-a-los-diagramas)  
 
-(#2-perfiles-de-usuario-y-roles-de-acceso)
+---
 
+## 1. Introducción  
+**Ferrepoco** es la plataforma digital diseñada para modernizar y optimizar la gestión de tu ferretería.  
+Con esta herramienta, podrás llevar el control de tu negocio a un nuevo nivel de eficiencia y productividad.
 
-3.1. 
-3.2. 
-3.3.(#33-reportes-y-análisis)
+La plataforma te permite:  
+- Automatizar y gestionar tu inventario en tiempo real.  
+- Agilizar los procesos de venta en el punto de cobro.  
+- Fortalecer la relación y el seguimiento de tus clientes.  
+- Generar reportes para la toma de decisiones estratégicas.  
 
+**Público Objetivo:**  
+Dueños, administradores, personal de ventas y encargados de almacén de ferreterías.  
 
-4.1. 
-4.2. 
+**Requisitos del Sistema:**  
 
+**Precondiciones:**  
+- Tener acceso a una conexión a Internet estable.  
+- Disponer de un computador o dispositivo compatible.  
+- Contar con un usuario y contraseña de acceso asignados.  
 
-5.1.(#51-navegación-y-búsqueda-de-productos)
-5.2. 
-5.3.(#53-seguimiento-de-pedidos)
+**Postcondiciones:**  
+- Acceso al sistema de gestión de la ferretería.  
+- Capacidad para gestionar inventario, ventas y clientes según tu rol.  
+- Visualización de datos y reportes actualizados.  
 
-(#6-anexo-tecnico-referencia-a-los-diagramas)
+---
 
-1. Introducción
-Ferrepoco es la plataforma digital diseñada para modernizar y optimizar la gestión de tu ferretería. Con esta herramienta, podrás llevar el control de tu negocio a un nuevo nivel de eficiencia y productividad.
+## 2. Perfiles de Usuario y Roles de Acceso  
+La plataforma **Ferrepoco** organiza sus funcionalidades en torno a tres perfiles de usuario, cada uno con responsabilidades y permisos específicos.  
 
-La plataforma te permite:
+Esta estructura de roles se basa en la arquitectura del sistema, tal como se define en el **Diagrama de Clases**, donde las clases **Administrador, Empleado y Cliente** heredan de una clase base `Usuario`.  
 
-Automatizar y gestionar tu inventario en tiempo real.
+Al ejecutar `iniciarSesion()`, la plataforma utiliza **polimorfismo por herencia** para redireccionarte automáticamente a la vista correcta.  
 
-Agilizar los procesos de venta en el punto de cobro.
+- **Administrador:**  
+  El rol con el nivel más alto de control. Configuración general, gestión de usuarios, control total del inventario y acceso a reportes de rendimiento.  
 
-Fortalecer la relación y el seguimiento de tus clientes.
+- **Empleado:**  
+  Rol operativo enfocado en la actualización de inventario, gestión de pedidos de clientes y soporte.  
 
-Generar reportes para la toma de decisiones estratégicas.
+- **Cliente:**  
+  Usuario final que navega por el catálogo de productos, realiza compras y da seguimiento a sus pedidos.  
 
-Público Objetivo:
-Dueños, administradores, personal de ventas y encargados de almacén de ferreterías.
+---
 
-Requisitos del Sistema:
+## 3. Guía para el Administrador  
+Como Administrador, puedes supervisar y gestionar todos los aspectos de la plataforma.  
+Tus tareas corresponden a los casos de uso principales del **Diagrama de Casos de Uso**, como **Gestionar Usuarios** y **Gestionar Inventario**.  
 
-Precondiciones:
+### 3.1. Gestión de Usuarios  
+- **Crear Usuarios:**  
+  Ve a *Gestión de Usuarios* y completa los datos (nombre, email, rol).  
 
-Tener acceso a una conexión a Internet estable.
+- **Modificar y Deshabilitar Usuarios:**  
+  No se eliminan permanentemente; se deshabilitan para preservar la trazabilidad de los datos.  
 
-Disponer de un computador o dispositivo compatible.
+- **Asignación de Roles:**  
+  Selecciona entre Administrador, Empleado o Cliente para definir permisos y vistas.  
 
-Contar con un usuario y contraseña de acceso asignados.
+### 3.2. Gestión de Productos e Inventario  
+- **Agregar Producto:**  
+  Desde *Inventario*, opción *Agregar Nuevo Producto*. Requiere nombre, descripción, precio y stock inicial.  
 
-Postcondiciones:
+- **Modificar Producto:**  
+  Edita información existente.  
+  El método `Producto.actualizarStock()` admite **polimorfismo por sobrecarga**, ya sea cambiando solo la cantidad o registrando cantidad y motivo.  
 
-Acceso al sistema de gestión de la ferretería.
+- **Eliminar Producto:**  
+  Puede archivarse o eliminarse del catálogo.  
 
-Capacidad para gestionar inventario, ventas y clientes según tu rol.
+- **Alertas de Stock:**  
+  El método `Inventario.generarAlertas()` notifica cuando el stock cae por debajo de un umbral.  
 
-Visualización de datos y reportes actualizados.
+### 3.3. Reportes y Análisis  
+- **Reporte de Ventas:** Ventas por periodo, categoría o cliente.  
+- **Análisis de Clientes:** Preferencias de compra para decisiones de marketing y stock.  
+- **Análisis de Inventario:** Valor total y rotación de productos.  
 
-2. Perfiles de Usuario y Roles de Acceso
-La plataforma Ferrepoco organiza sus funcionalidades en torno a tres perfiles de usuario, cada uno con responsabilidades y permisos específicos. Esta estructura de roles se basa en la arquitectura del sistema, tal como se define en el Diagrama de Clases, donde las clases Administrador, Empleado y Cliente heredan de una clase base Usuario. Al iniciarSesion(), la plataforma utiliza este polimorfismo por herencia para redireccionarte automáticamente a la vista correcta.
+---
 
-Administrador: El rol con el nivel más alto de control. Se encarga de la configuración general de la aplicación, la gestión de usuarios, el control total del inventario y el acceso a los reportes de rendimiento.
+## 4. Guía para el Empleado  
+El Empleado ejecuta las operaciones diarias. Sus interacciones corresponden a los casos de uso **Procesar Pedido** y **Actualizar Inventario**.  
 
-Empleado: Un rol operativo que se enfoca en las tareas diarias, como la actualización de inventario, la gestión de pedidos de los clientes y el soporte al usuario.
+### 4.1. Gestión del Inventario  
+- **Actualizar Stock:** Registra nuevas mercancías con `actualizarStock()`.  
+- **Consultar Inventario:** Verifica disponibilidad de productos.  
 
-Cliente: El usuario final que interactúa con la plataforma para navegar por el catálogo de productos, realizar compras y hacer seguimiento de sus pedidos.
+### 4.2. Gestión de Pedidos  
+- **Revisar Nuevos Pedidos:** Listado de pedidos pendientes.  
+- **Procesar Pedido:** Cambia estado del pedido (*En preparación, Enviado, Entregado*).  
+- **Historial de Pedidos:** Consulta pedidos completados.  
 
-3. Guía para el Administrador
-Como Administrador, tienes la capacidad de supervisar y gestionar todos los aspectos de la plataforma. La mayoría de tus tareas corresponden a los casos de uso principales definidos en el Diagrama de Casos de Uso, como Gestionar Usuarios y Gestionar Inventario.
+---
 
-3.1. Gestión de Usuarios
-Esta funcionalidad te permite mantener el control sobre quién accede a la plataforma y qué permisos tiene.
+## 5. Guía para el Cliente  
+El Cliente utiliza la plataforma principalmente para realizar compras (**caso de uso: Realizar Compra**).  
 
-Crear Usuarios: Para dar de alta a un nuevo Empleado o Administrador, ve a la sección "Gestión de Usuarios" y completa la información requerida (nombre, email, rol).
+### 5.1. Navegación y Búsqueda de Productos  
+- **Navegar por el Catálogo:** Visualiza productos por categoría con imágenes y descripciones.  
+- **Buscar Producto:** Con `Cliente.buscarProducto()` (**polimorfismo por sobrecarga**), busca por nombre, categoría o rango de precios.  
 
-Modificar y Deshabilitar Usuarios: Puedes actualizar la información de cualquier usuario en la lista. Importante: La plataforma está diseñada para que los usuarios no puedan ser eliminados permanentemente. En su lugar, debes deshabilitar las cuentas que ya no estén activas. Esto preserva un registro de la actividad histórica, lo cual es crucial para la integridad de los datos.
+### 5.2. Carrito de Compras y Proceso de Pago  
+- **Agregar al Carrito:** Añade productos y ajusta cantidades.  
+- **Proceso de Pago:** Compra simulada para generar el pedido.  
 
-Asignación de Roles: Al crear o modificar un usuario, puedes asignarle uno de los roles predefinidos (Administrador, Empleado, Cliente). Esta asignación determina sus permisos y la vista a la que accederá.
+### 5.3. Seguimiento de Pedidos  
+- **Mis Pedidos:** Historial y estado de cada compra (*Enviado, Entregado*).  
 
-3.2. Gestión de Productos e Inventario
-Aquí controlas el catálogo de productos y el nivel de stock en la ferretería.
+---
 
-Agregar Producto: Ve a la sección de inventario y utiliza la opción "Agregar Nuevo Producto". Debes proporcionar detalles como el nombre, la descripción, el precio y el stock inicial.
+## 6. Anexo Técnico: Referencia a los Diagramas  
 
-Modificar Producto: Puedes editar la información de cualquier producto existente. La plataforma utiliza un método como Producto.actualizarStock(), que puede ser invocado de varias maneras (polimorfismo por sobrecarga) para simplemente cambiar la cantidad o para registrar la cantidad y el motivo del cambio.
+### Diagrama de Clases  
+- **Administrador, Empleado y Cliente** heredan de `Usuario`.  
+- Comparten atributos comunes, pero redefinen comportamientos (`iniciarSesion()` con **polimorfismo por sobreescritura**).  
+- La clase `PlataformaFerrepoco` contiene `Inventario`, que a su vez gestiona productos.  
 
-Eliminar Producto: Si un producto ya no se vende, puedes archivarlo o eliminarlo del catálogo para que no aparezca en la vista del cliente.
+### Diagrama de Casos de Uso  
+- **Administrador:** Generar Reportes.  
+- **Empleado:** Procesar Pedido.  
+- Ambos pueden ejecutar funcionalidades que implementan la interfaz `IGestionable` (**polimorfismo por interfaz**).  
 
-Alertas de Stock: El sistema genera automáticamente alertas visuales cuando el nivel de stock de un producto cae por debajo de un umbral predefinido. Esto se basa en la lógica del método Inventario.generarAlertas(), asegurando que nunca te quedes sin productos clave.
-
-3.3. Reportes y Análisis
-La sección de reportes te proporciona una visión clara del rendimiento de tu negocio.
-
-Reporte de Ventas: Visualiza las ventas por periodo, por categoría de producto o por cliente.
-
-Análisis de Clientes: Identifica las preferencias de compra de los clientes para tomar decisiones de marketing y stock más informadas.
-
-Análisis de Inventario: Obtén un resumen del valor total de tu inventario y los productos con menor y mayor rotación.
-
-4. Guía para el Empleado
-Como Empleado, tus responsabilidades se centran en la ejecución de las operaciones diarias. Tu rol es fundamental para garantizar que los pedidos se procesen a tiempo y que el inventario se mantenga actualizado. Tus interacciones se corresponden con casos de uso como Procesar Pedido y Actualizar Inventario en el Diagrama de Casos de Uso.
-
-4.1. Gestión del Inventario
-Actualizar Stock: Puedes ajustar el stock de los productos. Por ejemplo, al recibir una nueva mercancía, puedes usar el método actualizarStock() para incrementar la cantidad de un producto. El sistema registrará el cambio para mantener la trazabilidad.
-
-Consultar Inventario: Puedes buscar productos específicos y verificar su disponibilidad para responder a las consultas de los clientes.
-
-4.2. Gestión de Pedidos
-Revisar Nuevos Pedidos: La sección "Pedidos" muestra una lista de los pedidos pendientes de los clientes.
-
-Procesar Pedido: Al seleccionar un pedido, puedes cambiar su estado (ej. "En preparación", "Enviado", "Entregado"). Esto actualiza el estado del pedido en la vista del cliente.
-
-Historial de Pedidos: Puedes acceder a los pedidos completados para referencias futuras o para resolver consultas de los clientes.
-
-5. Guía para el Cliente
-Como Cliente, tienes acceso a la parte de la plataforma diseñada para una experiencia de compra fluida y conveniente. Tus interacciones giran en torno al caso de uso Realizar Compra del Diagrama de Casos de Uso.
-
-5.1. Navegación y Búsqueda de Productos
-Navegar por el Catálogo: Explora las diferentes categorías de productos. La plataforma te mostrará los productos disponibles con imágenes y descripciones.
-
-Buscar Producto: Utiliza la barra de búsqueda para encontrar productos específicos. Gracias al polimorfismo por sobrecarga en el método Cliente.buscarProducto(), puedes buscar por nombre, categoría o incluso por un rango de precios.
-
-5.2. Carrito de Compras y Proceso de Pago
-Agregar al Carrito: Haz clic en "Agregar al Carrito" para añadir un producto. Puedes ajustar la cantidad en cualquier momento.
-
-Proceso de Pago: Cuando estés listo, ve a tu carrito y haz clic en "Comprar". La plataforma te guiará a través de un proceso de pago simulado para finalizar la creación del Pedido.
-
-5.3. Seguimiento de Pedidos
-Mis Pedidos: En la sección "Mis Pedidos", puedes ver el historial de tus compras y el estado actual de cada Pedido (ej. "Enviado", "Entregado").
-
-6. Anexo Técnico: Referencia a los Diagramas
-Para aquellos interesados en la arquitectura subyacente, la funcionalidad de la plataforma está directamente relacionada con los diagramas de diseño.
-
-Diagrama de Clases: Este diagrama muestra que las clases Administrador, Empleado y Cliente son especializaciones de la clase base Usuario. Esto significa que comparten características comunes (como nombre de usuario y contraseña) pero tienen comportamientos únicos. Por ejemplo, el método iniciarSesion() se comporta de manera distinta para cada uno, un claro ejemplo de polimorfismo por sobreescritura. La clase Plataforma Ferrepoco se compone de otras clases como Inventario, que a su vez contiene una colección de productos.
-
-Diagrama de Casos de Uso: Este diagrama ilustra las interacciones de los usuarios con el sistema. Un Administrador puede realizar el caso de uso Generar Reportes, mientras que un Empleado puede ejecutar Procesar Pedido, y ambos tienen acceso a funcionalidades que implementan la interfaz IGestionable, demostrando polimorfismo por interfaz.
-
-
+---
