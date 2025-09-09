@@ -1,12 +1,4 @@
-Gemini
 
-2.5 Flash
-
-
-
-
-
-Crear
 Manual de Usuario de la Plataforma Ferrepoco
 Gestión Inteligente para tu Ferretería
 
@@ -143,4 +135,5 @@ Para aquellos interesados en la arquitectura subyacente, la funcionalidad de la 
 Diagrama de Clases: Este diagrama muestra que las clases Administrador, Empleado y Cliente son especializaciones de la clase base Usuario. Esto significa que comparten características comunes (como nombre de usuario y contraseña) pero tienen comportamientos únicos. Por ejemplo, el método iniciarSesion() se comporta de manera distinta para cada uno, un claro ejemplo de polimorfismo por sobreescritura. La clase Plataforma Ferrepoco se compone de otras clases como Inventario, que a su vez contiene una colección de productos.
 
 Diagrama de Casos de Uso: Este diagrama ilustra las interacciones de los usuarios con el sistema. Un Administrador puede realizar el caso de uso Generar Reportes, mientras que un Empleado puede ejecutar Procesar Pedido, y ambos tienen acceso a funcionalidades que implementan la interfaz IGestionable, demostrando polimorfismo por interfaz.
+
 
