@@ -13,6 +13,7 @@ import PasarelaDePago from '../views/PasarelaDePago.vue';
 import Payment from '../views/Payment.vue';
 import CategoryView from '../views/CategoryView.vue';
 import ClientProfile from '../views/ClientProfile.vue';
+import Terminos from '../views/Terminos.vue';
 
 const routes = [
   {
@@ -85,6 +86,11 @@ const routes = [
     name: 'OrdersManager',
     component: OrdersManager,
     meta: { requiresAuth: true, roles: ['admin', 'employee'] }
+  },
+  {
+    path: '/terminos',
+    name: 'Terminos',
+    component: Terminos
   },
   {
     path: '/:catchAll(.*)', // Ruta para 404

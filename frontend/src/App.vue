@@ -25,7 +25,7 @@ const logout = () => {
   router.push('/login');
 };
 
-const isAuthRoute = computed(() => ['Login', 'Register'].includes(route.name));
+const isAuthRoute = computed(() => ['Login', 'Register', 'Terminos'].includes(route.name));
 
 const { isAuthenticated, userRole } = authStore;
 </script>
