@@ -134,6 +134,13 @@ async function simulatePay(){
       clientId: String(localStorage.getItem('userId') || auth.user?.id || ''),
       products: items.value.map(it => ({ productId: String(it.productId), quantity: Number(it.quantity||0) }))
     };
+    // Guardar productos para la factura
+    const productosFactura = items.value.map(it => ({
+      name: it.product?.name || '',
+      quantity: it.quantity,
+      price: it.product?.price || 0
+    }));
+    localStorage.setItem('factura_items', JSON.stringify(productosFactura));
     const res = await apiClient.post('/orders', payload);
     orderId.value = String(res.data?.order?.id || '');
     success.value = true;
