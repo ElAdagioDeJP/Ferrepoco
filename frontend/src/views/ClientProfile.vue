@@ -26,6 +26,7 @@
             <input id="apellido" v-model="form.apellido" class="w-full border rounded px-3 py-2" placeholder="Apellido" />
           </div>
         </div>
+        <div v-if="profileError" class="mt-2 text-red-600 text-sm">{{ profileError }}</div>
         <div class="mt-4">
           <button @click="saveProfile" class="px-4 py-2 bg-cyan-600 text-white rounded hover:bg-cyan-700" :disabled="saving">
             {{ saving ? 'Guardando...' : 'Guardar cambios' }}
@@ -50,6 +51,7 @@
             <input id="pwdConfirm" v-model="pwd.confirm" type="password" class="w-full border rounded px-3 py-2" />
           </div>
         </div>
+        <div v-if="pwdError" class="mt-2 text-red-600 text-sm">{{ pwdError }}</div>
         <div class="mt-4">
           <button @click="changePassword" class="px-4 py-2 bg-neutral-800 text-white rounded hover:bg-black" :disabled="changingPwd">
             {{ changingPwd ? 'Actualizando...' : 'Actualizar contraseña' }}
@@ -107,25 +109,51 @@ async function uploadPhoto() {
   }
 }
 
+const profileError = ref('');
 async function saveProfile() {
+  profileError.value = '';
+  if (!form.value.nombre.trim() || !form.value.apellido.trim()) {
+    profileError.value = 'Nombre y apellido no pueden estar vacíos.';
+    return;
+  }
   saving.value = true;
   try {
     await apiClient.put('/users/me', { nombre: form.value.nombre, apellido: form.value.apellido });
     await auth.refreshMe();
+    profileError.value = '';
   } catch (e) {
+    profileError.value = 'Error al guardar los datos.';
     console.error(e);
   } finally {
     saving.value = false;
   }
 }
 
+const pwdError = ref('');
 async function changePassword() {
-  if (!pwd.value.current || !pwd.value.next || pwd.value.next !== pwd.value.confirm) return;
+  pwdError.value = '';
+  // Validar campos vacíos
+  if (!pwd.value.current || !pwd.value.next || !pwd.value.confirm) {
+    pwdError.value = 'Todos los campos de contraseña son obligatorios.';
+    return;
+  }
+  // Validar longitud mínima
+  if (pwd.value.next.length < 8) {
+    pwdError.value = 'La nueva contraseña debe tener al menos 8 caracteres.';
+    return;
+  }
+  // Validar coincidencia
+  if (pwd.value.next !== pwd.value.confirm) {
+    pwdError.value = 'Las contraseñas nuevas no coinciden.';
+    return;
+  }
   changingPwd.value = true;
   try {
     await apiClient.put('/users/me/password', { currentPassword: pwd.value.current, newPassword: pwd.value.next });
     pwd.value = { current: '', next: '', confirm: '' };
+    pwdError.value = '';
   } catch (e) {
+    pwdError.value = 'Error al actualizar la contraseña.';
     console.error(e);
   } finally {
     changingPwd.value = false;
