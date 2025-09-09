@@ -17,6 +17,7 @@
   - [Navegación y Búsqueda de Productos](#51-navegación-y-búsqueda-de-productos)  
   - [Carrito de Compras y Proceso de Pago](#52-carrito-de-compras-y-proceso-de-pago)  
   - [Seguimiento de Pedidos](#53-seguimiento-de-pedidos)  
+  - [Crear Usuario](#54-crear-usuario)  
 - [Anexo Técnico: Referencia a los Diagramas](#6-anexo-técnico-referencia-a-los-diagramas)  
 
 ---
@@ -128,6 +129,30 @@ El Cliente utiliza la plataforma principalmente para realizar compras (**caso de
 
 ### 5.3. Seguimiento de Pedidos  
 - **Mis Pedidos:** Historial y estado de cada compra (*Enviado, Entregado*).  
+
+### 5.4. Crear Usuario  
+Para poder disfrutar de todas las funcionalidades de la plataforma Ferrepoco como Cliente, primero debes registrarte creando una cuenta personal.  
+
+1. **Accede a la página de inicio de sesión:**  
+   Haz clic en la opción **“Registrarse”**, ubicada en la parte inferior de la ventana de inicio de sesión.  
+
+2. **Completa el formulario de registro:**  
+   - **Nombre y Apellido:** Ingresa tus datos personales para identificar tu cuenta.  
+   - **Correo Electrónico:** Este será tu identificador único en la plataforma y también el canal de comunicación para notificaciones y recuperación de contraseña.  
+   - **Contraseña:** Define una contraseña segura que contenga al menos 8 caracteres. Se recomienda incluir letras mayúsculas, minúsculas, números y caracteres especiales.  
+
+3. **Confirmar Contraseña:**  
+   Repite la misma contraseña para evitar errores de escritura.  
+
+4. **Aceptar Términos y Condiciones:**  
+   Antes de continuar, deberás marcar la casilla que indica que aceptas los términos de uso y la política de privacidad de la plataforma.  
+
+5. **Finalizar Registro:**  
+   Haz clic en el botón **“Crear Cuenta”**.  
+   El sistema validará la información ingresada y, si todo está correcto, tu usuario será creado exitosamente.  
+
+6. **Confirmación:**  
+   Recibirás un correo electrónico de bienvenida con un enlace de verificación. Una vez verificado, podrás iniciar sesión y acceder a tu perfil de Cliente para empezar a navegar por el catálogo y realizar compras.  
 
 ---
 
