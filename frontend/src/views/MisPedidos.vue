@@ -12,7 +12,12 @@
             <div class="text-sm text-neutral-600">Estado: {{ order.status || 'Desconocido' }}</div>
           </div>
           <div class="flex gap-2 mt-2 md:mt-0">
-            <a :href="whatsappLink(order.id)" target="_blank" class="px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700">Retornar</a>
+            <a
+              :href="whatsappLink(order.id)"
+              target="_blank"
+              class="px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700"
+              @click.prevent="confirmReturn(order.id)"
+            >Reembolso</a>
           </div>
         </div>
       </div>
@@ -34,6 +39,12 @@ const loading = ref(true);
 
 function whatsappLink(orderId) {
   return `https://wa.me/584244252755?text=quiero%20hacer%20un%20retorno%20con%20el%20pedido%20de%20id:%20${orderId}`;
+}
+
+function confirmReturn(orderId) {
+  if (window.confirm('¿Estas seguro que quieres hacer un reembolso?')) {
+    window.open(whatsappLink(orderId), '_blank');
+  }
 }
 
 onMounted(async () => {
