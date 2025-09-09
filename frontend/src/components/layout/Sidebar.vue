@@ -1,13 +1,24 @@
 <template>
-  <aside v-if="showSidebar" class="w-64 bg-gradient-to-b from-cyan-900 to-cyan-800 text-white flex-shrink-0 shadow-xl relative">
-    <div class="p-6 border-b border-cyan-700">
-      <div class="flex items-center space-x-3">
-        <img src="/iconoferre.png" alt="Ferrepoco" class="w-8 h-8 rounded-lg object-cover" />
-        <h2 class="text-lg font-heading font-semibold">Navegación</h2>
+  <!-- Botón hamburguesa solo en móvil -->
+  <button @click="sidebarOpen = true" class="md:hidden fixed top-4 left-4 z-50 bg-cyan-900 text-white p-2 rounded-full shadow-lg focus:outline-none" v-if="showSidebar && !sidebarOpen">
+    <!-- Flechita hacia la derecha -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+  </button>
+
+  <transition name="sidebar-fade">
+    <aside v-if="showSidebar && (sidebarOpen || isDesktop)" class="fixed md:static top-0 left-0 h-full w-64 bg-gradient-to-b from-cyan-900 to-cyan-800 text-white flex-shrink-0 shadow-xl z-40 md:z-auto transition-transform duration-300" :class="{ '-translate-x-full': !sidebarOpen && !isDesktop, 'translate-x-0': sidebarOpen || isDesktop }">
+      <!-- Botón cerrar solo en móvil -->
+      <button @click="sidebarOpen = false" class="md:hidden absolute top-4 right-4 bg-cyan-800 text-white p-2 rounded-full focus:outline-none">
+        <!-- Flechita hacia la izquierda -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+      </button>
+      <div class="p-6 border-b border-cyan-700">
+        <div class="flex items-center space-x-3">
+          <img src="/iconoferre.png" alt="Ferrepoco" class="w-8 h-8 rounded-lg object-cover" />
+          <h2 class="text-lg font-heading font-semibold">Navegación</h2>
+        </div>
       </div>
-    </div>
-    
-  <nav class="mt-6 px-4 pb-16 overflow-y-auto">
+      <nav class="mt-6 px-4 pb-16 overflow-y-auto">
       <div class="space-y-2">
         <!-- Dashboard Links -->
         <router-link 
@@ -86,28 +97,47 @@
           <span class="font-medium">Usuarios</span>
         </router-link>
       </div>
-    </nav>
-    
-  <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-cyan-700 bg-cyan-900/80 backdrop-blur">
-      <div class="flex items-center space-x-3 text-sm">
-        <div class="w-2 h-2 bg-green-400 rounded-full"></div>
-        <span class="text-cyan-200">Sistema Activo</span>
+      </nav>
+      <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-cyan-700 bg-cyan-900/80 backdrop-blur">
+        <div class="flex items-center space-x-3 text-sm">
+          <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+          <span class="text-cyan-200">Sistema Activo</span>
+        </div>
       </div>
-    </div>
-  </aside>
+    </aside>
+  </transition>
 </template>
 
 <script setup>
 import { useAuthStore } from '../../stores/auth';
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, ref } from 'vue';
 
 const auth = useAuthStore();
+onMounted(() => { auth.initializeAuth(); });
+const showSidebar = computed(() => auth.userRole !== 'client');
 
-// Initialize auth on component mount instead of conditionally
+// Responsive sidebar state
+
+const sidebarOpen = ref(window.innerWidth >= 768);
+const isDesktop = ref(window.innerWidth >= 768);
+
+function handleResize() {
+  isDesktop.value = window.innerWidth >= 768;
+  if (isDesktop.value) {
+    sidebarOpen.value = true;
+  } else {
+    sidebarOpen.value = false;
+  }
+}
+
 onMounted(() => {
-  auth.initializeAuth();
+  window.addEventListener('resize', handleResize);
 });
 
-// Show sidebar only if NOT a client
-const showSidebar = computed(() => auth.userRole !== 'client');
+// Limpieza del event listener
+import { onUnmounted } from 'vue';
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
+});
+
 </script>

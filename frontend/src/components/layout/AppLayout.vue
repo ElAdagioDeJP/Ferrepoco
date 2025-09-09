@@ -2,17 +2,19 @@
   <div class="flex h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
     <Sidebar />
     <div class="flex-1 flex flex-col overflow-hidden min-w-0">
-  <Navbar />
+      <Navbar />
       <main class="flex-1 min-h-0 overflow-x-hidden overflow-y-auto bg-neutral-50">
         <div class="container mx-auto px-6 py-8">
           <router-view />
         </div>
       </main>
       <Footer />
-  <Carrito :open="cartOpen" @close="cartOpen=false" @checked-out="onCheckedOut" />
+      <Carrito :open="cartOpen" @close="cartOpen=false" @checked-out="onCheckedOut" />
     </div>
   </div>
-  
+
+
+
 </template>
 
 <script setup>
@@ -31,3 +33,17 @@ onMounted(() => { window.addEventListener('open-cart', onOpenCart) })
 onUnmounted(() => { window.removeEventListener('open-cart', onOpenCart) })
 </script>
 
+<style>
+  /* Sidebar transition */
+.sidebar-fade-enter-active, .sidebar-fade-leave-active {
+  transition: opacity 0.2s, transform 0.2s;
+}
+.sidebar-fade-enter-from, .sidebar-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+.sidebar-fade-enter-to, .sidebar-fade-leave-from {
+  opacity: 1;
+  transform: translateX(0);
+}
+</style>
