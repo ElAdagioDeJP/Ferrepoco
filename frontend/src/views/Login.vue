@@ -19,10 +19,22 @@
           <div class="mt-6 text-center space-y-2">
             <router-link to="/forgot-password" class="text-sm text-cyan-700 hover:underline">¿Olvidaste tu contraseña?</router-link>
           </div>
+          <div class="mt-6 text-center space-y-2">
+            <a href="https://github.com/ElAdagioDeJP/Ferrepoco/blob/unificado/doc.md" target="_blank" class="text-primary underline">
+              Manual de Usuario
+            </a>
+          </div>
+          <div class="mt-6 text-center space-y-2">
+          <a href="/terminos" target="_blank" class="text-primary underline">términos y condiciones</a>
+          </div>
+          <div class="mt-6 text-center space-y-2">
+          <a href="/faqs" target="_blank" class="text-primary underline">Preguntas frecuentes</a>
         </div>
+
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script setup>
