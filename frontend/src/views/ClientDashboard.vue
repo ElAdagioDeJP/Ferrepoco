@@ -150,8 +150,11 @@
         </div>
       </div>
 
-      <!-- Promos -->
+      <!-- ChatBot Gemini -->
       <section class="mb-12">
+        <div class="max-w-lg mx-auto mb-8">
+          <ChatBotGemini />
+        </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="bg-gradient-to-r from-cyan-50 to-cyan-100 rounded-xl overflow-hidden relative shadow-lg border border-cyan-200">
             <div class="p-6 md:p-8 relative z-10">
@@ -327,6 +330,8 @@ async function submitAddProduct() {
     saving.value = false
   }
 }
+
+import ChatBotGemini from '@/components/ChatBotGemini.vue';
 </script>
 
 <style scoped>
