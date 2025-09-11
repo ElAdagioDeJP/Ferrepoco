@@ -6,12 +6,16 @@ const db = require('../src/db');
 
 // Gemini API para fallback
 const axios = require('axios');
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent';
 const GEMINI_API_KEY = process.env.GOOGLE_API_KEY;
 
 // Analizador simple de preguntas (puedes mejorar esto luego)
 async function responderDesdeDB(pregunta) {
     const lower = pregunta.toLowerCase();
+    // Horarios de atención
+    if (lower.includes('horario') || lower.includes('horarios') || lower.includes('a qué hora abren') || lower.includes('a qué hora cierran') || lower.includes('a que hora abren') || lower.includes('a que hora cierran')) {
+        return 'Nuestros horarios son de 8 am a 6 pm';
+    }
     // Saludos y despedidas
     const saludos = [
         'hola', 'buenos días', 'buenas tardes', 'buenas noches', 'saludos', 'buen día', 'buenas', 'holi', 'holis', 'holaa', 'holaaa', 'qué tal', 'que tal', 'saludo', 'saludito', 'saluditos', 'hello', 'hi', 'hey'
@@ -148,10 +152,12 @@ async function responderDesdeDB(pregunta) {
 
 async function responderConGemini(pregunta) {
     try {
+        const prompt = 'Responde de forma clara y útil para un cliente de ferretería.' + pregunta;
         const res = await axios.post(
             `${GEMINI_API_URL}?key=${GEMINI_API_KEY}`,
             {
-                contents: [{ role: 'user', parts: [{ text: pregunta }] }]
+                contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                generationConfig: { maxOutputTokens: 100 }
             },
             {
                 headers: { 'Content-Type': 'application/json' }
@@ -159,10 +165,10 @@ async function responderConGemini(pregunta) {
         );
         return (
             res.data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-            'No se pudo obtener respuesta del bot.'
+            'Lo siento, estoy entrenada solamente para contestar preguntas sobre FERREPOCO C,A'
         );
     } catch (e) {
-        return 'Error al conectar con el bot.';
+        return 'Lo siento, estoy entrenada solamente para contestar preguntas sobre FERREPOCO C,A';
     }
 }
 

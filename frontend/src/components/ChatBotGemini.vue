@@ -16,6 +16,9 @@
               <span v-if="msg.role === 'user'">{{ msg.content }}</span>
               <span v-else v-html="renderMarkdown(msg.content)"></span>
             </div>
+            <div v-if="loading" class="bot-msg typing-msg">
+              <span>Pocobot está escribiendo...</span>
+            </div>
           </div>
           <form @submit.prevent="sendMessage" class="chat-input">
             <input v-model="input" type="text" placeholder="Escribe tu pregunta..." :disabled="loading" />
@@ -71,6 +74,15 @@ async function sendMessage() {
 </script>
 
 <style scoped>
+  .typing-msg {
+    color: #059669;
+    font-style: italic;
+    margin-bottom: 8px;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink {
+    50% { opacity: 0.5; }
+  }
   .chatbot-fab {
     position: fixed;
     right: 32px;
