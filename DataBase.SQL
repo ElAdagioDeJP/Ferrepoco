@@ -22,6 +22,11 @@ CREATE TABLE usuarios (
     correo_electronico VARCHAR(255) UNIQUE NOT NULL,
     contrasena VARCHAR(255) NOT NULL,
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    -- URL o ruta de la imagen del usuario (un usuario solo puede tener una imagen)
+    imagen_url VARCHAR(255) NULL,
+>>>>>>> unificado
 =======
     -- URL o ruta de la imagen del usuario (un usuario solo puede tener una imagen)
     imagen_url VARCHAR(255) NULL,
@@ -52,7 +57,10 @@ CREATE TABLE productos (
 );
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> unificado
 -- Tabla para las imágenes de los productos (máximo 10 por producto)
 CREATE TABLE imagenes_producto (
     id_imagen INT PRIMARY KEY AUTO_INCREMENT,
@@ -81,6 +89,9 @@ BEGIN
 END //
 DELIMITER ;
 
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
 -- Tabla para la gestión del inventario
 CREATE TABLE inventario (

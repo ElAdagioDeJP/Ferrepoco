@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid'); // Para generar IDs únicos
+<<<<<<< HEAD
 
 const dataPath = path.join(__dirname, '..', 'data');
 
@@ -15,6 +16,15 @@ const readData = (fileName) => {
         return []; // Retorna un array vacío si el archivo no existe o hay un error
 =======
 function ensureDataDir() {
+=======
+const { USE_DB } = require('../src/db');
+
+const dataPath = path.join(__dirname, '..', 'data');
+
+function ensureDataDir() {
+    // Cuando trabajamos con base de datos, no crear la carpeta "data"
+    if (USE_DB) return;
+>>>>>>> unificado
     try {
         if (!fs.existsSync(dataPath)) {
             fs.mkdirSync(dataPath, { recursive: true });
@@ -26,6 +36,13 @@ function ensureDataDir() {
 
 const readData = (fileName) => {
     try {
+<<<<<<< HEAD
+=======
+        if (USE_DB) {
+            // En modo DB, no leer ni crear archivos; devolver arreglo vacío
+            return [];
+        }
+>>>>>>> unificado
         ensureDataDir();
         const filePath = path.join(dataPath, fileName);
         if (!fs.existsSync(filePath)) {
@@ -37,6 +54,9 @@ const readData = (fileName) => {
     } catch (error) {
         console.error(`Error reading ${fileName}:`, error.message);
         return [];
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
     }
 };
@@ -44,7 +64,15 @@ const readData = (fileName) => {
 const writeData = (fileName, data) => {
     try {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+        ensureDataDir();
+>>>>>>> unificado
+=======
+        if (USE_DB) {
+            // En modo DB, no escribir archivos ni crear carpeta
+            return;
+        }
         ensureDataDir();
 >>>>>>> unificado
         const filePath = path.join(dataPath, fileName);

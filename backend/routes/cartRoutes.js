@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { readData, writeData } = require('../utils/dataHandler');
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 // Get current user's cart
 router.get('/', (req, res) => {
@@ -17,6 +18,24 @@ router.get('/', async (req, res) => {
 	const userId = req.user?.id;
 	const carts = readData('carts.json') || [];
 	let cart = carts.find(c => c.userId === userId) || { userId, items: [] };
+=======
+const { USE_DB, query } = require('../src/db');
+
+// En modo DB, usaremos un carrito en memoria por sesión de servidor (por usuario)
+// para evitar cualquier escritura en disco.
+const memoryCarts = new Map(); // key: userId -> { userId, items: [{productId, quantity}] }
+
+// Get current user's cart
+router.get('/', async (req, res) => {
+	const userId = req.user?.id;
+	let cart;
+	if (USE_DB) {
+		cart = memoryCarts.get(userId) || { userId, items: [] };
+	} else {
+		const carts = readData('carts.json') || [];
+		cart = carts.find(c => c.userId === userId) || { userId, items: [] };
+	}
+>>>>>>> unificado
 	// Normalize and merge duplicates by productId
 	const map = new Map();
 	for (const it of cart.items || []) {
@@ -28,6 +47,7 @@ router.get('/', async (req, res) => {
 	const normalizedItems = Array.from(map.entries()).map(([pid, qty]) => ({ productId: pid, quantity: qty }));
 	if ((cart.items || []).length !== normalizedItems.length) {
 		cart.items = normalizedItems;
+<<<<<<< HEAD
 		// persist cleanup
 		const idx = carts.findIndex(c => c.userId === userId);
 		if (idx >= 0) carts[idx] = cart; else carts.push(cart);
@@ -35,6 +55,19 @@ router.get('/', async (req, res) => {
 	}
 	try {
 		if (USE_DB && cart.items.length) {
+=======
+		if (USE_DB) {
+			memoryCarts.set(userId, cart);
+		} else {
+			const carts = readData('carts.json') || [];
+			const idx = carts.findIndex(c => c.userId === userId);
+			if (idx >= 0) carts[idx] = cart; else carts.push(cart);
+			writeData('carts.json', carts);
+		}
+	}
+	try {
+	if (USE_DB && cart.items.length) {
+>>>>>>> unificado
 			const ids = cart.items.map(i => Number(i.productId)).filter(Boolean);
 			if (ids.length) {
 				const placeholders = ids.map(() => '?').join(',');
@@ -86,6 +119,9 @@ router.get('/', async (req, res) => {
 		console.error(e);
 		return res.json(cart); // still return basic cart if enrichment fails
 	}
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
 });
 
@@ -94,6 +130,7 @@ router.post('/items', (req, res) => {
 	const userId = req.user?.id;
 	const { productId, quantity } = req.body;
 	if (!productId || !quantity || quantity < 1) return res.status(400).json({ message: 'productId and quantity >= 1 required' });
+<<<<<<< HEAD
 	let carts = readData('carts.json') || [];
 	let cart = carts.find(c => c.userId === userId);
 	if (!cart) {
@@ -114,12 +151,33 @@ router.post('/items', (req, res) => {
 >>>>>>> unificado
 	writeData('carts.json', carts);
 	res.status(201).json(cart);
+=======
+
+	if (USE_DB) {
+		const pid = String(productId);
+		let cart = memoryCarts.get(userId) || { userId, items: [] };
+		const idx = cart.items.findIndex(i => String(i.productId) === pid);
+		if (idx >= 0) cart.items[idx].quantity = quantity; else cart.items.push({ productId: pid, quantity });
+		memoryCarts.set(userId, cart);
+		return res.status(201).json(cart);
+	}
+
+	let carts = readData('carts.json') || [];
+	let cart = carts.find(c => c.userId === userId);
+	if (!cart) { cart = { userId, items: [] }; carts.push(cart); }
+	const pid = String(productId);
+	const idx = cart.items.findIndex(i => String(i.productId) === pid);
+	if (idx >= 0) cart.items[idx].quantity = quantity; else cart.items.push({ productId: pid, quantity });
+	writeData('carts.json', carts);
+	return res.status(201).json(cart);
+>>>>>>> unificado
 });
 
 // Remove item
 router.delete('/items/:productId', (req, res) => {
 	const userId = req.user?.id;
 	const { productId } = req.params;
+<<<<<<< HEAD
 	let carts = readData('carts.json') || [];
 	const cart = carts.find(c => c.userId === userId);
 	if (!cart) return res.status(404).json({ message: 'Cart not found' });
@@ -131,16 +189,45 @@ router.delete('/items/:productId', (req, res) => {
 >>>>>>> unificado
 	writeData('carts.json', carts);
 	res.json(cart);
+=======
+	if (USE_DB) {
+		const cart = memoryCarts.get(userId) || { userId, items: [] };
+		const pid = String(productId);
+		cart.items = (cart.items || []).filter(i => String(i.productId) !== pid);
+		memoryCarts.set(userId, cart);
+		return res.json(cart);
+	}
+	let carts = readData('carts.json') || [];
+	const cart = carts.find(c => c.userId === userId);
+	if (!cart) return res.status(404).json({ message: 'Cart not found' });
+	const pid = String(productId);
+	cart.items = cart.items.filter(i => String(i.productId) !== pid);
+	writeData('carts.json', carts);
+	return res.json(cart);
+>>>>>>> unificado
 });
 
 // Clear cart
 router.delete('/', (req, res) => {
 	const userId = req.user?.id;
+<<<<<<< HEAD
+=======
+	if (USE_DB) {
+		const cart = memoryCarts.get(userId) || { userId, items: [] };
+		cart.items = [];
+		memoryCarts.set(userId, cart);
+		return res.json({ message: 'Cart cleared' });
+	}
+>>>>>>> unificado
 	let carts = readData('carts.json') || [];
 	const cart = carts.find(c => c.userId === userId);
 	if (cart) cart.items = [];
 	writeData('carts.json', carts);
+<<<<<<< HEAD
 	res.json({ message: 'Cart cleared' });
+=======
+	return res.json({ message: 'Cart cleared' });
+>>>>>>> unificado
 });
 
 module.exports = router;

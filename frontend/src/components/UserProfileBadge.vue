@@ -2,6 +2,7 @@
   <div class="relative" v-if="isAuthenticated">
     <details class="group">
 <<<<<<< HEAD
+<<<<<<< HEAD
       <summary class="list-none cursor-pointer">
         <div class="flex items-center space-x-2">
           <div class="h-8 w-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center border border-primary-200">
@@ -24,6 +25,8 @@
           <div class="border-t border-gray-100 my-1"></div>
           <button @click="logout" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Cerrar sesión</button>
 =======
+=======
+>>>>>>> unificado
       <summary class="list-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring rounded-lg">
         <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
           <div class="relative">
@@ -70,6 +73,20 @@
           </router-link>
           
           <router-link 
+<<<<<<< HEAD
+=======
+            v-if="userRole === 'client'" 
+            to="/mis-pedidos" 
+            class="flex items-center gap-3 px-4 py-3 text-sm text-popover-foreground hover:bg-muted/50 transition-colors"
+          >
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"/>
+            </svg>
+            Mis Pedidos
+          </router-link>
+          
+          <router-link 
+>>>>>>> unificado
             v-if="userRole === 'employee'" 
             to="/employee" 
             class="flex items-center gap-3 px-4 py-3 text-sm text-popover-foreground hover:bg-muted/50 transition-colors"
@@ -92,6 +109,19 @@
             Panel Admin
           </router-link>
           
+<<<<<<< HEAD
+=======
+          <router-link 
+            to="/faqs" 
+            class="flex items-center gap-3 px-4 py-3 text-sm text-popover-foreground hover:bg-muted/50 transition-colors"
+          >
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 17l4 4m0 0l4-4m-4 4V3"/>
+            </svg>
+            Preguntas Frecuentes
+          </router-link>
+          
+>>>>>>> unificado
           <div class="border-t border-border my-2"></div>
           
           <button 
@@ -103,15 +133,21 @@
             </svg>
             Cerrar sesión
           </button>
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
         </div>
       </div>
     </details>
   </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
   <div v-else>
     <RouterLink to="/" class="text-primary-600 hover:text-primary-700">Iniciar sesión</RouterLink>
 =======
+=======
+>>>>>>> unificado
   
   <div v-else>
     <router-link 
@@ -123,6 +159,9 @@
       </svg>
       Iniciar sesión
     </router-link>
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
   </div>
 </template>
@@ -134,14 +173,20 @@ import { useAuthStore } from '../stores/auth';
 
 const auth = useAuthStore();
 <<<<<<< HEAD
+<<<<<<< HEAD
 auth.initializeAuth();
 const router = useRouter();
 const { isAuthenticated, displayName, userRole, roleLetter } = storeToRefs(auth);
 =======
+=======
+>>>>>>> unificado
 const router = useRouter();
 const { isAuthenticated, displayName, userRole, roleLetter, avatarUrl } = storeToRefs(auth);
 
 auth.initializeAuth();
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
 
 function logout() {
@@ -150,9 +195,12 @@ function logout() {
 }
 </script>
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 <style scoped>
 .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
 </style>
+=======
+>>>>>>> unificado
 =======
 >>>>>>> unificado

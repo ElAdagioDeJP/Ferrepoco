@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { useAuthStore } from '../stores/auth';
@@ -121,13 +122,21 @@ onMounted(fetchUsers);
 =======
 <template>
    Complete redesign with modern styling and better user experience 
+=======
+<template>
+   
+>>>>>>> unificado
   <div class="max-w-6xl mx-auto p-6">
     <div class="mb-8">
       <h1 class="text-3xl font-heading font-bold text-neutral-900">Gestión de Usuarios</h1>
       <p class="text-neutral-600 font-body mt-1">Solo administradores pueden crear empleados y administradores</p>
     </div>
 
+<<<<<<< HEAD
      Enhanced user creation form with better styling 
+=======
+    
+>>>>>>> unificado
     <div class="bg-white rounded-xl shadow-sm border border-neutral-200 p-6 mb-8">
       <div class="flex items-center mb-6">
         <div class="w-10 h-10 bg-gradient-to-br from-cyan-100 to-cyan-200 rounded-lg flex items-center justify-center mr-3">
@@ -221,7 +230,11 @@ onMounted(fetchUsers);
       </form>
     </div>
 
+<<<<<<< HEAD
      Enhanced users table with better styling and visual hierarchy 
+=======
+     
+>>>>>>> unificado
     <div class="bg-white rounded-xl shadow-sm border border-neutral-200 overflow-hidden">
       <div class="px-6 py-4 border-b border-neutral-200 bg-neutral-50 flex items-center justify-between">
         <h2 class="text-lg font-heading font-semibold text-neutral-900">Lista de Usuarios</h2>
@@ -266,6 +279,7 @@ onMounted(fetchUsers);
                 </span>
               </td>
               <td class="px-6 py-4">
+<<<<<<< HEAD
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 font-body">
                   <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
                   Activo
@@ -276,6 +290,22 @@ onMounted(fetchUsers);
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                   </svg>
+=======
+                <span
+                  class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium font-body"
+                  :class="u.activo !== false ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
+                >
+                  <div
+                    class="w-2 h-2 rounded-full mr-2"
+                    :class="u.activo !== false ? 'bg-green-500' : 'bg-red-500'"
+                  ></div>
+                  {{ u.activo !== false ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <button @click="disableUser(u.id)" class="px-3 py-2 text-red-700 border border-red-200 hover:bg-red-50 rounded-lg transition-colors text-sm font-body">
+                  Deshabilitar
+>>>>>>> unificado
                 </button>
               </td>
             </tr>
@@ -374,6 +404,7 @@ const createUser = async () => {
   }
 }
 
+<<<<<<< HEAD
 // deshabilitar usuario
 const deleteUser = async (userId) => {
   if (!confirm('¿Estás seguro de que quieres deshabilitar este usuario?')) return
@@ -385,6 +416,18 @@ const deleteUser = async (userId) => {
   const maxPage = Math.max(1, Math.ceil(newTotal / pageSize.value))
   if (page.value > maxPage) page.value = maxPage
   await fetchUsers() // Recargar lista
+=======
+// deshabilitar usuario: cambia su contraseña a una aleatoria para bloquear acceso
+const disableUser = async (userId) => {
+  if (!confirm('¿Estás seguro de que quieres deshabilitar este usuario?')) return
+  try {
+    await apiClient.post(`/users/${userId}/disable`)
+  // Reflejar inmediatamente el estado inactivo en la UI
+  const idx = users.value.findIndex(u => String(u.id) === String(userId))
+  if (idx !== -1) users.value[idx].activo = false
+  // Refrescar desde el servidor por consistencia
+  await fetchUsers()
+>>>>>>> unificado
   } catch (err) {
     error.value = 'Error al deshabilitar usuario'
     console.error(err)
@@ -416,5 +459,8 @@ onMounted(() => {
 .font-body {
   font-family: 'Open Sans', sans-serif;
 }
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
 </style>

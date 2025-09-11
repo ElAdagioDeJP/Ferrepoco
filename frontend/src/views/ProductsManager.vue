@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 <script setup>
 import { onMounted, reactive, ref, computed } from 'vue';
 import apiClient from '../api/apiClient';
@@ -204,6 +205,8 @@ onMounted(async () => {
                   <button v-if="canAdjustStock" class="px-2 py-1 text-xs rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100" @click="resetStockForm(p); showStockModal = true">Stock +/-</button>
                   <button v-if="isAdmin" class="px-2 py-1 text-xs rounded-md bg-rose-50 text-rose-700 hover:bg-rose-100" @click="confirmDelete(p.id)">Eliminar</button>
 =======
+=======
+>>>>>>> unificado
 <template>
   <div class="max-w-7xl mx-auto p-6">
     <div class="flex items-center justify-between mb-8">
@@ -211,6 +214,7 @@ onMounted(async () => {
         <h1 class="text-3xl font-heading font-bold text-neutral-900">Gestión de Productos</h1>
         <p class="text-neutral-600 font-body mt-1">Administra catálogo, stock y alertas de inventario</p>
       </div>
+<<<<<<< HEAD
       <div class="flex gap-3">
         <RouterLink to="/" class="px-4 py-2 rounded-lg border border-neutral-300 text-neutral-700 hover:bg-neutral-50 transition-colors font-body">
           <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -225,6 +229,9 @@ onMounted(async () => {
           Nuevo producto
         </button>
       </div>
+=======
+      
+>>>>>>> unificado
     </div>
     
     <div class="bg-white rounded-xl shadow-sm border border-neutral-200 p-6 mb-8">
@@ -313,12 +320,16 @@ onMounted(async () => {
                       </svg>
                     </button>
                   </div>
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
         <div v-if="loading" class="p-4 text-sm text-gray-500">Cargando...</div>
         <div v-if="error" class="p-4 text-sm text-red-600">{{ error }}</div>
@@ -470,6 +481,8 @@ onMounted(async () => {
 <style scoped>
 .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
 =======
+=======
+>>>>>>> unificado
         <div v-if="loading" class="p-6 text-center">
           <div class="inline-flex items-center text-neutral-600 font-body">
             <svg class="animate-spin -ml-1 mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24">
@@ -491,7 +504,11 @@ onMounted(async () => {
 
   <div class="space-y-6">
         <div class="bg-white rounded-xl shadow-sm border border-neutral-200 p-6" v-if="isAdmin">
+<<<<<<< HEAD
           <h2 class="font-heading font-semibold text-lg text-neutral-900 mb-4">{{ form.id ? 'Editar producto' : 'Nuevo producto' }}</h2>
+=======
+          <h2 class="font-heading font-semibold text-lg text-neutral-900 mb-4">{{ form.id ? 'Editar producto' : 'Info. de Producto' }}</h2>
+>>>>>>> unificado
           <form class="space-y-4" @submit.prevent="form.id ? updateProduct() : createProduct()">
             <div>
               <label for="pm-name" class="block text-sm font-medium text-neutral-700 mb-2 font-body">Nombre del producto</label>
@@ -517,7 +534,11 @@ onMounted(async () => {
             </div>
             <div class="flex gap-3 pt-2">
               <button type="submit" class="flex-1 px-4 py-3 rounded-lg bg-cyan-800 hover:bg-cyan-700 text-white font-medium transition-colors font-body">
+<<<<<<< HEAD
                 {{ form.id ? 'Guardar cambios' : 'Crear producto' }}
+=======
+                {{ form.id ? 'Guardar cambios' : 'Crear/Editar producto' }}
+>>>>>>> unificado
               </button>
               <button type="button" @click="resetForm(); selected=null" class="px-4 py-3 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-medium transition-colors font-body">
                 Limpiar
@@ -637,7 +658,11 @@ const loadAlerts = async () => {
   try {
     const response = await apiClient.get('/products');
     const allProducts = response.data;
+<<<<<<< HEAD
     const lowStockProducts = allProducts.filter(p => p.stock <= 50);
+=======
+    const lowStockProducts = allProducts.filter(p => p.stock <= 10);
+>>>>>>> unificado
     console.log('Low stock products:', lowStockProducts);
     alerts.value = lowStockProducts.map(p => ({
       productId: p.id,
@@ -780,5 +805,8 @@ onMounted(() => {
 .font-body {
   font-family: 'Open Sans', sans-serif;
 }
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
 </style>

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import router from './router'
@@ -12,6 +13,8 @@ app.use(router)
 
 app.mount('#app')
 =======
+=======
+>>>>>>> unificado
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import App from "./App.vue";
@@ -30,4 +33,7 @@ const app = createApp(App);
 app.use(pinia);
 app.use(router);
 app.mount("#app");
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado

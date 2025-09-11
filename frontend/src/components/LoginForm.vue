@@ -1,5 +1,6 @@
 <template>
 <<<<<<< HEAD
+<<<<<<< HEAD
   <form @submit.prevent="handleSubmit">
     <div>
       <label for="username">Usuario (email):</label>
@@ -16,6 +17,8 @@
 
 <script>
 =======
+=======
+>>>>>>> unificado
   <div class="min-h-screen bg-gradient-to-br from-cyan-50 via-neutral-50 to-orange-50 flex items-center justify-center p-4">
     <div class="w-full max-w-md">
       <div class="bg-white border border-neutral-200 rounded-xl shadow-lg p-8">
@@ -126,12 +129,16 @@
 </template>
 
 <script setup>
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
 import { ref } from 'vue';
 import apiClient from '../api/apiClient';
 import { useAuthStore } from '../stores/auth';
 import { useRouter } from 'vue-router';
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 export default {
   name: 'LoginForm',
@@ -177,6 +184,8 @@ export default {
       handleSubmit
     };
 =======
+=======
+>>>>>>> unificado
 const username = ref('');
 const password = ref('');
 const errorMessage = ref('');
@@ -212,12 +221,16 @@ const handleSubmit = async () => {
     console.error('Login error:', error);
   } finally {
     loading.value = false;
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
   }
 };
 </script>
 
 <style scoped>
+<<<<<<< HEAD
 <<<<<<< HEAD
 form {
   margin: 20px auto;
@@ -258,12 +271,17 @@ button:hover {
   color: red;
   margin-top: 10px;
 =======
+=======
+>>>>>>> unificado
 .font-heading {
   font-family: 'Montserrat', sans-serif;
 }
 
 .font-body {
   font-family: 'Open Sans', sans-serif;
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
 }
 </style>

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { readData, writeData, uuidv4, updateProductStock, findProducts } = require('../utils/dataHandler');
 <<<<<<< HEAD
+<<<<<<< HEAD
 const { authorize } = require('../src/middleware/auth');
 
 // Obtener todos los productos (accesible por todos)
@@ -19,6 +20,8 @@ router.get('/:id', (req, res) => {
     } else {
         res.status(404).json({ message: 'Product not found' });
 =======
+=======
+>>>>>>> unificado
 const { authenticate, authorize } = require('../src/middleware/auth');
 const { USE_DB, query } = require('../src/db');
 
@@ -150,11 +153,15 @@ router.get('/:id', async (req, res) => {
     } catch (e) {
         console.error(e);
         return res.status(500).json({ message: 'server error' });
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
     }
 });
 
 // Añadir producto (solo Admin)
+<<<<<<< HEAD
 <<<<<<< HEAD
 router.post('/', authorize(['admin']), (req, res) => {
     const { name, description, price, stock, category } = req.body;
@@ -198,6 +205,8 @@ router.delete('/:id', authorize(['admin']), (req, res) => {
     writeData('products.json', products);
     res.json({ message: 'Product deleted' });
 =======
+=======
+>>>>>>> unificado
 router.post('/', authenticate, authorize(['admin']), async (req, res) => {
     try {
         const { name, description = '', price, stock = 0, category } = req.body;
@@ -306,6 +315,9 @@ router.delete('/:id', authenticate, authorize(['admin']), async (req, res) => {
         console.error(e);
         return res.status(500).json({ message: 'server error' });
     }
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
 });
 

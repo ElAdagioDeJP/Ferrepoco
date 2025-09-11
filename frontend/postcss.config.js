@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 export default {
   plugins: {
     '@tailwindcss/postcss': {},
@@ -6,10 +7,16 @@ export default {
   },
 }
 =======
+=======
+>>>>>>> unificado
 module.exports = {
   plugins: {
     tailwindcss: {},
     autoprefixer: {},
   },
+<<<<<<< HEAD
+}
+>>>>>>> unificado
+=======
 }
 >>>>>>> unificado

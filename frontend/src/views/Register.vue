@@ -1,5 +1,8 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> unificado
 <template>
   <div class="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
     <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-0 bg-card border border-border rounded-2xl shadow-xl overflow-hidden">
@@ -54,7 +57,10 @@
           </ul>
         </div>
       </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> unificado
       <div class="p-6 sm:p-8 lg:p-10 bg-background">
         <div class="mb-6">
           <h2 class="font-heading text-2xl font-bold text-foreground lg:hidden">Crear cuenta de cliente</h2>
@@ -123,7 +129,10 @@
                 </ul>
               </div>
             </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> unificado
             <div>
               <label for="reg-pass2" class="block text-sm font-medium text-foreground mb-1">Confirmar contraseña</label>
               <div class="relative">
@@ -141,15 +150,26 @@
           </div>
 
           <div v-if="error" class="rounded-lg border border-destructive/20 bg-destructive/10 text-destructive px-4 py-2 text-sm">{{ error }}</div>
+<<<<<<< HEAD
 
           <button :disabled="loading || !canSubmit" type="submit" class="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-5 py-3 shadow-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+=======
+          <div class="flex items-center mb-3">
+            <input id="terms" type="checkbox" v-model="acceptedTerms" class="mr-2" />
+            <label for="terms" class="text-sm text-foreground">Acepto los <a href="/terminos" target="_blank" class="text-primary underline">términos y condiciones</a> *</label>
+          </div>
+          <button :disabled="loading || !canSubmit || !acceptedTerms" type="submit" class="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-5 py-3 shadow-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+>>>>>>> unificado
             <svg v-if="!loading" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
             </svg>
             <svg v-else class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             {{ loading ? 'Creando cuenta...' : 'Crear cuenta' }}
           </button>
+<<<<<<< HEAD
 
+=======
+>>>>>>> unificado
           <p class="text-center text-sm text-muted-foreground">
             ¿Ya tienes cuenta?
             <RouterLink to="/" class="text-primary hover:text-primary/80 font-medium transition-colors">Inicia sesión</RouterLink>
@@ -160,6 +180,9 @@
   </div>
 </template>
 
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
 <script setup>
 import { ref, computed } from 'vue';
@@ -168,7 +191,10 @@ import apiClient from '../api/apiClient';
 import { useAuthStore } from '../stores/auth';
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Estado del formulario
+=======
+>>>>>>> unificado
 =======
 >>>>>>> unificado
 const form = ref({ nombre: '', apellido: '', correo_electronico: '', password: '', confirm: '' });
@@ -176,12 +202,19 @@ const loading = ref(false);
 const error = ref('');
 const showPass = ref(false);
 const showPass2 = ref(false);
+<<<<<<< HEAD
 const router = useRouter();
 const auth = useAuthStore();
 
 <<<<<<< HEAD
 // Validaciones básicas
 =======
+>>>>>>> unificado
+=======
+const acceptedTerms = ref(false);
+const router = useRouter();
+const auth = useAuthStore();
+
 >>>>>>> unificado
 const passwordChecks = computed(() => {
   const v = form.value.password || '';
@@ -202,7 +235,11 @@ const strengthLabel = computed(() => {
 const strengthColor = computed(() => {
   const s = strengthScore.value;
 <<<<<<< HEAD
+<<<<<<< HEAD
   return s <= 1 ? 'bg-red-500' : s === 2 ? 'bg-amber-500' : s === 3 ? 'bg-yellow-500' : s === 4 ? 'bg-emerald-500' : 'bg-emerald-600';
+=======
+  return s <= 1 ? 'bg-destructive' : s === 2 ? 'bg-secondary' : s === 3 ? 'bg-accent' : s === 4 ? 'bg-primary' : 'bg-primary';
+>>>>>>> unificado
 =======
   return s <= 1 ? 'bg-destructive' : s === 2 ? 'bg-secondary' : s === 3 ? 'bg-accent' : s === 4 ? 'bg-primary' : 'bg-primary';
 >>>>>>> unificado
@@ -211,7 +248,10 @@ const strengthColor = computed(() => {
 const canSubmit = computed(() => {
   const f = form.value;
 <<<<<<< HEAD
+<<<<<<< HEAD
   // Permitir registro solo con correo y contraseñas válidas (nombre opcional)
+=======
+>>>>>>> unificado
 =======
 >>>>>>> unificado
   return !!f.correo_electronico?.trim() && (f.password?.length >= 6) && f.password === f.confirm;
@@ -226,8 +266,12 @@ async function register() {
   loading.value = true;
   try {
 <<<<<<< HEAD
+<<<<<<< HEAD
     // Crear siempre un cliente desde la UI pública
     const payload = { username: form.value.correo_electronico, password: form.value.password, role: 'client' };
+=======
+    const payload = { username: form.value.correo_electronico, password: form.value.password, role: 'client', nombre: form.value.nombre, apellido: form.value.apellido };
+>>>>>>> unificado
 =======
     const payload = { username: form.value.correo_electronico, password: form.value.password, role: 'client', nombre: form.value.nombre, apellido: form.value.apellido };
 >>>>>>> unificado
@@ -237,7 +281,10 @@ async function register() {
     user.apellido = form.value.apellido;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     // Auto-login
+=======
+>>>>>>> unificado
 =======
 >>>>>>> unificado
     const loginRes = await apiClient.post('/auth/login', { username: user.username, password: form.value.password });
@@ -253,6 +300,7 @@ async function register() {
   }
 }
 </script>
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 <template>
@@ -393,5 +441,7 @@ async function register() {
 /* Ajustes menores para suavizar esquinas y sombras */
 .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); }
 </style>
+=======
+>>>>>>> unificado
 =======
 >>>>>>> unificado

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import apiClient from '../api/apiClient';
@@ -85,6 +86,8 @@ onMounted(loadOrders);
                 <button class="px-2 py-1 bg-green-100 hover:bg-green-200 rounded text-sm" @click="updateStatus(o,'completed')">Completar</button>
                 <button class="px-2 py-1 bg-red-100 hover:bg-red-200 rounded text-sm" @click="updateStatus(o,'cancelled')">Cancelar</button>
 =======
+=======
+>>>>>>> unificado
 <template>
   <div class="max-w-7xl mx-auto p-6">
     <div class="flex items-center justify-between mb-8">
@@ -195,6 +198,9 @@ onMounted(loadOrders);
                     Cancelar
                   </button>
                 </div>
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
               </td>
             </tr>
@@ -202,9 +208,12 @@ onMounted(loadOrders);
         </table>
       </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
       <div v-if="loading" class="p-4 text-sm text-gray-500">Cargando...</div>
       <div v-if="error" class="p-4 text-sm text-red-600">{{ error }}</div>
 =======
+=======
+>>>>>>> unificado
       <div v-if="loading" class="p-6 text-center">
         <div class="inline-flex items-center text-neutral-600 font-body">
           <svg class="animate-spin -ml-1 mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24">
@@ -229,15 +238,21 @@ onMounted(loadOrders);
         <h3 class="text-lg font-heading font-medium text-neutral-900 mb-2">No hay pedidos</h3>
         <p class="text-neutral-500 font-body">{{ statusFilter ? 'No se encontraron pedidos con el filtro seleccionado.' : 'Aún no hay pedidos registrados en el sistema.' }}</p>
       </div>
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
     </div>
   </div>
 </template>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 <style scoped>
 .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
 =======
+=======
+>>>>>>> unificado
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { apiService } from '@/services/apiService' // Ajusta la ruta según donde tengas el archivo
@@ -291,5 +306,8 @@ onMounted(() => {
 .font-body {
   font-family: 'Open Sans', sans-serif;
 }
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
 </style>

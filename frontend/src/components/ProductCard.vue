@@ -1,5 +1,6 @@
 <template>
 <<<<<<< HEAD
+<<<<<<< HEAD
   <div class="product-card">
     <h3>{{ product.name }}</h3>
     <p>{{ product.description }}</p>
@@ -40,6 +41,8 @@ p {
   color: #666;
   font-size: 0.9em;
 =======
+=======
+>>>>>>> unificado
   <div class="bg-white border border-neutral-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
      Updated to use new design system colors instead of semantic tokens 
     <div class="flex flex-col h-full">
@@ -114,6 +117,9 @@ const stockStatusColor = computed(() => {
 
 .font-body {
   font-family: 'Open Sans', sans-serif;
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
 }
 </style>

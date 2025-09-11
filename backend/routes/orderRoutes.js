@@ -3,6 +3,7 @@ const router = express.Router();
 const { readData, writeData, uuidv4, updateProductStock } = require('../utils/dataHandler');
 const { authorize } = require('../src/middleware/auth');
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 // --- Cliente: Crear un nuevo pedido (realizar compra) ---
 router.post('/', authorize(['client']), (req, res) => {
@@ -79,6 +80,8 @@ router.put('/:id/status', authorize(['employee', 'admin']), (req, res) => {
     writeData('orders.json', orders);
     res.json({ message: 'Order status updated', order: orders[orderIndex] });
 =======
+=======
+>>>>>>> unificado
 const { USE_DB, query, initPool } = require('../src/db');
 
 function mapDbOrderRow(r) {
@@ -287,6 +290,9 @@ router.put('/:id', authorize(['employee', 'admin']), async (req, res) => {
         console.error(e);
         return res.status(500).json({ message: 'server error' });
     }
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
 });
 

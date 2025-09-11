@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -135,10 +136,13 @@ const handleLogin = async () => {
             <a href="#" class="hover:text-gray-700 transition-colors">Ayuda</a>
           </div>
 =======
+=======
+>>>>>>> unificado
 <template>
   <div class="min-h-screen bg-gradient-to-br from-neutral-200 via-neutral-100 to-neutral-200 flex items-center justify-center p-4">
     <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-0 bg-card border border-border rounded-2xl shadow-xl overflow-hidden">
       
+<<<<<<< HEAD
   <div class="relative hidden lg:flex flex-col justify-between p-10 text-white bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900">
         <div>
           <div class="flex items-center gap-3 mb-10">
@@ -189,6 +193,9 @@ const handleLogin = async () => {
           </div>
         </div>
       </div>
+=======
+  <AuthMarketingPanel />
+>>>>>>> unificado
 
       
       <div class="p-8 lg:p-12 bg-background">
@@ -202,6 +209,7 @@ const handleLogin = async () => {
           </div>
 
           <LoginForm />
+<<<<<<< HEAD
 >>>>>>> unificado
         </div>
       </div>
@@ -887,5 +895,32 @@ video {
 =======
 <script setup>
 import LoginForm from '../components/LoginForm.vue'
+</script>
+>>>>>>> unificado
+=======
+          <div class="mt-6 text-center space-y-2">
+            <router-link to="/forgot-password" class="text-sm text-cyan-700 hover:underline">¿Olvidaste tu contraseña?</router-link>
+          </div>
+          <div class="mt-6 text-center space-y-2">
+            <a href="https://github.com/ElAdagioDeJP/Ferrepoco/blob/unificado/doc.md" target="_blank" class="text-primary underline">
+              Manual de Usuario
+            </a>
+          </div>
+          <div class="mt-6 text-center space-y-2">
+          <a href="/terminos" target="_blank" class="text-primary underline">términos y condiciones</a>
+          </div>
+          <div class="mt-6 text-center space-y-2">
+          <a href="/faqs" target="_blank" class="text-primary underline">Preguntas frecuentes</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</template>
+
+<script setup>
+import LoginForm from '../components/LoginForm.vue'
+import AuthMarketingPanel from '../components/AuthMarketingPanel.vue'
 </script>
 >>>>>>> unificado

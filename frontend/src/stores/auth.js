@@ -1,5 +1,9 @@
 import { defineStore } from 'pinia';
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+import apiClient from '../api/apiClient';
+>>>>>>> unificado
 =======
 import apiClient from '../api/apiClient';
 >>>>>>> unificado
@@ -9,7 +13,11 @@ export const useAuthStore = defineStore('auth', {
     user: null,
     token: null,
 <<<<<<< HEAD
+<<<<<<< HEAD
     userRole: null
+=======
+  userRole: null
+>>>>>>> unificado
 =======
   userRole: null
 >>>>>>> unificado
@@ -19,6 +27,10 @@ export const useAuthStore = defineStore('auth', {
     getUserRole: (state) => state.userRole,
     isAdmin: (state) => state.userRole === 'admin',
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  avatarUrl: (state) => state.user?.imagen_url || null,
+>>>>>>> unificado
 =======
   avatarUrl: (state) => state.user?.imagen_url || null,
 >>>>>>> unificado
@@ -37,6 +49,7 @@ export const useAuthStore = defineStore('auth', {
       this.user = userData;
       this.userRole = (userData.role || '').toLowerCase();
 <<<<<<< HEAD
+<<<<<<< HEAD
       this.token = userData.token; // Guardar el token en el estado
       // Persistir datos en localStorage
       localStorage.setItem('userRole', this.userRole);
@@ -47,6 +60,8 @@ export const useAuthStore = defineStore('auth', {
       if (userData.username || userData.correo_electronico) localStorage.setItem('username', userData.username || userData.correo_electronico);
       // Admin is the highest role and has all privileges
 =======
+=======
+>>>>>>> unificado
       this.token = userData.token;
 
       // Persistir datos en localStorage (¡IMPORTANTE!)
@@ -60,12 +75,16 @@ export const useAuthStore = defineStore('auth', {
         localStorage.setItem('username', userData.username || userData.correo_electronico);
       }
   if (userData.imagen_url) localStorage.setItem('imagen_url', userData.imagen_url);
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
     },
     logout() {
       this.user = null;
       this.token = null;
       this.userRole = null;
+<<<<<<< HEAD
 <<<<<<< HEAD
       // Eliminar datos de localStorage
       localStorage.removeItem('userRole');
@@ -88,6 +107,8 @@ export const useAuthStore = defineStore('auth', {
         this.userRole = storedRole;
         this.token = storedToken; // Establecer el token en el estado
 =======
+=======
+>>>>>>> unificado
 
       // Eliminar datos de localStorage
       localStorage.removeItem('userRole');
@@ -139,6 +160,9 @@ export const useAuthStore = defineStore('auth', {
         if (u.imagen_url) localStorage.setItem('imagen_url', u.imagen_url); else localStorage.removeItem('imagen_url');
       } catch (e) {
         // ignore
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
       }
     }

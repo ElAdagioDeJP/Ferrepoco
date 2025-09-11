@@ -10,11 +10,23 @@ import ProductsManager from '../views/ProductsManager.vue';
 import OrdersManager from '../views/OrdersManager.vue';
 import AdminUsers from '../views/AdminUsers.vue';
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> unificado
 import PasarelaDePago from '../views/PasarelaDePago.vue';
 import Payment from '../views/Payment.vue';
 import CategoryView from '../views/CategoryView.vue';
 import ClientProfile from '../views/ClientProfile.vue';
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
+import Terminos from '../views/Terminos.vue';
+import FAQs from '../views/FAQs.vue';
+import MisPedidos from '../views/MisPedidos.vue';
+import ForgotPassword from '../views/ForgotPassword.vue';
+import ResetPassword from '../views/ResetPassword.vue';
+import ManualUsuario from '../views/ManualUsuario.vue';
 >>>>>>> unificado
 
 const routes = [
@@ -36,6 +48,20 @@ const routes = [
     component: Register
   },
   {
+<<<<<<< HEAD
+=======
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: ForgotPassword
+  },
+  {
+    path: '/reset-password/:token',
+    name: 'ResetPassword',
+    component: ResetPassword,
+    props: true
+  },
+  {
+>>>>>>> unificado
     path: '/admin',
     name: 'AdminDashboard',
     component: AdminDashboard,
@@ -55,7 +81,10 @@ const routes = [
   },
   {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> unificado
     path: '/checkout',
     name: 'Checkout',
     component: PasarelaDePago,
@@ -80,6 +109,9 @@ const routes = [
     meta: { requiresAuth: true, roles: ['client'] }
   },
   {
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
     path: '/products',
     name: 'ProductsManager',
@@ -93,6 +125,30 @@ const routes = [
     meta: { requiresAuth: true, roles: ['admin', 'employee'] }
   },
   {
+<<<<<<< HEAD
+=======
+    path: '/terminos',
+    name: 'Terminos',
+    component: Terminos
+  },
+  {
+    path: '/faqs',
+    name: 'FAQs',
+    component: FAQs
+  },
+  {
+    path: '/manual-usuario',
+    name: 'ManualUsuario',
+    component: ManualUsuario
+  },
+  {
+    path: '/mis-pedidos',
+    name: 'MisPedidos',
+    component: MisPedidos,
+    meta: { requiresAuth: true, roles: ['client'] }
+  },
+  {
+>>>>>>> unificado
     path: '/:catchAll(.*)', // Ruta para 404
     name: 'NotFound',
     component: NotFound

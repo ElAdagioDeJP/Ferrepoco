@@ -1,6 +1,10 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 /** @type {import('tailwindcss').Config} */
 export default {
+=======
+module.exports = {
+>>>>>>> unificado
 =======
 module.exports = {
 >>>>>>> unificado
@@ -10,8 +14,11 @@ module.exports = {
   ],
   theme: {
 <<<<<<< HEAD
+<<<<<<< HEAD
     extend: {},
 =======
+=======
+>>>>>>> unificado
     extend: {
       fontFamily: {
         heading: ["Montserrat", "sans-serif"],
@@ -44,6 +51,9 @@ module.exports = {
         }
       }
     },
+<<<<<<< HEAD
+>>>>>>> unificado
+=======
 >>>>>>> unificado
   },
   plugins: [],
