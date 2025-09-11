@@ -1,27 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { readData, writeData, uuidv4, updateProductStock, findProducts } = require('../utils/dataHandler');
-<<<<<<< HEAD
-<<<<<<< HEAD
-const { authorize } = require('../src/middleware/auth');
-
-// Obtener todos los productos (accesible por todos)
-router.get('/', (req, res) => {
-    const products = findProducts(''); // Devuelve todos los productos
-    res.json(products);
-});
-
-// Obtener producto por ID
-router.get('/:id', (req, res) => {
-    const products = readData('products.json');
-    const product = products.find(p => p.id === req.params.id);
-    if (product) {
-        res.json(product);
-    } else {
-        res.status(404).json({ message: 'Product not found' });
-=======
-=======
->>>>>>> unificado
 const { authenticate, authorize } = require('../src/middleware/auth');
 const { USE_DB, query } = require('../src/db');
 
@@ -153,60 +132,10 @@ router.get('/:id', async (req, res) => {
     } catch (e) {
         console.error(e);
         return res.status(500).json({ message: 'server error' });
-<<<<<<< HEAD
->>>>>>> unificado
-=======
->>>>>>> unificado
     }
 });
 
 // Añadir producto (solo Admin)
-<<<<<<< HEAD
-<<<<<<< HEAD
-router.post('/', authorize(['admin']), (req, res) => {
-    const { name, description, price, stock, category } = req.body;
-    if (!name || !price || !stock || !category) {
-        return res.status(400).json({ message: 'Missing required product fields.' });
-    }
-    const products = readData('products.json');
-    const newProduct = { id: uuidv4(), name, description, price, stock, category };
-    products.push(newProduct);
-    writeData('products.json', products);
-    res.status(201).json({ message: 'Product added', product: newProduct });
-});
-
-// Actualizar producto (solo Admin)
-router.put('/:id', authorize(['admin']), (req, res) => {
-    const { id } = req.params;
-    const updatedFields = req.body;
-    let products = readData('products.json');
-    const productIndex = products.findIndex(p => p.id === id);
-
-    if (productIndex === -1) {
-        return res.status(404).json({ message: 'Product not found' });
-    }
-
-    products[productIndex] = { ...products[productIndex], ...updatedFields };
-    writeData('products.json', products);
-    res.json({ message: 'Product updated', product: products[productIndex] });
-});
-
-// Eliminar producto (solo Admin)
-router.delete('/:id', authorize(['admin']), (req, res) => {
-    const { id } = req.params;
-    let products = readData('products.json');
-    const initialLength = products.length;
-    products = products.filter(p => p.id !== id);
-
-    if (products.length === initialLength) {
-        return res.status(404).json({ message: 'Product not found' });
-    }
-
-    writeData('products.json', products);
-    res.json({ message: 'Product deleted' });
-=======
-=======
->>>>>>> unificado
 router.post('/', authenticate, authorize(['admin']), async (req, res) => {
     try {
         const { name, description = '', price, stock = 0, category } = req.body;
@@ -315,10 +244,6 @@ router.delete('/:id', authenticate, authorize(['admin']), async (req, res) => {
         console.error(e);
         return res.status(500).json({ message: 'server error' });
     }
-<<<<<<< HEAD
->>>>>>> unificado
-=======
->>>>>>> unificado
 });
 
 module.exports = router;

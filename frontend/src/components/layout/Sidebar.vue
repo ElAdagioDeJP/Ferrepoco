@@ -1,28 +1,4 @@
 <template>
-<<<<<<< HEAD
-<<<<<<< HEAD
-  <aside class="w-64 bg-gray-800 text-white flex-shrink-0">
-    <div class="p-4">
-      <h2 class="text-lg font-semibold">Menú</h2>
-      <nav class="mt-4">
-  <router-link v-if="auth.userRole==='admin'" to="/admin" class="block py-2 px-4 rounded hover:bg-gray-700" active-class="bg-gray-700">Admin</router-link>
-  <router-link v-if="auth.userRole==='employee'" to="/employee" class="block py-2 px-4 rounded hover:bg-gray-700" active-class="bg-gray-700">Empleado</router-link>
-  <router-link v-if="auth.userRole==='client'" to="/client" class="block py-2 px-4 rounded hover:bg-gray-700" active-class="bg-gray-700">Cliente</router-link>
-  <router-link v-if="auth.userRole==='admin' || auth.userRole==='employee'" to="/products" class="block py-2 px-4 rounded hover:bg-gray-700" active-class="bg-gray-700">Productos</router-link>
-  <router-link v-if="auth.userRole==='admin' || auth.userRole==='employee'" to="/orders" class="block py-2 px-4 rounded hover:bg-gray-700" active-class="bg-gray-700">Pedidos</router-link>
-  <router-link v-if="auth.userRole==='admin'" to="/admin/users" class="block py-2 px-4 rounded hover:bg-gray-700" active-class="bg-gray-700">Usuarios</router-link>
-      </nav>
-=======
-  <aside v-if="showSidebar" class="w-64 bg-gradient-to-b from-cyan-900 to-cyan-800 text-white flex-shrink-0 shadow-xl relative">
-    <div class="p-6 border-b border-cyan-700">
-      <div class="flex items-center space-x-3">
-        <img src="/iconoferre.png" alt="Ferrepoco" class="w-8 h-8 rounded-lg object-cover" />
-        <h2 class="text-lg font-heading font-semibold">Navegación</h2>
-      </div>
-    </div>
-    
-  <nav class="mt-6 px-4 pb-16 overflow-y-auto">
-=======
   <!-- Botón hamburguesa solo en móvil -->
   <button @click="sidebarOpen = true" class="md:hidden fixed top-4 left-4 z-50 bg-cyan-900 text-white p-2 rounded-full shadow-lg focus:outline-none" v-if="showSidebar && !sidebarOpen">
     <!-- Flechita hacia la derecha -->
@@ -43,7 +19,6 @@
         </div>
       </div>
       <nav class="mt-6 px-4 pb-16 overflow-y-auto">
->>>>>>> unificado
       <div class="space-y-2">
         <!-- Dashboard Links -->
         <router-link 
@@ -122,18 +97,6 @@
           <span class="font-medium">Usuarios</span>
         </router-link>
       </div>
-<<<<<<< HEAD
-    </nav>
-    
-  <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-cyan-700 bg-cyan-900/80 backdrop-blur">
-      <div class="flex items-center space-x-3 text-sm">
-        <div class="w-2 h-2 bg-green-400 rounded-full"></div>
-        <span class="text-cyan-200">Sistema Activo</span>
-      </div>
->>>>>>> unificado
-    </div>
-  </aside>
-=======
       </nav>
       <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-cyan-700 bg-cyan-900/80 backdrop-blur">
         <div class="flex items-center space-x-3 text-sm">
@@ -143,31 +106,10 @@
       </div>
     </aside>
   </transition>
->>>>>>> unificado
 </template>
 
 <script setup>
 import { useAuthStore } from '../../stores/auth';
-<<<<<<< HEAD
-<<<<<<< HEAD
-const auth = useAuthStore();
-auth.initializeAuth();
-</script>
-=======
-import { onMounted, computed } from 'vue';
-
-const auth = useAuthStore();
-
-// Initialize auth on component mount instead of conditionally
-onMounted(() => {
-  auth.initializeAuth();
-});
-
-// Show sidebar only if NOT a client
-const showSidebar = computed(() => auth.userRole !== 'client');
-</script>
->>>>>>> unificado
-=======
 import { onMounted, computed, ref } from 'vue';
 
 const auth = useAuthStore();
@@ -199,4 +141,3 @@ onUnmounted(() => {
 });
 
 </script>
->>>>>>> unificado

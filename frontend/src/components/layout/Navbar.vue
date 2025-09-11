@@ -1,23 +1,9 @@
 <template>
-<<<<<<< HEAD
-<<<<<<< HEAD
-  <header class="bg-white shadow-md">
-    <div class="container mx-auto px-6 py-4">
-      <div class="flex items-center justify-between">
-        <h1 class="text-xl font-semibold text-gray-700">Ferrepoco</h1>
-        <UserProfileBadge />
-=======
-=======
->>>>>>> unificado
   <header class="bg-white shadow-lg border-b border-neutral-200">
     <div class="container mx-auto px-6 py-4">
       <div class="grid grid-cols-12 items-center gap-4">
         <!-- Brand -->
-<<<<<<< HEAD
-        <div class="col-span-12 md:col-span-4 flex items-center gap-3 min-w-0">
-=======
         <div class="col-span-12 md:col-span-4 flex items-center gap-3 min-w-0 cursor-pointer" @click="goToDashboard">
->>>>>>> unificado
           <img src="/logo.png" alt="Ferrepoco" class="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
           <div class="truncate">
             <h1 class="text-2xl font-heading font-bold text-cyan-800 truncate">Ferrepoco</h1>
@@ -45,11 +31,6 @@
 
         <!-- Actions -->
         <div class="col-span-12 md:col-span-3 flex items-center justify-end gap-2 md:gap-4">
-<<<<<<< HEAD
-          <!-- Cliente: favoritos y carrito -->
-          <template v-if="userRole === 'client'">
-            <button class="p-2 rounded-lg hover:bg-neutral-100 transition-colors relative" @click="openCart" aria-label="Carrito">
-=======
           <!-- Desktop: acciones visibles -->
           <a
             href="https://github.com/ElAdagioDeJP/Ferrepoco/blob/unificado/doc.md"
@@ -62,26 +43,10 @@
           </a>
           <template v-if="userRole === 'client'">
             <button class="hidden md:inline-flex p-2 rounded-lg hover:bg-neutral-100 transition-colors relative" @click="openCart" aria-label="Carrito">
->>>>>>> unificado
               <ShoppingCart class="w-6 h-6 text-neutral-600" />
               <span class="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">{{ cartCount }}</span>
             </button>
           </template>
-<<<<<<< HEAD
-
-          <!-- Notificaciones (admin/employee) -->
-          <button v-if="userRole !== 'client'" class="relative p-2 text-neutral-600 hover:text-cyan-800 hover:bg-neutral-100 rounded-lg transition-colors duration-200" aria-label="Notificaciones">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM10.07 2.82l3.12 3.12c.944.944.944 2.475 0 3.419L8.5 14.04a1 1 0 01-.707.293H6v-1.793c0-.265.105-.52.293-.707l4.69-4.69c.944-.944 2.475-.944 3.419 0z"></path>
-            </svg>
-            <span class="sr-only">Notificaciones</span>
-            <span class="absolute -top-1 -right-1 w-3 h-3 bg-orange-500 rounded-full"></span>
-          </button>
-
-          <UserProfileBadge />
-        </div>
->>>>>>> unificado
-=======
           <UserProfileBadge class="hidden md:inline-flex" />
 
           <!-- Mobile: menú hamburguesa -->
@@ -112,19 +77,12 @@
             </transition>
           </div>
         </div>
->>>>>>> unificado
       </div>
     </div>
   </header>
 </template>
 
 <script setup>
-<<<<<<< HEAD
-<<<<<<< HEAD
-import UserProfileBadge from '../UserProfileBadge.vue';
-=======
-=======
->>>>>>> unificado
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../../stores/auth';
@@ -132,30 +90,22 @@ import apiClient from '../../api/apiClient';
 import UserProfileBadge from '../UserProfileBadge.vue';
 import { ShoppingCart } from 'lucide-vue-next';
 
-<<<<<<< HEAD
-=======
 
 const menuOpen = ref(false);
 function toggleMenu() { menuOpen.value = !menuOpen.value; }
 function closeMenu() { menuOpen.value = false; }
 
->>>>>>> unificado
 const auth = useAuthStore();
 auth.initializeAuth();
 
 const router = useRouter();
-<<<<<<< HEAD
-=======
 
->>>>>>> unificado
 const searchQuery = ref('');
 const favoriteCount = ref(Number(localStorage.getItem('favoritesCount') || 0));
 const cartCount = ref(0);
 
 const userRole = auth.userRole;
 
-<<<<<<< HEAD
-=======
 function goToDashboard() {
   if (userRole === 'admin') {
     router.push({ name: 'AdminDashboard' });
@@ -168,7 +118,6 @@ function goToDashboard() {
   }
 }
 
->>>>>>> unificado
 const emitGlobalSearch = () => {
   const event = new CustomEvent('global-search', { detail: searchQuery.value });
   window.dispatchEvent(event);
@@ -208,10 +157,6 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('cart-updated', onCartUpdated);
 });
-<<<<<<< HEAD
->>>>>>> unificado
-</script>
-=======
 
 </script>
 
@@ -224,4 +169,3 @@ onUnmounted(() => {
   animation: fade-in 0.2s ease;
 }
 </style>
->>>>>>> unificado

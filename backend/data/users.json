@@ -1,35 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-[
-  {
-    "id": "user-1",
-    "username": "admin@ferrepoco.com",
-    "password": "$2a$10$UL7tnteFHv7EzFNBXzSeyuhKW/deoiaLUqhM28Gc1IWcamdVL85DK",
-    "role": "admin"
-  },
-  {
-    "id": "user-2",
-    "username": "empleado@ferrepoco.com",
-    "password": "$2a$10$jObFJpHq.66kC2dX4UsEh.WgiQZVkkkp9urLFdxfRy5hHwq7QfHu2",
-    "role": "employee"
-  },
-  {
-    "id": "user-3",
-    "username": "cliente@ferrepoco.com",
-    "password": "$2a$10$XKEcDnHw5PTVZOpxLcKs5.dvPFT8qu52S.nx3471tZOlSUF9bnDAS",
-    "role": "client"
-  },
-  {
-    "id": "7de2b2b2-7438-4d62-a05b-c790aa83ada1",
-    "username": "juan432@gmail.com",
-    "password": "$2a$10$WY0tONRgnSlf6gKI3RNTyuJOkTjVPT.80GHsjYL.u983.YW4W8XT6",
-    "role": "client"
-  }
-]
-=======
-[]
->>>>>>> unificado
-=======
 [
   {
     "id": "5a7faef2-0d2f-4a79-926e-de9d5ec374f6",
@@ -40,4 +8,3 @@
     "apellido": "Guerrero"
   }
 ]
->>>>>>> unificado

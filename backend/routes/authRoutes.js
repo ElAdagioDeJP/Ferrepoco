@@ -5,39 +5,10 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { authenticate } = require('../src/middleware/auth');
 const { USE_DB, query } = require('../src/db');
-<<<<<<< HEAD
-
-const JWT_SECRET = process.env.JWT_SECRET || 'ferrepoco_super_secret_key';
-
-<<<<<<< HEAD
-// Register new user (client only from public endpoint)
-router.post('/register', async (req, res) => {
-    try {
-        const { username, password } = req.body;
-        if (!username || !password) return res.status(400).json({ message: 'username and password required' });
-        const hashed = await bcrypt.hash(password, 10);
-            if (USE_DB) {
-                // Force role to client on public registration
-                const role = 'client';
-                const roleId = 3;
-                const rows = await query('INSERT INTO usuarios (nombre, apellido, correo_electronico, contrasena, id_rol) VALUES (?, ?, ?, ?, ?)', ['','', username, hashed, roleId]);
-                const id = rows.insertId?.toString() || uuidv4();
-                return res.status(201).json({ message: 'registered', user: { id, username, role } });
-        } else {
-            const users = readData('users.json');
-            if (users.find(u => u.username === username)) return res.status(409).json({ message: 'username already exists' });
-            const role = 'client';
-            const user = { id: uuidv4(), username, password: hashed, role };
-            users.push(user);
-            writeData('users.json', users);
-            return res.status(201).json({ message: 'registered', user: { id: user.id, username, role } });
-=======
-=======
 const crypto = require('crypto');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'ferrepoco_super_secret_key';
 
->>>>>>> unificado
 function normalizeRole(dbRole) {
     if (!dbRole) return 'client';
     const r = String(dbRole).toLowerCase();
@@ -100,10 +71,6 @@ router.post('/register', async (req, res) => {
             users.push(user);
             writeData('users.json', users);
             return res.status(201).json({ message: 'registered', user: { id: user.id, username, role: 'client', nombre, apellido } });
-<<<<<<< HEAD
->>>>>>> unificado
-=======
->>>>>>> unificado
         }
     } catch (err) {
         console.error(err);
@@ -118,23 +85,12 @@ router.post('/login', async (req, res) => {
         if (!username || !password) return res.status(400).json({ message: 'username and password required' });
         let userRecord = null;
         if (USE_DB) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-            const rows = await query('SELECT u.id_usuario as id, u.correo_electronico as username, u.contrasena as password, r.nombre_rol as role FROM usuarios u LEFT JOIN roles r ON u.id_rol = r.id_rol WHERE u.correo_electronico = ? LIMIT 1', [username]);
-            userRecord = rows[0];
-=======
-=======
->>>>>>> unificado
             const rows = await query('SELECT u.id_usuario as id, u.nombre, u.apellido, u.correo_electronico as username, u.contrasena as password, u.imagen_url as imagen_url, r.nombre_rol as role FROM usuarios u LEFT JOIN roles r ON u.id_rol = r.id_rol WHERE u.correo_electronico = ? LIMIT 1', [username]);
             userRecord = rows[0];
             if (!userRecord) return res.status(401).json({ message: 'Invalid credentials' });
             const ok = await bcrypt.compare(password, userRecord.password);
             if (!ok) return res.status(401).json({ message: 'Invalid credentials' });
             userRecord.role = normalizeRole(userRecord.role);
-<<<<<<< HEAD
->>>>>>> unificado
-=======
->>>>>>> unificado
         } else {
             const users = readData('users.json');
             const idx = users.findIndex(u => u.username === username);
@@ -173,13 +129,6 @@ router.post('/login', async (req, res) => {
         if (!userRecord) return res.status(401).json({ message: 'Invalid credentials' });
         // Nota: cuando USE_DB=true ya se validó arriba con bcrypt.compare
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-        const token = jwt.sign({ id: String(userRecord.id), username: userRecord.username, role: userRecord.role }, JWT_SECRET, { expiresIn: '8h' });
-        return res.json({ message: 'Login successful', user: { id: String(userRecord.id), username: userRecord.username, role: userRecord.role, token } });
-=======
-=======
->>>>>>> unificado
     const token = jwt.sign({ id: String(userRecord.id), username: userRecord.username, role: userRecord.role }, JWT_SECRET, { expiresIn: '8h' });
     // Normalize avatar URL: when using DB, imagen_url may be stored as '/uploads/...'. Also expose via '/api' prefix for proxy.
     let imagen_url = null;
@@ -188,10 +137,6 @@ router.post('/login', async (req, res) => {
         imagen_url = raw.startsWith('/api/') ? raw : `/api${raw.startsWith('/') ? '' : '/'}${raw}`;
     }
     return res.json({ message: 'Login successful', user: { id: String(userRecord.id), username: userRecord.username, role: userRecord.role, token, nombre: userRecord.nombre, apellido: userRecord.apellido, imagen_url } });
-<<<<<<< HEAD
->>>>>>> unificado
-=======
->>>>>>> unificado
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: 'server error' });
@@ -203,9 +148,6 @@ router.get('/me', authenticate, (req, res) => {
     return res.json({ user: req.user });
 });
 
-<<<<<<< HEAD
-module.exports = router;
-=======
 module.exports = router;
 
 // ---------------------- Password Recovery ----------------------
@@ -326,4 +268,3 @@ router.post('/reset-password', async (req, res) => {
         return res.status(500).json({ message: 'server error' });
     }
 });
->>>>>>> unificado

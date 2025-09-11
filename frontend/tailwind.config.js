@@ -1,24 +1,9 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-/** @type {import('tailwindcss').Config} */
-export default {
-=======
 module.exports = {
->>>>>>> unificado
-=======
-module.exports = {
->>>>>>> unificado
   content: [
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    extend: {},
-=======
-=======
->>>>>>> unificado
     extend: {
       fontFamily: {
         heading: ["Montserrat", "sans-serif"],
@@ -51,10 +36,6 @@ module.exports = {
         }
       }
     },
-<<<<<<< HEAD
->>>>>>> unificado
-=======
->>>>>>> unificado
   },
   plugins: [],
 }

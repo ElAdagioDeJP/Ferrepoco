@@ -1,9 +1,6 @@
 const bcrypt = require('bcryptjs');
 const { readData, writeData, uuidv4 } = require('../utils/dataHandler');
-<<<<<<< HEAD
-=======
 const { USE_DB, query } = require('../src/db');
->>>>>>> unificado
 
 async function run() {
   const username = process.argv[2];
@@ -20,19 +17,6 @@ async function run() {
     process.exit(1);
   }
 
-<<<<<<< HEAD
-  const users = readData('users.json');
-  if (users.find(u => u.username === username)) {
-    console.log('User already exists:', username);
-    return;
-  }
-
-  const hashed = await bcrypt.hash(password, 10);
-  const newUser = { id: uuidv4(), username, password: hashed, role: roleArg };
-  users.push(newUser);
-  writeData('users.json', users);
-  console.log(`User created: ${username} (role: ${roleArg})`);
-=======
   const hashed = await bcrypt.hash(password, 10);
 
   if (USE_DB) {
@@ -59,7 +43,6 @@ async function run() {
   users.push(newUser);
   writeData('users.json', users);
   console.log(`User created (JSON): ${username} (role: ${roleArg})`);
->>>>>>> unificado
 }
 
 run().catch(err => { console.error(err); process.exit(1); });

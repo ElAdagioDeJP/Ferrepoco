@@ -1,39 +1,17 @@
 import { defineStore } from 'pinia';
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 import apiClient from '../api/apiClient';
->>>>>>> unificado
-=======
-import apiClient from '../api/apiClient';
->>>>>>> unificado
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null,
     token: null,
-<<<<<<< HEAD
-<<<<<<< HEAD
-    userRole: null
-=======
   userRole: null
->>>>>>> unificado
-=======
-  userRole: null
->>>>>>> unificado
   }),
   getters: {
     isAuthenticated: (state) => !!state.user,
     getUserRole: (state) => state.userRole,
     isAdmin: (state) => state.userRole === 'admin',
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
   avatarUrl: (state) => state.user?.imagen_url || null,
->>>>>>> unificado
-=======
-  avatarUrl: (state) => state.user?.imagen_url || null,
->>>>>>> unificado
     displayName: (state) => {
       const u = state.user || {};
       const nameParts = [u.nombre, u.apellido].filter(Boolean).join(' ').trim();
@@ -48,20 +26,6 @@ export const useAuthStore = defineStore('auth', {
     login(userData) {
       this.user = userData;
       this.userRole = (userData.role || '').toLowerCase();
-<<<<<<< HEAD
-<<<<<<< HEAD
-      this.token = userData.token; // Guardar el token en el estado
-      // Persistir datos en localStorage
-      localStorage.setItem('userRole', this.userRole);
-      localStorage.setItem('userId', userData.id); // Para persistir el ID del usuario
-      localStorage.setItem('token', userData.token); // Para persistir el token
-      if (userData.nombre) localStorage.setItem('nombre', userData.nombre);
-      if (userData.apellido) localStorage.setItem('apellido', userData.apellido);
-      if (userData.username || userData.correo_electronico) localStorage.setItem('username', userData.username || userData.correo_electronico);
-      // Admin is the highest role and has all privileges
-=======
-=======
->>>>>>> unificado
       this.token = userData.token;
 
       // Persistir datos en localStorage (¡IMPORTANTE!)
@@ -75,40 +39,11 @@ export const useAuthStore = defineStore('auth', {
         localStorage.setItem('username', userData.username || userData.correo_electronico);
       }
   if (userData.imagen_url) localStorage.setItem('imagen_url', userData.imagen_url);
-<<<<<<< HEAD
->>>>>>> unificado
-=======
->>>>>>> unificado
     },
     logout() {
       this.user = null;
       this.token = null;
       this.userRole = null;
-<<<<<<< HEAD
-<<<<<<< HEAD
-      // Eliminar datos de localStorage
-      localStorage.removeItem('userRole');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('token'); // Eliminar el token
-      localStorage.removeItem('nombre');
-      localStorage.removeItem('apellido');
-      localStorage.removeItem('username');
-    },
-    // Método para cargar el estado del usuario al recargar la página
-    initializeAuth() {
-      const storedRole = localStorage.getItem('userRole');
-      const storedId = localStorage.getItem('userId');
-      const storedToken = localStorage.getItem('token'); // Recuperar el token
-      const nombre = localStorage.getItem('nombre') || undefined;
-      const apellido = localStorage.getItem('apellido') || undefined;
-      const username = localStorage.getItem('username') || undefined;
-      if (storedRole && storedId && storedToken) {
-        this.user = { id: storedId, role: storedRole, nombre, apellido, username };
-        this.userRole = storedRole;
-        this.token = storedToken; // Establecer el token en el estado
-=======
-=======
->>>>>>> unificado
 
       // Eliminar datos de localStorage
       localStorage.removeItem('userRole');
@@ -160,10 +95,6 @@ export const useAuthStore = defineStore('auth', {
         if (u.imagen_url) localStorage.setItem('imagen_url', u.imagen_url); else localStorage.removeItem('imagen_url');
       } catch (e) {
         // ignore
-<<<<<<< HEAD
->>>>>>> unificado
-=======
->>>>>>> unificado
       }
     }
   }

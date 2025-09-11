@@ -1,12 +1,5 @@
 const BASE_URL = '/api';
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-async function fetchApi(endpoint) {
-  const response = await fetch(`${BASE_URL}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`);
-=======
-=======
->>>>>>> unificado
 async function fetchApi(endpoint, options = {}) {
   const token = localStorage.getItem('token');
   const userRole = localStorage.getItem('userRole');
@@ -20,10 +13,6 @@ async function fetchApi(endpoint, options = {}) {
     ...options
   });
 
-<<<<<<< HEAD
->>>>>>> unificado
-=======
->>>>>>> unificado
   if (!response.ok) {
     throw new Error(`Error fetching ${endpoint}: ${response.statusText}`);
   }
@@ -34,12 +23,6 @@ export const apiService = {
   getUsers: () => fetchApi('/users'),
   getProducts: () => fetchApi('/products'),
   getOrders: () => fetchApi('/orders'),
-<<<<<<< HEAD
-<<<<<<< HEAD
-};
-=======
-=======
->>>>>>> unificado
   // DB endpoints
   getDbAll: () => fetchApi('/db/all'),
   getDbRoles: () => fetchApi('/db/roles'),
@@ -60,9 +43,4 @@ export const apiService = {
       method: 'PUT',
       body: JSON.stringify({ status })
     })
-<<<<<<< HEAD
 };
->>>>>>> unificado
-=======
-};
->>>>>>> unificado

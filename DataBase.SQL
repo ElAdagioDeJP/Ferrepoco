@@ -21,16 +21,8 @@ CREATE TABLE usuarios (
     apellido VARCHAR(100) NOT NULL,
     correo_electronico VARCHAR(255) UNIQUE NOT NULL,
     contrasena VARCHAR(255) NOT NULL,
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
     -- URL o ruta de la imagen del usuario (un usuario solo puede tener una imagen)
     imagen_url VARCHAR(255) NULL,
->>>>>>> unificado
-=======
-    -- URL o ruta de la imagen del usuario (un usuario solo puede tener una imagen)
-    imagen_url VARCHAR(255) NULL,
->>>>>>> unificado
     id_rol INT,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_rol) REFERENCES roles(id_rol)
@@ -56,11 +48,6 @@ CREATE TABLE productos (
     FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria)
 );
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> unificado
 -- Tabla para las imágenes de los productos (máximo 10 por producto)
 CREATE TABLE imagenes_producto (
     id_imagen INT PRIMARY KEY AUTO_INCREMENT,
@@ -89,10 +76,6 @@ BEGIN
 END //
 DELIMITER ;
 
-<<<<<<< HEAD
->>>>>>> unificado
-=======
->>>>>>> unificado
 -- Tabla para la gestión del inventario
 CREATE TABLE inventario (
     id_inventario INT PRIMARY KEY AUTO_INCREMENT,

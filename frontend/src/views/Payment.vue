@@ -22,19 +22,12 @@
   
 </template>
 
-<<<<<<< HEAD
-=======
 
->>>>>>> unificado
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import apiClient from '@/api/apiClient';
 
-<<<<<<< HEAD
-const route = useRoute();
-const router = useRouter();
-=======
 import { useAuthStore } from '@/stores/auth';
 import jsPDF from 'jspdf';
 
@@ -43,7 +36,6 @@ const router = useRouter();
 const auth = useAuthStore();
 auth.initializeAuth();
 
->>>>>>> unificado
 
 const orderId = ref(String(route.query.orderId || ''));
 const amount = ref(Number(route.query.amount || 0));
@@ -53,8 +45,6 @@ const processing = ref(false);
 const done = ref(false);
 const error = ref('');
 
-<<<<<<< HEAD
-=======
 // Recuperar productos del localStorage (guardados en PasarelaDePago)
 let productosFactura = [];
 try {
@@ -72,7 +62,6 @@ function generarNumeroControl(orden) {
   return '00-32131-' + String(orden).padStart(5, '0');
 }
 
->>>>>>> unificado
 async function loadMethods(){
   try {
     const res = await apiClient.get('/payments/methods');
@@ -82,8 +71,6 @@ async function loadMethods(){
   }
 }
 
-<<<<<<< HEAD
-=======
 
 function generarFacturaPDF() {
   const doc = new jsPDF();
@@ -141,17 +128,13 @@ function generarFacturaPDF() {
   doc.save(`Factura_Ferrepoco_${orderId.value || Date.now()}.pdf`);
 }
 
->>>>>>> unificado
 async function confirm(){
   if (!orderId.value || !methodId.value) return;
   processing.value = true; error.value='';
   try {
     await apiClient.post('/payments', { orderId: Number(orderId.value), methodId: Number(methodId.value), amount: amount.value });
     done.value = true;
-<<<<<<< HEAD
-=======
     generarFacturaPDF();
->>>>>>> unificado
     setTimeout(() => { router.push({ name: 'ClientDashboard' }); }, 1200);
   } catch (e) {
     console.error(e);
